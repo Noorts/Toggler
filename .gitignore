@@ -1,0 +1,6 @@
+/.gradle/
+/.idea/
+/build/
+TODO.txt
+
+.DS_Store

@@ -1,0 +1,30 @@
+<idea-plugin url="https://www.jetbrains.com/idea">
+    <id>com.noorts.toggler</id>
+    <name>Toggler</name>
+    <vendor url="https://github.com/Noorts">Noorts</vendor>
+
+    <description><![CDATA[
+    Toggle words through a sequence of user configurable word toggles.
+    ]]></description>
+
+    <change-notes>Initial release of the plugin.</change-notes>
+    <version>Unreleased</version>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="AppSettingsState"/>
+        <applicationConfigurable parentId="tools" instance="AppSettingsConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="Toggler"/>
+    </extensions>
+
+    <actions>
+        <action id="ToggleAction" class="ToggleAction" text="Toggle"
+                description="Toggle the selected word to the next word in the sequence
+                defined in the Toggler plugin configuration.">
+            <add-to-group group-id="EditMenu" anchor="after" relative-to-action="EditSmartGroup"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl R"/>
+        </action>
+    </actions>
+</idea-plugin>
