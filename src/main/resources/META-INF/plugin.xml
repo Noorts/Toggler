@@ -24,7 +24,7 @@
                 description="Toggle the selected word to the next word in the sequence
                 defined in the Toggler plugin configuration.">
             <add-to-group group-id="EditMenu" anchor="after" relative-to-action="EditSmartGroup"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl R"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="control shift X"/>
         </action>
     </actions>
 </idea-plugin>
