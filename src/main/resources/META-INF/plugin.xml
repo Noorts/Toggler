@@ -4,11 +4,11 @@
     <vendor url="https://github.com/Noorts">Noorts</vendor>
 
     <description><![CDATA[
-    Toggle words through a sequence of user configurable word toggles.
+    Quickly toggle words with a hotkey. Toggles can defined by the user.
     ]]></description>
 
     <change-notes>Initial release of the plugin.</change-notes>
-    <version>Unreleased</version>
+    <version>0.1.0</version>
 
     <depends>com.intellij.modules.platform</depends>
 
