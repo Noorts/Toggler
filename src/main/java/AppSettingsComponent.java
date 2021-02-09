@@ -13,9 +13,9 @@ public class AppSettingsComponent {
 
     public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
-                .addLabeledComponent(new JBLabel("Json"), myJsonText, 1, true)
+                .addComponent(new JBLabel("Json"))
+                .addComponentFillVertically(myJsonText, 1)
                 .addComponent(myLabel)
-                .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
 
