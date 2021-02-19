@@ -6,7 +6,8 @@ import utils.JsonParser;
 import javax.swing.*;
 import java.util.List;
 
-/* When the settings are changed to something else than the defaultToggles, then the settings are persisted to a file named config/options/SdkSettingsPlugin.xml */
+/* When the settings are changed to something else than the defaultToggles,
+ * then the settings are persisted to a file named config/options/SdkSettingsPlugin.xml */
 public class AppSettingsConfigurable implements Configurable {
 
     private AppSettingsComponent mySettingsComponent;
@@ -32,7 +33,7 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggleWords));
+        boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
 //        modified |= mySettingsComponent.getIdeaUserStatus() != settings.ideaStatus;
         return modified;
     }
@@ -42,7 +43,11 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
         List<List<String>> currentSettingsFromMenu = JsonParser.parseJson(mySettingsComponent.getJsonText());
         if (currentSettingsFromMenu != null) {
-            settings.toggleWords = currentSettingsFromMenu;
+            settings.toggles = currentSettingsFromMenu;
+            /* Set the JsonTextarea in the settings menu to the toggles saved to the plugin.
+             * The side effect is that eventual errors entered by the user that aren't included by the JsonParser
+             * are removed from the textarea input as the input is forcefully reset. */
+            mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
             mySettingsComponent.setErrorMessage("Status: saving JSON was successful.");
         } else {
             mySettingsComponent.setErrorMessage("Error: saving JSON failed.");
@@ -53,8 +58,8 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggleWords));
-        mySettingsComponent.setErrorMessage("Status: previous values were loaded.");
+        mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
+        mySettingsComponent.setErrorMessage("Status: loading previous values was successful.");
     }
 
     @Override

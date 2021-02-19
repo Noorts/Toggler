@@ -112,8 +112,7 @@ public class ToggleAction extends AnAction {
         String wordInLowerCase = word.toLowerCase();
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         /* The current settings. */
-        List<List<String>> toggleWordsStructure = appSettingsState.toggleWords;
-
+        List<List<String>> toggleWordsStructure = appSettingsState.toggles;
 
         /* O(n^2) search for the word to replace. */
         for (int i = 0; i < toggleWordsStructure.size(); i++) {

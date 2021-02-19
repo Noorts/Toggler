@@ -16,19 +16,21 @@ import java.util.List;
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
 
-    private final String defaultToggles =
+    private static final String defaultToggles =
             (
                     "[[`true`,`false`],[`one`,`two`,`three`]," +
                     "[`public`,`private`,`protected`]," +
                     "[`class`,`interface`]]"
             ).replace('`', '"');
 
-    AppSettingsState() {
-        toggleWords = JsonParser.parseJson(defaultToggles);
-    }
+    AppSettingsState() { resetTogglesToDefault(); }
 
     @OptionTag(converter = TogglerStructureConverter.class)
-    public List<List<String>> toggleWords;
+    public List<List<String>> toggles;
+
+    public void resetTogglesToDefault(){
+        toggles = JsonParser.parseJson(defaultToggles);
+    }
 
     public static AppSettingsState getInstance() {
         return ServiceManager.getService(AppSettingsState.class);
