@@ -11,8 +11,8 @@ import utils.JsonParser;
 import java.util.List;
 
 @State(
-        name = "AppSettingsState",
-        storages = {@Storage("TogglerSettingsPlugin.xml")}
+        name = "TogglerSettingsState",
+        storages = {@Storage("togglerPluginSettings.xml")}
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
 
