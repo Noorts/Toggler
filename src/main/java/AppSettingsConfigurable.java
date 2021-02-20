@@ -41,16 +41,18 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public void apply() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        List<List<String>> currentSettingsFromMenu = JsonParser.parseJson(mySettingsComponent.getJsonText());
-        if (currentSettingsFromMenu != null) {
+
+        try {
+            List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(mySettingsComponent.getJsonText());
             settings.toggles = currentSettingsFromMenu;
+
             /* Set the JsonTextarea in the settings menu to the toggles saved to the plugin.
              * The side effect is that eventual errors entered by the user that aren't included by the JsonParser
              * are removed from the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
             mySettingsComponent.setStatusMessage("Status: Saving toggles was successful.");
-        } else {
-            mySettingsComponent.setStatusMessage("Error: Saving toggles failed.");
+        } catch (JsonParser.TogglesFormatException e) {
+            mySettingsComponent.setStatusMessage(String.format("Error: %s", e.getMessage()));
         }
     }
 

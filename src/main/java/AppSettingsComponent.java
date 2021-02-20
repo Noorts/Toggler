@@ -62,7 +62,10 @@ public class AppSettingsComponent {
 
         // Load and parse the contents of the JSON file and set the toggles to the loaded toggles.
         try {
-            appSettingsState.toggles = JsonParser.parseJson(FileHandler.loadContentFromFileToString());
+            appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
+        } catch (JsonParser.TogglesFormatException e) {
+            setStatusMessage(String.format("Error: %s", e.getMessage()));
+            return;
         } catch (FileHandler.FileSelectionCancelledException e) {
             setStatusMessage("Error: No file was selected, importing toggles failed.");
             return;

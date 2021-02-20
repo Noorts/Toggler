@@ -29,7 +29,12 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     public List<List<String>> toggles;
 
     public void resetTogglesToDefault(){
-        toggles = JsonParser.parseJson(defaultToggles);
+        try {
+            toggles = JsonParser.parseJsonToToggles(defaultToggles);
+        } catch (JsonParser.TogglesFormatException e) {
+            System.err.println("The defaultToggles provided by the creator of the " +
+                    "plugin don't conform to the JSON format.");
+        }
     }
 
     public static AppSettingsState getInstance() {
