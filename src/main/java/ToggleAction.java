@@ -12,6 +12,11 @@ import utils.StringTransformer;
 
 import java.util.List;
 
+/**
+ * Defines the logic used for the toggle action.
+ *
+ * @author Noorts
+ */
 public class ToggleAction extends AnAction {
 
     private static final NotificationGroup togglerNotificationGroup =
@@ -42,9 +47,19 @@ public class ToggleAction extends AnAction {
      * @param document The document in which the caret(s) are present.
      */
     public void performToggleOnSingleCaret(Caret caret, Document document) {
+        // Return if the caret is a multi-line selection as support for this hasn't been implemented yet.
+        if (caret.getSelectionStartPosition().line != caret.getSelectionEndPosition().line) {
+            Notifications.Bus.notify(new Notification(
+                    togglerNotificationGroup.getDisplayId(), "Toggler",
+                    "Toggling by finding keywords inside of a multi-line " +
+                            "selection isn't supported by Toggler (yet).",
+                    NotificationType.INFORMATION, null));
+            return;
+        }
+
         /* Positions of the beginning and end of the selection.
-        *  The position is held in two variables so that we can reselect it if necessary.
-        *  See the last comment block in this method for more information. */
+         *  The position is held in two variables so that we can reselect it if necessary.
+         *  See the last comment block in this method for more information. */
         int start = caret.getSelectionStart();
         int end = caret.getSelectionEnd();
         int oldPosition = end;
@@ -58,37 +73,39 @@ public class ToggleAction extends AnAction {
             end = caret.getSelectionEnd();
         }
 
-        String selectedWordToReplace = caret.getSelectedText();
-        if (!(selectedWordToReplace == null)) {
-            String replacementWord = StringTransformer.transferCapitalisation(
-                    selectedWordToReplace, findNextWordInTogglePair(selectedWordToReplace));
+        // Select the entire toggle/word from the caret so that it can be replaced by the replacement.
+        String selectedToggleFromCaret = caret.getSelectedText();
 
-            boolean wordReplacementCouldBeFoundSuccessfully = !(replacementWord == null);
-            if (wordReplacementCouldBeFoundSuccessfully) {
-                document.replaceString(start, end, replacementWord);
-            } else {
-                Notifications.Bus.notify(new Notification(
-                        togglerNotificationGroup.getDisplayId(), "Toggler",
-                                "No match was found.<br>" +
-                                        "Add new words through the configuration menu.<br>" +
-                                        "Go to Preferences -> Tools -> Toggler."
-                                ,
-                        NotificationType.WARNING, null));
-            }
+        // Exit if the caret is in an empty file in which no toggle could possibly be selected.
+        if (selectedToggleFromCaret == null) {
+            Notifications.Bus.notify(new Notification(
+                    togglerNotificationGroup.getDisplayId(), "Toggler",
+                    "No text could be selected.",
+                    NotificationType.INFORMATION, null));
+            return;
+        }
 
-            /* Reset the caret selection to the state before the action was performed.
-             * E.g. A selection will turn into a selection of the replacement word.
-             *      No selection will not select the replacement word but will instead
-             *      place the caret at the original position it was in. */
-            if (!caretHasASelection) {
-                caret.setSelection(oldPosition, oldPosition);
-            }
+        // Get the replacementToggle and toggle the caret its toggle with the replacement.
+        String replacementToggle = findNextToggleInToggles(selectedToggleFromCaret);
+        if (replacementToggle != null) {
+            replacementToggle = StringTransformer.transferCapitalisation(
+                    selectedToggleFromCaret, replacementToggle);
+            document.replaceString(start, end, replacementToggle);
         } else {
             Notifications.Bus.notify(new Notification(
                     togglerNotificationGroup.getDisplayId(), "Toggler",
-                    "No text could be selected."
-                    ,
-                    NotificationType.INFORMATION, null));
+                            "No match was found.<br>" +
+                                    "Add new words through the configuration menu.<br>" +
+                                    "Go to Preferences -> Tools -> Toggler.",
+                    NotificationType.WARNING, null));
+        }
+
+        /* Reset the caret selection to the state before the action was performed.
+         * E.g. A selection will turn into a selection of the replacement word.
+         *      No selection will not select the replacement word but will instead
+         *      place the caret at the original position it was in. */
+        if (!caretHasASelection) {
+            caret.setSelection(oldPosition, oldPosition);
         }
     }
 
@@ -108,7 +125,7 @@ public class ToggleAction extends AnAction {
      * @return The next word in the sequence which the provided word is part of.
      *         Null is returned if the provided word couldn't be found in the config.
      */
-    private String findNextWordInTogglePair(String word) {
+    private String findNextToggleInToggles(String word) {
         String wordInLowerCase = word.toLowerCase();
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         /* The current settings. */

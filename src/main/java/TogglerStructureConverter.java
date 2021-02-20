@@ -4,6 +4,10 @@ import utils.JsonParser;
 
 import java.util.List;
 
+/**
+ * A converter used by the AppSettingsState to write and load the state of the toggles to and from the
+ * internal settings file of this plugin managed by the IDE.
+ */
 class TogglerStructureConverter extends Converter<List<List<String>>> {
     public List<List<String>> fromString(@NotNull String value) {
         try {

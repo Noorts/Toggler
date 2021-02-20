@@ -1,5 +1,7 @@
 package utils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class StringTransformer {
     /**
      * Transfer the capitalisation from the currentWord to the replacementWord.
@@ -11,7 +13,7 @@ public class StringTransformer {
      * @param replacementWord The word to transform and return.
      * @return The replacementWord after being transformed.
      */
-    public static String transferCapitalisation(String currentWord, String replacementWord) {
+    public static String transferCapitalisation(@NotNull String currentWord, @NotNull String replacementWord) {
         char[] symbolsInCurrentWord = currentWord.toCharArray();
         int amountOfUpperCaseCharactersInCurrentWord = 0;
         int lengthOfCurrentWord = symbolsInCurrentWord.length;
@@ -28,7 +30,9 @@ public class StringTransformer {
         }
 
         /* Only first character is uppercase. */
-        if (amountOfUpperCaseCharactersInCurrentWord == 1 && Character.isUpperCase(symbolsInCurrentWord[0])) {
+        if (amountOfUpperCaseCharactersInCurrentWord == 1
+                && Character.isUpperCase(symbolsInCurrentWord[0])
+                && Character.isAlphabetic(symbolsInCurrentWord[0])) {
             return replacementWord.substring(0, 1).toUpperCase() + replacementWord.substring(1);
         }
 
