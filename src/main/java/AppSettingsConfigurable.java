@@ -48,9 +48,9 @@ public class AppSettingsConfigurable implements Configurable {
              * The side effect is that eventual errors entered by the user that aren't included by the JsonParser
              * are removed from the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
-            mySettingsComponent.setErrorMessage("Status: saving JSON was successful.");
+            mySettingsComponent.setStatusMessage("Status: Saving toggles was successful.");
         } else {
-            mySettingsComponent.setErrorMessage("Error: saving JSON failed.");
+            mySettingsComponent.setStatusMessage("Error: Saving toggles failed.");
         }
     }
 
@@ -59,7 +59,7 @@ public class AppSettingsConfigurable implements Configurable {
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
-        mySettingsComponent.setErrorMessage("Status: loading previous values was successful.");
+        mySettingsComponent.setStatusMessage("Status: Loaded previous toggles.");
     }
 
     @Override
