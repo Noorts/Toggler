@@ -1,10 +1,9 @@
+// Note: gradle-intellij-plugin version 0.7.0 isn't available yet thus 0.6.5 is still in use.
+// https://github.com/JetBrains/gradle-intellij-plugin
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
 }
-
-group 'com.noorts'
-version '0.3.0'
 
 repositories {
     mavenCentral()
@@ -18,8 +17,33 @@ dependencies {
 intellij {
     version '2020.2.3'
 }
+
+// Disable building searchableOptions as this isn't beneficial for this plugin.
+// From the FAQ: As a result of disabling building searchable options,
+// the configurables that your plugin provides won't be searchable in the Settings dialog.
+// https://github.com/JetBrains/gradle-intellij-plugin/blob/master/FAQ.md
+buildSearchableOptions.enabled = false
+
+group 'com.noorts'
+version '0.3.0'
+
+// Changes made to the plugin.xml are entered here.
 patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    changeNotes("""
+      [1.0.0] - 2021-02-21
+      <ul>
+      <li>Initial version.</li>
+      </ul><br>
+      
+      """)
+
+    pluginDescription("""
+      Quickly toggle words and symbols with a hotkey. Toggles can be configured by the user.
+      """)
+
+    // Defines the builds that will be able to enable this plugin.
+    // Build number chosen based on product version statistics:
+    // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
+    sinceBuild('193.0')
+    untilBuild(null)
 }

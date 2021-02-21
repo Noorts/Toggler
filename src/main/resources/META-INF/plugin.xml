@@ -3,13 +3,6 @@
     <name>Toggler</name>
     <vendor url="https://github.com/Noorts">Noorts</vendor>
 
-    <description><![CDATA[
-    Quickly toggle words with a hotkey. Toggles can defined by the user.
-    ]]></description>
-
-    <change-notes>Initial public release of the plugin.</change-notes>
-    <version>0.3.0</version>
-
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -21,7 +14,7 @@
 
     <actions>
         <action id="ToggleAction" class="ToggleAction" text="Toggle"
-                description="Toggle the selected word to the next word in the sequence
+                description="Toggle the selected word or symbol to the next word or symbol in the sequence
                 defined in the Toggler plugin configuration.">
             <add-to-group group-id="EditMenu" anchor="after" relative-to-action="EditSmartGroup"/>
             <keyboard-shortcut keymap="$default" first-keystroke="control shift X"/>
