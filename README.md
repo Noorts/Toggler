@@ -13,9 +13,18 @@
   <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/d/16166" alt="Plugin downloads"></a>
   <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/v/16166" alt="Plugin version"></a>
 </p>
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#configuration">Configuration</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#roadmap">Roadmap</a> •
+  <a href="#acknowledgements">Acknowledgements</a> •
+  <a href="#license">License</a>
+  <br><br>
+  <img src="TogglerUsage.gif" alt="Toggler Usage Example">
+</p>
 <br>
-
-![](TogglerUsage.gif)
 
 ## Features
 
@@ -31,6 +40,9 @@ Select or place your cursor on a word/symbol and press the default hotkey
 (<code>Ctrl+Shift+X</code> on Windows or <code>Cmd+Shift+X</code> on MacOS) to
 toggle the word/symbol to the next toggle defined in the configuration file.
 The toggle action can also be found as <code>Toggle Word/Symbol</code> in the <code>Edit</code> menu.
+
+## Configuration
+Configure the toggles from <code>Settings/Preferences -> Tools -> Toggler</code>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. 
 
 ## Installation
 There are four ways to install Toggler:
