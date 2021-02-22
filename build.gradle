@@ -30,6 +30,8 @@ version '0.3.0'
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
     changeNotes("""
+      For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
+      <br><br>
       [1.0.0] - 2021-02-21
       <ul>
       <li>Initial version.</li>
@@ -38,7 +40,35 @@ patchPluginXml {
       """)
 
     pluginDescription("""
-      Quickly toggle words and symbols with a hotkey. Toggles can be configured by the user.
+      Quickly toggle words and symbols with a hotkey. Toggles can be configured from the settings menu.
+      
+      <h3>Features:</h3>
+      <ul>
+      <li>Customizable through the settings menu.</li>
+      <li>Support for multiple cursors.</li>
+      <li>Support for numerous toggles.</li>
+      <li>Limited support for transferring word case.</li>
+      <li>Easy importing and exporting of the settings configuration.</li>
+      <li>No external dependencies required.</li>
+      </ul>
+      
+      <h3>Usage:</h3>
+      Select or place your cursor on a word/symbol and press the default hotkey
+      (<code>Ctrl+Shift+X</code> on Windows or <code>Cmd+Shift+X</code> on MacOS) to
+      toggle the word/symbol to the next toggle defined in the configuration file.<br>
+      The toggle action can also be found as <code>Toggle Word/Symbol</code> in the <code>Edit</code> menu.
+      
+      <h3>Configuration:</h3>
+      Configure the toggles from <code>Preferences -> Tools -> Toggler</code>.<br>
+      Default toggles have been added to provide functionality right out of the gate.
+      Toggles can be added and removed by modifying the JSON and applying the changes.<br>
+      The Import, Export and Reset to Defaults buttons have been added for convenience.
+      
+      <h3>Acknowledgements:</h3>
+      This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
+      original versions of toggle plugins/extensions
+      for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a>
+      and <a href="https://atom.io/packages/toggler">Atom</a>.
       """)
 
     // Defines the builds that will be able to enable this plugin.

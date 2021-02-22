@@ -1,4 +1,4 @@
-<idea-plugin url="https://www.jetbrains.com/idea">
+<idea-plugin url="https://github.com/Noorts/Toggler">
     <id>com.noorts.toggler</id>
     <name>Toggler</name>
     <vendor url="https://github.com/Noorts">Noorts</vendor>
@@ -13,7 +13,7 @@
     </extensions>
 
     <actions>
-        <action id="ToggleAction" class="ToggleAction" text="Toggle"
+        <action id="ToggleAction" class="ToggleAction" text="Toggle Word/Symbol"
                 description="Toggle the selected word or symbol to the next word or symbol in the sequence
                 defined in the Toggler plugin configuration.">
             <add-to-group group-id="EditMenu" anchor="after" relative-to-action="EditSmartGroup"/>
