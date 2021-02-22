@@ -105,7 +105,14 @@ public class ToggleAction extends AnAction {
          *      No selection will not select the replacement word but will instead
          *      place the caret at the original position it was in. */
         if (!caretHasASelection) {
-            caret.setSelection(oldPosition, oldPosition);
+            /* We check if the position we want to reset the caret selection to exceeds the text length.
+             * If it does, we set the caret to the end of the selection to prevent setting
+             * it to an unavailable position. Else, the selection is set to the old position. */
+            if (document.getTextLength() < oldPosition){
+                caret.setSelection(caret.getOffset(), caret.getOffset());
+            } else {
+                caret.setSelection(oldPosition, oldPosition);
+            }
         }
     }
 
