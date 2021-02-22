@@ -46,6 +46,8 @@ public class AppSettingsComponent {
 
         mainPanel = FormBuilder.createFormBuilder()
                 .addComponent(headerPanel)
+                .addComponent(new JSeparator())
+                .addVerticalGap(8)
                 .addComponentFillVertically(jsonText, 0)
                 .getPanel();
     }
