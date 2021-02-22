@@ -1,10 +1,19 @@
-# Toggler
-
-![Downloads](https://img.shields.io/jetbrains/plugin/d/16166)
-![Version](https://img.shields.io/jetbrains/plugin/v/16166)
-
-Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey. 
-Toggles can be configured from the settings menu.
+<h1 align="center">
+  <br>
+  <a href="https://github.com/Noorts/Toggler"><img src="src/main/resources/META-INF/pluginIcon_dark.svg" width="120" height="120" alt="Toggler"></a>
+  <br>
+  Toggler
+  <br>
+</h1>
+<h4 align="center">
+  Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey. 
+Toggles can be configured from the settings menu. 
+</h4>
+<p align="center">
+  <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/d/16166" alt="Plugin downloads"></a>
+  <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/v/16166" alt="Plugin version"></a>
+</p>
+<br>
 
 ![](TogglerUsage.gif)
 
@@ -17,9 +26,6 @@ Toggles can be configured from the settings menu.
 - Easy importing and exporting of the settings configuration.
 - No external dependencies required.
 
-[comment]: <> (# Installation)
-
-
 ## Usage
 Select or place your cursor on a word/symbol and press the default hotkey
 (<code>Ctrl+Shift+X</code> on Windows or <code>Cmd+Shift+X</code> on MacOS) to
@@ -28,7 +34,7 @@ The toggle action can also be found as <code>Toggle Word/Symbol</code> in the <c
 
 ## Installation
 There are four ways to install Toggler:
-- Install directly from the plugin marketplace in your Jetbrains product. Go to <code>Settings/Preferences -> Plugins -> Marketplace</code> and search for Toggler.
+- Install directly from the plugin marketplace in your Jetbrains product. Go to <code>Settings/Preferences -> Plugins -> Marketplace</code> and search for <code>Toggler</code>.
 - Install from the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
 - Download the jar from a [release](https://github.com/Noorts/Toggler/releases) and install manually. 
 Go to the <code>Settings/Preferences -> Plugins</code> menu, press the cog in the top right and choose <code>Install Plugin from Disk...</code>.
