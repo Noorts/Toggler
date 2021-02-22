@@ -118,31 +118,32 @@ public class ToggleAction extends AnAction {
     }
 
     /**
-     * Find the next word in the toggle pair for the provided word.
-     * The provided word is searched for in the toggle pairs configured
-     * in the Plugin settings and the next one in the sequence is returned.
-     * @param word The word to be replaced.
-     * @return The next word in the sequence which the provided word is part of.
+     * Find the next word/symbol for the provided word/symbol in the toggles.
+     * The provided word/symbol is searched for in the toggles configured
+     * in the plugin settings and the next one in the sequence is returned.
+     * The settings can be found under Preferences -> Tools -> Toggler.
+     * @param keyword The word/symbol to be replaced.
+     * @return The next word/symbol in the sequence which the provided word/symbol is part of.
      *         Null is returned if the provided word couldn't be found in the config.
      */
-    private String findNextToggleInToggles(String word) {
-        String wordInLowerCase = word.toLowerCase();
+    private String findNextToggleInToggles(String keyword) {
+        String wordInLowerCase = keyword.toLowerCase();
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         /* The current settings. */
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
 
-        /* O(n^2) search for the word to replace. */
+        /* O(n) search for the word/symbol to replace. */
         for (int i = 0; i < toggleWordsStructure.size(); i++) {
             for (int j = 0; j < toggleWordsStructure.get(i).size(); j++) {
                 if (toggleWordsStructure.get(i).get(j).toLowerCase().equals(wordInLowerCase)) {
-                    /* The next word in the sequence is retrieved.
+                    /* The next word/symbol in the sequence is retrieved.
                        The modulo is used to wrap around if the end of the sequence is reached. */
                     return toggleWordsStructure.get(i).get((j + 1) % toggleWordsStructure.get(i).size());
                 }
             }
         }
 
-        /* Null is returned if the word couldn't be found. */
+        /* Null is returned if the word/symbol couldn't be found. */
         return null;
     }
 }
