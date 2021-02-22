@@ -6,8 +6,8 @@
   <br>
 </h1>
 <h4 align="center">
-  Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey. 
-Toggles can be configured from the settings menu. 
+  Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey.<br>
+  Toggles can be configured from the settings menu. 
 </h4>
 <p align="center">
   <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/d/16166" alt="Plugin downloads"></a>
