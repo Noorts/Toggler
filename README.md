@@ -37,19 +37,19 @@
 
 ## Usage
 Select or place your cursor on a word/symbol and press the default hotkey
-(<code>Ctrl+Shift+X</code> on Windows or <code>Cmd+Shift+X</code> on MacOS) to
+(<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on MacOS) to
 toggle the word/symbol to the next toggle defined in the configuration file.
-The toggle action can also be found as <code>Toggle Word/Symbol</code> in the <code>Edit</code> menu.
+The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
 ## Configuration
-Configure the toggles from <code>Settings/Preferences -> Tools -> Toggler</code>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. 
+Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. 
 
 ## Installation
 There are four ways to install Toggler:
-- Install directly from the plugin marketplace in your Jetbrains product. Go to <code>Settings/Preferences -> Plugins -> Marketplace</code> and search for <code>Toggler</code>.
+- Install directly from the plugin marketplace in your Jetbrains product. Go to <kbd>Settings/Preferences -> Plugins -> Marketplace</kbd> and search for <kbd>Toggler</kbd>.
 - Install from the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
 - Download the jar from a [release](https://github.com/Noorts/Toggler/releases) and install manually. 
-Go to the <code>Settings/Preferences -> Plugins</code> menu, press the cog in the top right and choose <code>Install Plugin from Disk...</code>.
+Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the top right and choose <kbd>Install Plugin from Disk...</kbd>.
 - Download this repo, build the plugin and install it manually.
 
 ## Roadmap
