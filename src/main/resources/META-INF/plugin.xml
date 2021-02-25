@@ -10,6 +10,7 @@
         <applicationConfigurable parentId="tools" instance="AppSettingsConfigurable"
                                  id="org.intellij.sdk.settings.AppSettingsConfigurable"
                                  displayName="Toggler"/>
+        <notificationGroup id="Toggler" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
 
     <actions>

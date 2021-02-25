@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import utils.NotificationHandler;
 import utils.StringTransformer;
 
 import java.util.List;
@@ -18,10 +19,6 @@ import java.util.List;
  * @author Noorts
  */
 public class ToggleAction extends AnAction {
-
-    private static final NotificationGroup togglerNotificationGroup =
-            new NotificationGroup("Toggler",
-                    NotificationDisplayType.BALLOON, false);
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -49,11 +46,9 @@ public class ToggleAction extends AnAction {
     public void performToggleOnSingleCaret(Caret caret, Document document) {
         // Return if the caret is a multi-line selection as support for this hasn't been implemented yet.
         if (caret.getSelectionStartPosition().line != caret.getSelectionEndPosition().line) {
-            Notifications.Bus.notify(new Notification(
-                    togglerNotificationGroup.getDisplayId(), "Toggler",
-                    "Toggling by finding keywords inside of a multi-line " +
+            NotificationHandler.notify("Toggling by finding keywords inside of a multi-line " +
                             "selection isn't supported by Toggler (yet).",
-                    NotificationType.INFORMATION, null));
+                    NotificationType.INFORMATION);
             return;
         }
 
@@ -78,26 +73,24 @@ public class ToggleAction extends AnAction {
 
         // Exit if the caret is in an empty file in which no toggle could possibly be selected.
         if (selectedToggleFromCaret == null) {
-            Notifications.Bus.notify(new Notification(
-                    togglerNotificationGroup.getDisplayId(), "Toggler",
-                    "No text could be selected.",
-                    NotificationType.INFORMATION, null));
-            return;
+            NotificationHandler.notify("No text could be selected.",
+                    NotificationType.INFORMATION);
         }
 
         // Get the replacementToggle and toggle the caret its toggle with the replacement.
-        String replacementToggle = findNextToggleInToggles(selectedToggleFromCaret);
-        if (replacementToggle != null) {
-            replacementToggle = StringTransformer.transferCapitalisation(
-                    selectedToggleFromCaret, replacementToggle);
-            document.replaceString(start, end, replacementToggle);
-        } else {
-            Notifications.Bus.notify(new Notification(
-                    togglerNotificationGroup.getDisplayId(), "Toggler",
-                            "No match was found.<br>" +
-                                    "Add new words through the configuration menu.<br>" +
-                                    "Go to Preferences -> Tools -> Toggler.",
-                    NotificationType.WARNING, null));
+        if (selectedToggleFromCaret != null) {
+            String replacementToggle = findNextToggleInToggles(selectedToggleFromCaret);
+
+            if (replacementToggle != null) {
+                replacementToggle = StringTransformer.transferCapitalisation(
+                        selectedToggleFromCaret, replacementToggle);
+                document.replaceString(start, end, replacementToggle);
+            } else {
+                NotificationHandler.notify("No match was found.<br>" +
+                        "Add new words through the configuration menu.<br>" +
+                        "Go to Preferences -> Tools -> Toggler.",
+                        NotificationType.INFORMATION);
+            }
         }
 
         /* Reset the caret selection to the state before the action was performed.
