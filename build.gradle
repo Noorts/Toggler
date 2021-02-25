@@ -15,7 +15,11 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.2.3'
+    version '2020.3.1'
+}
+
+runPluginVerifier {
+    ideVersions = ["IC-2019.1.4", "IC-2020.3.2"]
 }
 
 // Disable building searchableOptions as this isn't beneficial for this plugin.
@@ -25,13 +29,20 @@ intellij {
 buildSearchableOptions.enabled = false
 
 group 'com.noorts'
-version '1.0.0'
+version '1.0.1'
 
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
     changeNotes("""
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
+      [1.0.1] - 2021-02-25
+      <ul>
+      <li>Plugin description updated.</li>
+      <li>Plugin now compatible with builds from 2019.1 until 2021.2.</li>
+      <li>Miscellaneous developer tweaks.</li>
+      </ul><br>
+      
       [1.0.0] - 2021-02-22
       <ul>
       <li>Initial version.</li>
@@ -41,7 +52,7 @@ patchPluginXml {
 
     pluginDescription("""
       Quickly toggle words and symbols with a hotkey. Toggles can be configured from the settings menu.
-      
+      <br>
       <h3>Features:</h3>
       <ul>
       <li>Customizable through the settings menu.</li>
@@ -54,13 +65,13 @@ patchPluginXml {
       
       <h3>Usage:</h3>
       Select or place your cursor on a word/symbol and press the default hotkey
-      (<code>Ctrl+Shift+X</code> on Windows or <code>Cmd+Shift+X</code> on MacOS) to
+      (<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on MacOS) to
       toggle the word/symbol to the next toggle defined in the configuration file. 
-      The shortcut can be changed from <code>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</code>
-      The toggle action can also be found as <code>Toggle Word/Symbol</code> in the <code>Edit</code> menu.
-      
+      The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
+      The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
+
       <h3>Configuration:</h3>
-      Configure the toggles from <code>Settings/Preferences -> Tools -> Toggler</code>. 
+      Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. 
       Default toggles have been added to provide functionality right out of the gate.
       Toggles can be added and removed by modifying the JSON and applying the changes. 
       The Import, Export and Reset to Defaults buttons have been added for convenience.
@@ -70,13 +81,11 @@ patchPluginXml {
       original versions of toggle plugins/extensions
       for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a>
       and <a href="https://atom.io/packages/toggler">Atom</a>.
-      
-      <br><br><a href="https://github.com/Noorts/Toggler">Source Code</a>
       """)
 
     // Defines the builds that will be able to enable this plugin.
     // Build number chosen based on product version statistics:
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
-    sinceBuild('193.0')
-    untilBuild(null)
+    sinceBuild('191.0')
+    untilBuild('212.*')
 }
