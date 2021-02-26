@@ -28,6 +28,9 @@ public class ToggleAction extends AnAction {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         final Document document = editor.getDocument();
 
+        /* Bandage (temporary fix) that might help remove the "ghost" caret that appears on load of the IDE. */
+        editor.getCaretModel().setCaretsAndSelections(editor.getCaretModel().getCaretsAndSelections());
+
         List<Caret> carets = editor.getCaretModel().getAllCarets();
 
         /* Lock the file and perform the toggle on all carets in the editor. */
