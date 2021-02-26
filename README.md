@@ -18,6 +18,7 @@
   <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#installation">Installation</a> •
+  <a href="#issues">Issues</a> •
   <a href="#roadmap">Roadmap</a> •
   <a href="#acknowledgements">Acknowledgements</a> •
   <a href="#license">License</a>
@@ -27,7 +28,6 @@
 <br>
 
 ## Features
-
 - Customizable through the settings menu.
 - Support for multiple cursors.
 - Support for numerous toggles.
@@ -52,8 +52,12 @@ There are four ways to install Toggler:
 Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the top right and choose <kbd>Install Plugin from Disk...</kbd>.
 - Download this repo, build the plugin and install it manually.
 
-## Roadmap
+## Issues
+- Words/symbols inside single apostrophes (') aren't detected correctly yet.
+- Carets very rarely behave unexpectedly. E.g. toggling a word/symbol that isn't selected anymore.
+  Use at your own risk.
 
+## Roadmap
 - Improve performance (optimise data structure).
 - Create Jetbrains "native" UI.
 - Improve transferring word case.
