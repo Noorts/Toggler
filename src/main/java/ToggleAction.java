@@ -32,33 +32,8 @@ public class ToggleAction extends AnAction {
 
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            /* An ugly hack/workaround is used down below to disable caret(s) that are moved unintentionally.
-             * E.g. when three carets are placed inside the same word/symbol and the toggle is pressed, the
-             * first caret will be processed and the word/symbol will be toggled/replaced. The unintended consequence
-             * is that the other two carets will be moved to the beginning of the document. I think they are moved
-             * because the first caret has selected the entire word in which the other carets are located.
-             * The loop down below will move on to processing the next caret and will eventually end up processing the
-             * carets that were moved to the beginning. Thus the caret will replace the word/symbol on line 0 column 0.
-             *
-             * This is an unintended side effect for the user and to prevent this the carets are examined
-             * and left unprocessed if the position of the caret was moved by the "bug". */
-            boolean validFirstCharacterCaretExists = false;
-            boolean validFirstCharacterCaretHasBeenProcessed = false;
             for (Caret caret : carets) {
-                if (caret.getOffset() == 0) {
-                    validFirstCharacterCaretExists = true;
-                }
-            }
-
-            for (Caret caret : carets) {
-                if (caret.getOffset() == 0 && (!validFirstCharacterCaretExists || validFirstCharacterCaretHasBeenProcessed)) {
-                    return;
-                } else if (caret.getOffset() == 0 && validFirstCharacterCaretExists && !validFirstCharacterCaretHasBeenProcessed) {
-                    performToggleOnSingleCaret(caret, document, editor);
-                    validFirstCharacterCaretHasBeenProcessed = true;
-                } else {
-                    performToggleOnSingleCaret(caret, document, editor);
-                }
+                performToggleOnSingleCaret(caret, document, editor);
             }
         });
     }
@@ -72,7 +47,18 @@ public class ToggleAction extends AnAction {
      * @param editor   The editor in which the caret(s) are present.
      */
     private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor) {
-        if (!caret.isValid()) {
+        /* The validity of the carets are checked down below to prevent unexpected behavior.
+         * E.g. when three carets are placed inside the same word/symbol and the toggle is pressed, the
+         * first caret will be processed and the word/symbol will be toggled/replaced. The unintended consequence
+         * is that the other two carets will be moved to the beginning of the document. I think they are moved
+         * because the first caret has selected the entire word in which the other carets are located.
+         * The loop in the actionPerformed method will move on to processing the next caret and will eventually
+         * end up processing the carets that were moved to the beginning. Thus the caret will replace
+         * the word/symbol on line 0 column 0.
+         *
+         * This is an unintended side effect for the user and to prevent this the carets are examined
+         * and left unprocessed if the position of the caret was moved by the "bug". */
+        if (!caret.isValid() || !caret.isUpToDate()) {
             return;
         }
         // Return if the caret is a multi-line selection as support for this hasn't been implemented yet.
@@ -125,15 +111,15 @@ public class ToggleAction extends AnAction {
         }
 
         /* Reset the caret selection to the state before the action was performed.
-         * E.g. A selection will turn into a selection of the replacement word.
-         *      No selection (just a caret) will not select the replacement word but will instead
-         *      place the caret at the original position it was in. */
+         * E.g. - A caret with selection will turn into a selection of the replacement word.
+         *      - No selection (just a caret) will not select the replacement word but will instead
+         *        place the caret at the original position it was in. */
         if (!caretHasASelection) {
             /* We check if the position we want to reset the caret selection to exceeds the text length.
              * If it does, we set the caret to the end of the selection to prevent setting
              * it to an unavailable position. Else, the selection is set to the old position. */
             if (document.getTextLength() < oldPosition) {
-                caret.setSelection(caret.getOffset(), caret.getOffset());
+                caret.setSelection(caret.getLeadSelectionOffset(), caret.getLeadSelectionOffset());
             } else {
                 caret.setSelection(oldPosition, oldPosition);
             }
@@ -152,15 +138,20 @@ public class ToggleAction extends AnAction {
                 editor.getDocument().getLineStartOffset(currentLine),
                 editor.getDocument().getLineEndOffset(currentLine)));
 
-        /* Text expansion by extending the left side and then the right side. */
-        while ((currentColumnLeftSide != 0) &&
-                (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
-            currentColumnLeftSide--;
-        }
-        while ((currentColumnRightSide != textOnCurrentLine.length()) &&
-                (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnRightSide)))) {
-            currentColumnRightSide++;
-        }
+        /* Try catch added as temporary measure against StringIndexOutOfBoundsException.
+         * The exception is sometimes thrown when the caret isn't set correctly after
+         * the user selects a different location. */
+        try {
+            /* Text expansion by extending the left side and then the right side. */
+            while ((currentColumnLeftSide > 0) &&
+                    (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
+                currentColumnLeftSide--;
+            }
+            while ((currentColumnRightSide < textOnCurrentLine.length()) &&
+                    (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnRightSide)))) {
+                currentColumnRightSide++;
+            }
+        } catch (StringIndexOutOfBoundsException ignored){}
 
         /* Start and end offset are determined because those are required for the setSelection method.
          * The offsets indicate the offset from the beginning of the document, so including all lines. */
@@ -174,7 +165,13 @@ public class ToggleAction extends AnAction {
         final Project project = e.getProject();
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
 
-        e.getPresentation().setEnabledAndVisible(project != null && editor != null);
+        // Make sure at least one caret is available.
+        boolean menuAllowed = false;
+        if (editor != null && project != null) {
+            // Ensure the list of carets in the editor is not empty.
+            menuAllowed = !editor.getCaretModel().getAllCarets().isEmpty();
+        }
+        e.getPresentation().setEnabledAndVisible(menuAllowed);
     }
 
     /**
