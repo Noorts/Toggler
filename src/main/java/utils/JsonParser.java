@@ -1,7 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * A utility written to handle parsing and composing between a String and the plugin its toggles data structure.
@@ -52,6 +51,10 @@ public class JsonParser {
             togglesStructure.add(listOfToggles);
         }
 
+        /* Will check if the togglesStructure contains any duplicate words/symbols.
+           An error will be thrown if a duplicate is found. */
+        checkTogglesForDuplicates(togglesStructure);
+
         return togglesStructure;
     }
 
@@ -84,6 +87,24 @@ public class JsonParser {
         stringBuilder.append("\n]");
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Check if the provided toggles contain any duplicate words/symbols.
+     * I.e. if a duplicate word/symbol is found in two different toggles
+     * or if a duplicate is found inside of the same toggle.
+     * @param toggles the data structure in which the toggles are defined.
+     * @throws TogglesFormatException when a duplicate word/symbol was found.
+     */
+    private static void checkTogglesForDuplicates(List<List<String>> toggles) throws TogglesFormatException {
+        HashSet<String> set = new HashSet<>();
+        for (List<String> toggle : toggles) {
+            for (String string : toggle) {
+                if (!set.add(string.toLowerCase())){
+                    throw new TogglesFormatException("Duplicate word/symbol was found.");
+                }
+            }
+        }
     }
 
     /**
