@@ -29,34 +29,41 @@ runPluginVerifier {
 buildSearchableOptions.enabled = false
 
 group 'com.noorts'
-version '1.1.0'
+version '1.1.1'
 
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
     changeNotes("""
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
+      [1.1.1] - 2021-03-17
+      <ul>
+      <li>Words inside of apostrophes will now be detected correctly.</li>
+      <li>Boundary characters will now be detected inside of the configuration JSON to prevent invalid toggles.</li>
+      <li>Default spacing inside of the configuration JSON is now set to a tab instead of 4 spaces to improve the configuration experience.</li>
+      </ul><br>
+
       [1.1.0] - 2021-02-26
       <ul>
-      <li>Total rewrite of the word/symbol selection system to allow for better selection of symbols. 
+      <li>Total rewrite of the word/symbol selection system to allow for better selection of symbols.
       Note: the system hasn't been tested extensively yet. Use at your own risk.</li>
       <li>It is now possible to toggle multiple carets that are on the same line.</li>
       <li>Plugin description updated.</li>
       <li>Notification clarity improved.</li>
       </ul><br>
-      
+
       [1.0.1] - 2021-02-25
       <ul>
       <li>Plugin description updated.</li>
       <li>Plugin now compatible with builds from 2019.1 until 2021.2.</li>
       <li>Miscellaneous developer tweaks.</li>
       </ul><br>
-      
+
       [1.0.0] - 2021-02-22
       <ul>
       <li>Initial version.</li>
       </ul><br>
-      
+
       """)
 
     pluginDescription("""
@@ -71,27 +78,28 @@ patchPluginXml {
       <li>Easy importing and exporting of the settings configuration.</li>
       <li>No external dependencies required.</li>
       </ul>
-      
+
       <h3>Usage</h3>
       Select or place your cursor on a word/symbol and press the default hotkey
       (<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on MacOS) to
-      toggle the word/symbol to the next toggle defined in the configuration file. 
+      toggle the word/symbol to the next toggle defined in the configuration file.
       The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
       The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
       <h3>Configuration</h3>
-      Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. 
+      Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>.
       Default toggles have been added to provide functionality right out of the gate.
-      Toggles can be added and removed by modifying the JSON and applying the changes. 
+      Toggles can be added and removed by modifying the JSON and applying the changes.
       The Import, Export and Reset to Defaults buttons have been added for convenience.
-      
+      The following characters are used for word/symbol selection and thus can't be used inside the toggles
+      <kbd>' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '''</kbd>.
+
       <h3>Issues</h3>
       <ul>
-      <li>Words/symbols inside single apostrophes (') aren't detected correctly yet.</li>
-      <li>Carets very rarely behave unexpectedly. E.g. toggling a word/symbol that isn't selected anymore. 
-      Use at your own risk.</li>
+      <li>None, currently. Feel free to send me a message or create an issue if you run
+      into unexpected behavior or if you have a feature request.</li>
       </ul>
-      
+
       <h3>Acknowledgements</h3>
       This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
       original versions of toggle plugins/extensions

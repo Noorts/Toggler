@@ -7,7 +7,7 @@
 </h1>
 <h4 align="center">
   Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey.<br>
-  Toggles can be configured from the settings menu. 
+  Toggles can be configured from the settings menu.
 </h4>
 <p align="center">
   <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/d/16166" alt="Plugin downloads"></a>
@@ -42,20 +42,18 @@ toggle the word/symbol to the next toggle defined in the configuration file.
 The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
 ## Configuration
-Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. 
+Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. The following characters are used for word/symbol selection and thus can't be used inside the toggles <code>' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '''</code>.
 
 ## Installation
 There are four ways to install Toggler:
 - Install directly from the plugin marketplace in your Jetbrains product. Go to <kbd>Settings/Preferences -> Plugins -> Marketplace</kbd> and search for <kbd>Toggler</kbd>.
 - Install from the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
-- Download the jar from a [release](https://github.com/Noorts/Toggler/releases) and install manually. 
+- Download the jar from a [release](https://github.com/Noorts/Toggler/releases) and install manually.
 Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the top right and choose <kbd>Install Plugin from Disk...</kbd>.
 - Download this repo, build the plugin and install it manually.
 
 ## Issues
-- Words/symbols inside single apostrophes (') aren't detected correctly yet.
-- Carets very rarely behave unexpectedly. E.g. toggling a word/symbol that isn't selected anymore.
-  Use at your own risk.
+- None, currently. Feel free to send me a message or create an issue if you run into unexpected behavior. 
 
 ## Roadmap
 - Improve performance (optimise data structure).
@@ -70,5 +68,4 @@ for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler"
 and <a href="https://atom.io/packages/toggler">Atom</a>.
 
 ## License
-
 Toggler is licensed under the [MIT license](LICENSE.md).
