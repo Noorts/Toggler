@@ -73,7 +73,7 @@ public class JsonParser {
         stringBuilder.append("[\n");
 
         for (int i = 0; i < togglesStructure.size(); i++) {
-            stringBuilder.append("    [");
+            stringBuilder.append("\t[");
             for (int j = 0; j < togglesStructure.get(i).size(); j++) {
                 stringBuilder.append('"');
                 stringBuilder.append(togglesStructure.get(i).get(j));

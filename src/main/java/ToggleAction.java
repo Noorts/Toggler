@@ -132,7 +132,9 @@ public class ToggleAction extends AnAction {
     private void expandCaretSelection(Caret caret, Editor editor) {
         /* The characters that indicate a word/symbol its boundaries. Used for left and right side.
          * The beginning and end of the line the caret is on also function as boundaries. */
-        Character[] boundaryChars = {' ', ';', ':', '.', ',', '(', ')', '[', ']', '"'};
+        /* Boundary characters should be declared somewhere else to improve
+         * maintainability as these characters are also used elsewhere. */
+        Character[] boundaryChars = {' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '\''};
         int currentColumnLeftSide = caret.getSelectionStartPosition().column;
         int currentColumnRightSide = caret.getSelectionEndPosition().column;
         int currentLine = caret.getLeadSelectionPosition().line;
