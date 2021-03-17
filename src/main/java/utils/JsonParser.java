@@ -46,6 +46,8 @@ public class JsonParser {
             String[] words = toggle.split(", *");
             for (String word : words) {
                 word = word.replaceAll("[\\[\\]\"]", "");
+                // Throw an error if the word contains any forbidden boundary characters.
+                checkIfWordContainsABoundaryCharacter(word);
                 listOfToggles.add(word);
             }
             togglesStructure.add(listOfToggles);
@@ -102,6 +104,26 @@ public class JsonParser {
             for (String string : toggle) {
                 if (!set.add(string.toLowerCase())){
                     throw new TogglesFormatException("Duplicate word/symbol was found.");
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if the provided word contains a boundary character.
+     * The boundary characters are used in the toggle action to detect
+     * a word/symbol by expanding the selection from a caret.
+     * @param word the word/symbol to be checked.
+     * @throws TogglesFormatException when a word/symbol was found that contains a boundary character.
+     */
+    private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
+        /* Boundary characters should be declared somewhere else to improve
+         * maintainability as these characters are also used elsewhere. */
+        Character[] boundaryChars = {' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '\''};
+        for (int i = 0; i < word.length(); i++) {
+            for (int j = 0; j < boundaryChars.length; j++) {
+                if (word.charAt(i) == boundaryChars[j]) {
+                    throw new TogglesFormatException("A toggle contains an invalid character.");
                 }
             }
         }
