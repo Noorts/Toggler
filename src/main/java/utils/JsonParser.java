@@ -119,7 +119,8 @@ public class JsonParser {
     private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
         /* Boundary characters should be declared somewhere else to improve
          * maintainability as these characters are also used elsewhere. */
-        Character[] boundaryChars = {' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '\''};
+        Character[] boundaryChars = {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
+
         for (int i = 0; i < word.length(); i++) {
             for (int j = 0; j < boundaryChars.length; j++) {
                 if (word.charAt(i) == boundaryChars[j]) {
