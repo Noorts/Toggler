@@ -42,7 +42,7 @@ toggle the word/symbol to the next toggle defined in the configuration file.
 The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
 ## Configuration
-Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. The following characters are used for word/symbol selection and thus can't be used inside the toggles <code>' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '''</code>.
+Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. Default toggles have been added to provide functionality right out of the gate. Toggles can be added and removed by modifying the JSON and applying the changes. The Import, Export and Reset to Defaults buttons have been added for convenience. The following characters are used for word/symbol selection and thus can't be used inside the toggles <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</code>.
 
 ## Installation
 There are four ways to install Toggler:
