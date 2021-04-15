@@ -29,12 +29,18 @@ runPluginVerifier {
 buildSearchableOptions.enabled = false
 
 group 'com.noorts'
-version '1.1.1'
+version '1.1.2'
 
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
     changeNotes("""
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
+      <br><br>
+      [1.1.2] - 2021-04-15
+      <ul>
+      <li>Additional boundary characters have been added. They are now set to the following: <kbd>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</kbd></li>
+      </ul><br>
+      
       <br><br>
       [1.1.1] - 2021-03-17
       <ul>
@@ -92,7 +98,7 @@ patchPluginXml {
       Toggles can be added and removed by modifying the JSON and applying the changes.
       The Import, Export and Reset to Defaults buttons have been added for convenience.
       The following characters are used for word/symbol selection and thus can't be used inside the toggles
-      <kbd>' ', ';', ':', '.', ',', '(', ')', '[', ']', '"', '''</kbd>.
+      <kbd>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</kbd>.
 
       <h3>Issues</h3>
       <ul>
