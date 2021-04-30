@@ -6,7 +6,7 @@
   <br>
 </h1>
 <h4 align="center">
-  Toggler is a Jetbrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey.<br>
+  Toggler is a JetBrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey.<br>
   Toggles can be configured from the settings menu.
 </h4>
 <p align="center">
@@ -46,8 +46,8 @@ Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>. 
 
 ## Installation
 There are four ways to install Toggler:
-- Install directly from the plugin marketplace in your Jetbrains product. Go to <kbd>Settings/Preferences -> Plugins -> Marketplace</kbd> and search for <kbd>Toggler</kbd>.
-- Install from the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
+- Install directly from the plugin marketplace in your JetBrains product. Go to <kbd>Settings/Preferences -> Plugins -> Marketplace</kbd> and search for <kbd>Toggler</kbd>.
+- Install from the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
 - Download the jar from a [release](https://github.com/Noorts/Toggler/releases) and install manually.
 Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the top right and choose <kbd>Install Plugin from Disk...</kbd>.
 - Download this repo, build the plugin and install it manually.
@@ -57,7 +57,7 @@ Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the 
 
 ## Roadmap
 - Improve performance (optimise data structure).
-- Create Jetbrains "native" UI.
+- Create JetBrains "native" UI.
 - Improve transferring word case.
 - Improve JsonParser error handling.
 
