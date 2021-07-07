@@ -33,8 +33,8 @@ public class ToggleAction extends AnAction {
         final Document document = editor.getDocument();
 
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        /* The current settings. */
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
+        String regexPatternOfToggles = createRegexPatternOfToggles(toggleWordsStructure);
 
         boolean partialMatchingIsAllowed = true;
 
@@ -46,7 +46,7 @@ public class ToggleAction extends AnAction {
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (Caret caret : carets) {
-                performToggleOnSingleCaret(caret, document, editor, toggleWordsStructure, partialMatchingIsAllowed);
+                performToggleOnSingleCaret(caret, document, editor, regexPatternOfToggles, partialMatchingIsAllowed);
             }
         });
     }
@@ -60,7 +60,7 @@ public class ToggleAction extends AnAction {
      * @param editor   The editor in which the caret(s) are present.
      */
     private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor,
-                List<List<String>> toggleWordsStructure, boolean tempIsPartialMatchingAllowed) {
+                String regexPatternOfToggles, boolean partialMatchingIsAllowed) {
         /* The validity of the carets are checked down below to prevent unexpected behavior.
          * E.g. when three carets are placed inside the same word/symbol and the toggle is pressed, the
          * first caret will be processed and the word/symbol will be toggled/replaced. The unintended consequence
@@ -114,8 +114,8 @@ public class ToggleAction extends AnAction {
          * in contact with the caret. Being in contact is a requirement for a partial match. */
         int caretPositionInsideOfCurrentSelection = oldPosition - caret.getSelectionStart();
 
-        List<Integer> positionOfMatch = getPositionOfToggleMatch(toggleWordsStructure, selectedToggleFromCaret,
-                (tempIsPartialMatchingAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
+        List<Integer> positionOfMatch = getPositionOfToggleMatch(regexPatternOfToggles, selectedToggleFromCaret,
+                (partialMatchingIsAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
 
         // If a match was found then toggle it, else display a notification.
         if (positionOfMatch != null) {
@@ -280,7 +280,8 @@ public class ToggleAction extends AnAction {
      *
      * Priority is based on the following: greater length and left > right.
      *
-     * @param toggleWordsStructure The data structure that holds the toggles.
+     * @param regexPatternOfToggles A regex pattern that contains all toggles.
+     *                              For more information check out the createRegexPatternOfToggles method.
      * @param input The text that will be searched for matches.
      * @param allowPartialMatch Whether to allow partial matches or not. If not, then only a match that is of
      *                          the same length as the input (aka a full match) is deemed valid.
@@ -288,10 +289,9 @@ public class ToggleAction extends AnAction {
      *                      E.g. if the input is "add", then the caretPosition should be between 0 and 4.
      * @return A pair of integers that indicate the beginning and end of the match relative to the input string.
      */
-    public List<Integer> getPositionOfToggleMatch(List<List<String>> toggleWordsStructure, String input,
+    public List<Integer> getPositionOfToggleMatch(String regexPatternOfToggles, String input,
                                                   boolean allowPartialMatch, int caretPosition) {
-        String regex = createRegexPatternOfToggles(toggleWordsStructure);
-        Matcher matcher = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(input);
+        Matcher matcher = Pattern.compile(regexPatternOfToggles, Pattern.CASE_INSENSITIVE).matcher(input);
 
         // Sort the matches by string length, so that longer matches get priority over smaller ones.
         List<MatchResult> matches = matcher.results().collect(Collectors.toList());

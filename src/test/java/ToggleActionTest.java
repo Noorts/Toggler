@@ -31,13 +31,14 @@ public class ToggleActionTest {
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositions = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, -1);
+                regexPattern, input, true, -1);
 
         // Assert
         List<Integer> correctPositions = new ArrayList<>(Arrays.asList(0, 8));
@@ -50,13 +51,14 @@ public class ToggleActionTest {
         // Arrange
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositions = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, 1);
+                regexPattern, input, true, 1);
 
         // Assert
         List<Integer> correctPositions = new ArrayList<>(Arrays.asList(0, 3));
@@ -70,13 +72,14 @@ public class ToggleActionTest {
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositions = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, false, -1);
+                regexPattern, input, false, -1);
 
         // Assert
         List<Integer> correctPositions = new ArrayList<>(Arrays.asList(0, 8));
@@ -89,13 +92,14 @@ public class ToggleActionTest {
         // Arrange
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositions = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, false, -1);
+                regexPattern, input, false, -1);
 
         // Assert
         assertNull(resultPositions,
@@ -108,15 +112,16 @@ public class ToggleActionTest {
         List<String> firstTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<String> secondTogglePair = new ArrayList<>(Arrays.asList("class", "interface"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(firstTogglePair, secondTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositionsAdd = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, 1);
+                regexPattern, input, true, 1);
         List<Integer> resultPositionsClass = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, 5);
+                regexPattern, input, true, 5);
 
         // Assert
         List<Integer> correctPositionsAdd = new ArrayList<>(Arrays.asList(0, 3));
@@ -134,15 +139,16 @@ public class ToggleActionTest {
         // Arrange
         List<String> firstTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(firstTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "addClass";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositionsWrongWord = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, 5);
+                regexPattern, input, true, 5);
         List<Integer> resultPositionsOutOfBounds = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, -1);
+                regexPattern, input, true, -1);
 
         // Assert
         assertNull(resultPositionsWrongWord,
@@ -159,13 +165,14 @@ public class ToggleActionTest {
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("lov", "add"));
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("ely", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        ToggleAction newToggleAction = new ToggleAction();
+        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
 
         String input = "Lovely";
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
         List<Integer> resultPositions = newToggleAction.getPositionOfToggleMatch(
-                toggleActionStructure, input, true, 4);
+                regexPattern, input, true, 4);
 
         // Assert
         List<Integer> correctPositions = new ArrayList<>(Arrays.asList(3, 6));
