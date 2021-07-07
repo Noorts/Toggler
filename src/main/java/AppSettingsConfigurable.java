@@ -34,7 +34,7 @@ public class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         AppSettingsState settings = AppSettingsState.getInstance();
         boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
-//        modified |= mySettingsComponent.getIdeaUserStatus() != settings.ideaStatus;
+        modified |= mySettingsComponent.getCheckboxStatus() != settings.partialMatchingIsEnabled;
         return modified;
     }
 
@@ -43,14 +43,18 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
 
         try {
-            List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(mySettingsComponent.getJsonText());
+            /* Set whether or not the partial matching functionality is enabled. */
+            settings.partialMatchingIsEnabled = mySettingsComponent.getCheckboxStatus();
+
+            List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(
+                    mySettingsComponent.getJsonText());
             settings.toggles = currentSettingsFromMenu;
 
             /* Set the JsonTextarea in the settings menu to the toggles saved to the plugin.
              * The side effect is that eventual errors entered by the user that aren't included by the JsonParser
              * are removed from the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
-            mySettingsComponent.setStatusMessage("Status: Saving toggles was successful.");
+            mySettingsComponent.setStatusMessage("Status: Saving was successful.");
         } catch (JsonParser.TogglesFormatException e) {
             mySettingsComponent.setStatusMessage(String.format("Error: %s", e.getMessage()));
         }
@@ -61,7 +65,8 @@ public class AppSettingsConfigurable implements Configurable {
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
-        mySettingsComponent.setStatusMessage("Status: Loaded previous toggles.");
+        mySettingsComponent.setCheckboxStatus(settings.partialMatchingIsEnabled);
+        mySettingsComponent.setStatusMessage("Status: Loaded previous settings.");
     }
 
     @Override

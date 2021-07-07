@@ -36,8 +36,6 @@ public class ToggleAction extends AnAction {
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
         String regexPatternOfToggles = createRegexPatternOfToggles(toggleWordsStructure);
 
-        boolean partialMatchingIsAllowed = true;
-
         /* Bandage (temporary fix) that might help remove the "ghost" caret that appears on load of the IDE. */
         editor.getCaretModel().setCaretsAndSelections(editor.getCaretModel().getCaretsAndSelections());
 
@@ -46,7 +44,8 @@ public class ToggleAction extends AnAction {
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (Caret caret : carets) {
-                performToggleOnSingleCaret(caret, document, editor, regexPatternOfToggles, partialMatchingIsAllowed);
+                performToggleOnSingleCaret(caret, document, editor,
+                        regexPatternOfToggles, appSettingsState.partialMatchingIsEnabled);
             }
         });
     }
@@ -187,11 +186,13 @@ public class ToggleAction extends AnAction {
         try {
             /* Text expansion by extending the left side and then the right side. */
             while ((currentColumnLeftSide > 0) &&
-                    (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
+                    (-1 == Arrays.toString(boundaryChars).indexOf(
+                            textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
                 currentColumnLeftSide--;
             }
             while ((currentColumnRightSide < textOnCurrentLine.length()) &&
-                    (-1 == Arrays.toString(boundaryChars).indexOf(textOnCurrentLine.charAt(currentColumnRightSide)))) {
+                    (-1 == Arrays.toString(boundaryChars).indexOf(
+                            textOnCurrentLine.charAt(currentColumnRightSide)))) {
                 currentColumnRightSide++;
             }
         } catch (StringIndexOutOfBoundsException ignored){}

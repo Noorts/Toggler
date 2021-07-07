@@ -70,15 +70,18 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
                         "[`===`,`!==`]," +
                     "]"
             ).replace('`', '"');
+    private static final defaultPartialMatchingStatus = true;
 
-    AppSettingsState() { resetTogglesToDefault(); }
+    AppSettingsState() { resetSettingsToDefault(); }
 
     @OptionTag(converter = TogglerStructureConverter.class)
     public List<List<String>> toggles;
+    public boolean partialMatchingIsEnabled;
 
-    public void resetTogglesToDefault(){
+    public void resetSettingsToDefault(){
         try {
             toggles = JsonParser.parseJsonToToggles(defaultToggles);
+            partialMatchingIsEnabled = defaultPartialMatchingStatus;
         } catch (JsonParser.TogglesFormatException e) {
             System.err.println("The defaultToggles provided by the creator of the " +
                     "plugin don't conform to the JSON format.");
