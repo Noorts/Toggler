@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import utils.StringTransformer;
 
 import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Defines the logic used for the toggle action.
@@ -28,6 +32,12 @@ public class ToggleAction extends AnAction {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         final Document document = editor.getDocument();
 
+        AppSettingsState appSettingsState = AppSettingsState.getInstance();
+        /* The current settings. */
+        List<List<String>> toggleWordsStructure = appSettingsState.toggles;
+
+        boolean partialMatchingIsAllowed = true;
+
         /* Bandage (temporary fix) that might help remove the "ghost" caret that appears on load of the IDE. */
         editor.getCaretModel().setCaretsAndSelections(editor.getCaretModel().getCaretsAndSelections());
 
@@ -36,7 +46,7 @@ public class ToggleAction extends AnAction {
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (Caret caret : carets) {
-                performToggleOnSingleCaret(caret, document, editor);
+                performToggleOnSingleCaret(caret, document, editor, toggleWordsStructure, partialMatchingIsAllowed);
             }
         });
     }
@@ -49,7 +59,8 @@ public class ToggleAction extends AnAction {
      * @param document The document in which the caret(s) are present.
      * @param editor   The editor in which the caret(s) are present.
      */
-    private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor) {
+    private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor,
+                List<List<String>> toggleWordsStructure, boolean tempIsPartialMatchingAllowed) {
         /* The validity of the carets are checked down below to prevent unexpected behavior.
          * E.g. when three carets are placed inside the same word/symbol and the toggle is pressed, the
          * first caret will be processed and the word/symbol will be toggled/replaced. The unintended consequence
@@ -98,16 +109,32 @@ public class ToggleAction extends AnAction {
             return;
         }
 
+        /* This position is relative to the start of the expanded selection.
+         * It is passed to the getPositionOfToggleMatch method to be able to determine if a partial match is
+         * in contact with the caret. Being in contact is a requirement for a partial match. */
+        int caretPositionInsideOfCurrentSelection = oldPosition - caret.getSelectionStart();
+
+        List<Integer> positionOfMatch = getPositionOfToggleMatch(toggleWordsStructure, selectedToggleFromCaret,
+                (tempIsPartialMatchingAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
+        String stringOfMatch = null;
+        String replacementToggle = null;
+        if (positionOfMatch != null) {
+            stringOfMatch = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
+            replacementToggle = findNextToggleInToggles(stringOfMatch);
+        }
         // Get the replacementToggle and toggle the caret its toggle with the replacement.
-        String replacementToggle = findNextToggleInToggles(selectedToggleFromCaret);
         if (replacementToggle != null) {
             replacementToggle = StringTransformer.transferCapitalisation(
-                    selectedToggleFromCaret, replacementToggle);
-            document.replaceString(caret.getSelectionStart(), caret.getSelectionEnd(), replacementToggle);
+                    stringOfMatch, replacementToggle);
+
+            StringBuffer stringBuffer = new StringBuffer(selectedToggleFromCaret);
+            stringBuffer.replace(positionOfMatch.get(0), positionOfMatch.get(1), replacementToggle);
+
+            document.replaceString(caret.getSelectionStart(), caret.getSelectionEnd(), stringBuffer.toString());
         } else {
             Notifications.Bus.notify(new Notification(
                     togglerNotificationGroup.getDisplayId(), "Toggler",
-                    String.format("No match was found for: %s.<br>" +
+                    String.format("No match was found in: %s.<br>" +
                             "Add new words or symbols through the configuration menu.<br>" +
                             "Go to Settings/Preferences -> Tools -> Toggler.", selectedToggleFromCaret),
                     NotificationType.WARNING, null));
@@ -207,6 +234,49 @@ public class ToggleAction extends AnAction {
         }
 
         /* Null is returned if the word/symbol couldn't be found. */
+        return null;
+    }
+
+    public String createRegexPatternOfToggles(List<List<String>> toggleActionStructure) {
+        List<String> names = toggleActionStructure.stream().flatMap(Collection::stream)
+                .sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList());
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
+        for (int i = 1; i < names.size(); i++) {
+            stringBuilder.append("|\\Q").append(names.get(i)).append("\\E");
+        }
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
+
+    public List<Integer> getPositionOfToggleMatch(List<List<String>> toggleActionStructure, String input,
+                                                  boolean allowPartialMatch, int caretPosition) {
+        String regex = createRegexPatternOfToggles(toggleActionStructure);
+        Matcher matcher = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(input);
+
+        // Sort the matches by string length, so that longer matches get priority over smaller ones.
+        List<MatchResult> matches = matcher.results().collect(Collectors.toList());
+
+        for (MatchResult match: matches
+             ) {
+            System.out.println(match.group());
+        }
+
+        // A full match is returned if it can be found.
+        if (matches.size() != 0 && matches.get(0).end() - matches.get(0).start() == input.length()) {
+            return new ArrayList<>(Arrays.asList(matches.get(0).start(), matches.get(0).end()));
+        } else if (allowPartialMatch) {
+            /* Else, if partial matches are allowed, a partial match is returned. This is only done if it has
+             * the caret inside of it. Because the toggles were sorted by string length whilst creating the regex
+             * pattern in @createRegexPatternOfToggles, the longer matches get priority. */
+            for (MatchResult match : matches) {
+                if (match.start() <= caretPosition && match.end() >= caretPosition) {
+                    return new ArrayList<>(Arrays.asList(match.start(), match.end()));
+                }
+            }
+        }
+        // If no match that fits the requirements is found, then we return null.
         return null;
     }
 }
