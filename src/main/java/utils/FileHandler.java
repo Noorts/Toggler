@@ -63,11 +63,11 @@ public class FileHandler {
                 new FileSaverDescriptor(
                         "Toggler JSON Export",
                         "Export the currently saved toggles to a JSON file."),
-                (@org.jetbrains.annotations.Nullable Project) null
+                (Project) null
         );
 
         // Open the file saver dialog and allow the user to choose a file (whether it exists or not doesn't matter).
-        VirtualFileWrapper virtualFileWrapper = fileSaverDialog.save(null, filenameForJsonExportFile);
+        VirtualFileWrapper virtualFileWrapper = fileSaverDialog.save((VirtualFile) null, filenameForJsonExportFile);
 
         // If no file was selected because the dialog was closed or cancelled throw an appropriate error.
         if (virtualFileWrapper == null) {

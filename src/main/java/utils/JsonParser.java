@@ -1,7 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * A utility written to handle parsing and composing between a String and the plugin its toggles data structure.
@@ -47,10 +46,16 @@ public class JsonParser {
             String[] words = toggle.split(", *");
             for (String word : words) {
                 word = word.replaceAll("[\\[\\]\"]", "");
+                // Throw an error if the word contains any forbidden boundary characters.
+                checkIfWordContainsABoundaryCharacter(word);
                 listOfToggles.add(word);
             }
             togglesStructure.add(listOfToggles);
         }
+
+        /* Will check if the togglesStructure contains any duplicate words/symbols.
+           An error will be thrown if a duplicate is found. */
+        checkTogglesForDuplicates(togglesStructure);
 
         return togglesStructure;
     }
@@ -70,7 +75,7 @@ public class JsonParser {
         stringBuilder.append("[\n");
 
         for (int i = 0; i < togglesStructure.size(); i++) {
-            stringBuilder.append("    [");
+            stringBuilder.append("\t[");
             for (int j = 0; j < togglesStructure.get(i).size(); j++) {
                 stringBuilder.append('"');
                 stringBuilder.append(togglesStructure.get(i).get(j));
@@ -84,6 +89,45 @@ public class JsonParser {
         stringBuilder.append("\n]");
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Check if the provided toggles contain any duplicate words/symbols.
+     * I.e. if a duplicate word/symbol is found in two different toggles
+     * or if a duplicate is found inside of the same toggle.
+     * @param toggles the data structure in which the toggles are defined.
+     * @throws TogglesFormatException when a duplicate word/symbol was found.
+     */
+    private static void checkTogglesForDuplicates(List<List<String>> toggles) throws TogglesFormatException {
+        HashSet<String> set = new HashSet<>();
+        for (List<String> toggle : toggles) {
+            for (String string : toggle) {
+                if (!set.add(string.toLowerCase())){
+                    throw new TogglesFormatException("Duplicate word/symbol was found.");
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if the provided word contains a boundary character.
+     * The boundary characters are used in the toggle action to detect
+     * a word/symbol by expanding the selection from a caret.
+     * @param word the word/symbol to be checked.
+     * @throws TogglesFormatException when a word/symbol was found that contains a boundary character.
+     */
+    private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
+        /* Boundary characters should be declared somewhere else to improve
+         * maintainability as these characters are also used elsewhere. */
+        Character[] boundaryChars = {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
+
+        for (int i = 0; i < word.length(); i++) {
+            for (int j = 0; j < boundaryChars.length; j++) {
+                if (word.charAt(i) == boundaryChars[j]) {
+                    throw new TogglesFormatException("A toggle contains an invalid character.");
+                }
+            }
+        }
     }
 
     /**
