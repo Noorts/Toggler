@@ -157,6 +157,16 @@ public class ToggleAction extends AnAction {
         }
     }
 
+    /**
+     * Expand the caret its selection to encompass a word/symbol. This is done by expanding the selection towards
+     * both the left and right side until a boundary character or the beginning or end of the line is found.
+     *
+     * Boundary characters are hardcoded characters such as ; and ".
+     * Check the method its implementation for more details.
+     *
+     * @param caret    The caret to perform the toggle for.
+     * @param editor   The editor in which the caret(s) are present.
+     */
     private void expandCaretSelection(Caret caret, Editor editor) {
         /* The characters that indicate a word/symbol its boundaries. Used for left and right side.
          * The beginning and end of the line the caret is on also function as boundaries.
@@ -238,8 +248,20 @@ public class ToggleAction extends AnAction {
         return null;
     }
 
-    public String createRegexPatternOfToggles(List<List<String>> toggleActionStructure) {
-        List<String> names = toggleActionStructure.stream().flatMap(Collection::stream)
+    /**
+     * Will take the provided toggles and create a regex pattern out of it that will match any of the toggles.
+     *
+     * The individual toggles have been escaped by wrapping them in \\Q and \\E. This allows characters such as * that
+     * would normally be recognised as regex operators to be included in the toggles.
+     *
+     * The following is an example of the output of the method:
+     * "(\\Qremove\\E|\\Qadd\\E)"
+     *
+     * @param toggleWordsStructure The data structure that holds the toggles.
+     * @return The regex pattern inside of a String.
+     */
+    public String createRegexPatternOfToggles(List<List<String>> toggleWordsStructure) {
+        List<String> names = toggleWordsStructure.stream().flatMap(Collection::stream)
                 .sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList());
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -251,9 +273,24 @@ public class ToggleAction extends AnAction {
         return stringBuilder.toString();
     }
 
-    public List<Integer> getPositionOfToggleMatch(List<List<String>> toggleActionStructure, String input,
+    /**
+     * Provided an input, search for toggles inside of that input and if found and the caret touches it,
+     * return the match its position using its beginning and end indices relative to the input string.
+     * A caret touching a match means that the caret its position is inside of the match or on the edge of it.
+     *
+     * Priority is based on the following: greater length and left > right.
+     *
+     * @param toggleWordsStructure The data structure that holds the toggles.
+     * @param input The text that will be searched for matches.
+     * @param allowPartialMatch Whether to allow partial matches or not. If not, then only a match that is of
+     *                          the same length as the input (aka a full match) is deemed valid.
+     * @param caretPosition The position the caret is in relative to the input.
+     *                      E.g. if the input is "add", then the caretPosition should be between 0 and 4.
+     * @return A pair of integers that indicate the beginning and end of the match relative to the input string.
+     */
+    public List<Integer> getPositionOfToggleMatch(List<List<String>> toggleWordsStructure, String input,
                                                   boolean allowPartialMatch, int caretPosition) {
-        String regex = createRegexPatternOfToggles(toggleActionStructure);
+        String regex = createRegexPatternOfToggles(toggleWordsStructure);
         Matcher matcher = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(input);
 
         // Sort the matches by string length, so that longer matches get priority over smaller ones.
