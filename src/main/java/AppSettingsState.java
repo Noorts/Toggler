@@ -70,7 +70,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
                         "[`===`,`!==`]," +
                     "]"
             ).replace('`', '"');
-    private static final defaultPartialMatchingStatus = true;
+    private static final boolean defaultPartialMatchingStatus = true;
 
     AppSettingsState() { resetSettingsToDefault(); }
 
