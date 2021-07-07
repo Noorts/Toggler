@@ -116,21 +116,22 @@ public class ToggleAction extends AnAction {
 
         List<Integer> positionOfMatch = getPositionOfToggleMatch(toggleWordsStructure, selectedToggleFromCaret,
                 (tempIsPartialMatchingAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
-        String stringOfMatch = null;
-        String replacementToggle = null;
+
+        // If a match was found then toggle it, else display a notification.
         if (positionOfMatch != null) {
-            stringOfMatch = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
-            replacementToggle = findNextToggleInToggles(stringOfMatch);
-        }
-        // Get the replacementToggle and toggle the caret its toggle with the replacement.
-        if (replacementToggle != null) {
-            replacementToggle = StringTransformer.transferCapitalisation(
-                    stringOfMatch, replacementToggle);
+            String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
+            String replacementToggle = findNextToggleInToggles(match);
 
-            StringBuffer stringBuffer = new StringBuffer(selectedToggleFromCaret);
-            stringBuffer.replace(positionOfMatch.get(0), positionOfMatch.get(1), replacementToggle);
+            /* The replacementToggle should never be null in this case, because if no match was found then
+             * the positionOfMatch would be null. There will always be a replacementToggle because even a single toggle
+             * will toggle to itself, thus providing a replacementToggle. */
+            assert replacementToggle != null;
+            replacementToggle = StringTransformer.transferCapitalisation(match, replacementToggle);
 
-            document.replaceString(caret.getSelectionStart(), caret.getSelectionEnd(), stringBuffer.toString());
+            // Toggle the match to its replacement toggle. This is where the manipulation of the document is performed.
+            int startPositionOfTextToReplace = caret.getSelectionStart() + positionOfMatch.get(0);
+            int endPositionOfTextToReplace = caret.getSelectionStart() + positionOfMatch.get(1);
+            document.replaceString(startPositionOfTextToReplace, endPositionOfTextToReplace, replacementToggle);
         } else {
             Notifications.Bus.notify(new Notification(
                     togglerNotificationGroup.getDisplayId(), "Toggler",
@@ -257,11 +258,6 @@ public class ToggleAction extends AnAction {
 
         // Sort the matches by string length, so that longer matches get priority over smaller ones.
         List<MatchResult> matches = matcher.results().collect(Collectors.toList());
-
-        for (MatchResult match: matches
-             ) {
-            System.out.println(match.group());
-        }
 
         // A full match is returned if it can be found.
         if (matches.size() != 0 && matches.get(0).end() - matches.get(0).start() == input.length()) {
