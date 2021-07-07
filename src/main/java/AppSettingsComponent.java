@@ -15,6 +15,7 @@ public class AppSettingsComponent {
     private final JPanel mainPanel;
     private final JBTextArea jsonText = new JBTextArea();
     private final JBLabel statusLabel = new JBLabel();
+    private final JCheckBox checkBox;
 
     public AppSettingsComponent() {
         JButton importButton = new JButton("Import");
@@ -28,8 +29,13 @@ public class AppSettingsComponent {
                 "Clicking this button will open a file saver dialog from which you can save the file.");
 
         JButton resetButton = new JButton("Reset to Defaults");
-        resetButton.setToolTipText("Reset the toggles to the default toggles this plugin ships with. " +
+        resetButton.setToolTipText("Reset the settings to the default settings this plugin ships with. " +
                 "Note: the reset is applied and saved instantly.");
+
+        checkBox = new JCheckBox("Enable partial matching");
+        checkBox.setToolTipText("Check the checkbox to enable the partial matching functionality. " +
+                "This allows Toggler to also search for toggles at the cursor that don't encompass " +
+                "the entire word/symbol. E.g. 'add' inside of 'addClass'.");
 
         resetButton.addActionListener(a -> executeResetButtonAction());
         importButton.addActionListener(a -> importTogglesFromJsonFile());
@@ -41,10 +47,11 @@ public class AppSettingsComponent {
         buttonPanel.add(resetButton);
 
         BorderLayoutPanel headerPanel = new BorderLayoutPanel();
-        headerPanel.add(statusLabel, BorderLayout.LINE_START);
+        headerPanel.add(checkBox, BorderLayout.LINE_START);
         headerPanel.add(buttonPanel, BorderLayout.LINE_END);
 
         mainPanel = FormBuilder.createFormBuilder()
+                .addComponent(statusLabel)
                 .addComponent(headerPanel)
                 .addComponent(new JSeparator())
                 .addVerticalGap(8)
@@ -54,9 +61,10 @@ public class AppSettingsComponent {
 
     public void executeResetButtonAction() {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        appSettingsState.resetTogglesToDefault();
+        appSettingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setStatusMessage("Status: Resetting toggles to defaults was successful.");
+        setCheckboxStatus(appSettingsState.partialMatchingIsEnabled);
+        setStatusMessage("Status: Resetting settings to defaults was successful.");
     }
 
     private void importTogglesFromJsonFile() {
@@ -96,24 +104,20 @@ public class AppSettingsComponent {
         setStatusMessage("Status: Exporting toggles to JSON file succeeded.");
     }
 
-    public JPanel getPanel() {
-        return mainPanel;
-    }
+    public JPanel getPanel() { return mainPanel; }
 
     public JComponent getPreferredFocusedComponent() {
         return jsonText;
     }
 
     @NotNull
-    public String getJsonText() {
-        return jsonText.getText();
-    }
+    public String getJsonText() { return jsonText.getText(); }
 
-    public void setJsonText(@NotNull String newText) {
-        jsonText.setText(newText);
-    }
+    public void setJsonText(@NotNull String newText) { jsonText.setText(newText); }
 
-    public void setStatusMessage(@NotNull String errorMessage) {
-        statusLabel.setText(errorMessage);
-    }
+    public void setStatusMessage(@NotNull String errorMessage) { statusLabel.setText(errorMessage); }
+
+    public boolean getCheckboxStatus() { return checkBox.isSelected(); }
+
+    public void setCheckboxStatus(boolean partialMatchingIsEnabled) { checkBox.setSelected(partialMatchingIsEnabled); }
 }
