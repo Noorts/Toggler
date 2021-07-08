@@ -20,7 +20,7 @@ intellij {
 }
 
 runPluginVerifier {
-    ideVersions = ["IC-2019.1.4", "IC-2020.3.2"]
+    ideVersions = ["IC-2019.1.4", "IC-2020.3.2", "IC-2021.1"]
 }
 
 // Disable building searchableOptions as this isn't beneficial for this plugin.
@@ -30,13 +30,18 @@ runPluginVerifier {
 buildSearchableOptions.enabled = false
 
 group 'com.noorts'
-version '1.2.0'
+version '1.2.1'
 
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
     changeNotes("""
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
+
+      [1.2.1] - 2021-07-08
+      <ul>
+      <li>The plugin is now compatible with IDE builds from 2020.3 and onwards. Under the hood the notification system was updated which improves compatibility with future versions of the JetBrains products. This also means that older IDE versions (< 2020.3) are no longer supported as of this update.</li>
+      </ul><br>
 
       [1.2.0] - 2021-07-07
       <ul>
@@ -126,6 +131,6 @@ patchPluginXml {
     // Defines the builds that will be able to enable this plugin.
     // Build number chosen based on product version statistics:
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
-    sinceBuild('191.0')
-    untilBuild('212.*')
+    sinceBuild('203.4203.26')
+    // untilBuild('212.*')
 }
