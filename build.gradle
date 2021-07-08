@@ -126,6 +126,6 @@ patchPluginXml {
     // Defines the builds that will be able to enable this plugin.
     // Build number chosen based on product version statistics:
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
-    sinceBuild('191.0')
+    sinceBuild('192.0')
     untilBuild('212.*')
 }
