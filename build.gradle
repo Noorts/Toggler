@@ -40,7 +40,7 @@ patchPluginXml {
 
       [1.2.1] - 2021-07-08
       <ul>
-      <li>The plugin is now compatible with IDE builds from 2020.3 and onwards. Under the hood the notification system was updated which improves compatibility with future versions of the JetBrains products. This also means that older IDE versions (< 2020.3/203.4341) are no longer supported as of this update.</li>
+      <li>The plugin is now compatible with IDE builds from 2020.3 and onwards. Under the hood the notification system was updated which improves compatibility with future versions of the JetBrains products. This also means that older IDE versions (prior to 2020.3/203.4341) are no longer supported as of this update.</li>
       </ul><br>
 
       [1.2.0] - 2021-07-07
