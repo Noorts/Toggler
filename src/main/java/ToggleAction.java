@@ -154,6 +154,9 @@ public class ToggleAction extends AnAction {
      * Boundary characters are hardcoded characters such as ; and ".
      * Check the method its implementation for more details.
      *
+     * This method will expand outwards from the cursor position of the caret. Note: if a selection has
+     * already been made, then that won't be taken into account.
+     *
      * @param caret    The caret to perform the toggle for.
      * @param editor   The editor in which the caret(s) are present.
      */
@@ -163,9 +166,9 @@ public class ToggleAction extends AnAction {
          * Boundary characters should be declared somewhere else to improve
          * maintainability as these characters are also used elsewhere. */
         Character[] boundaryChars = {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
-        int currentColumnLeftSide = caret.getSelectionStartPosition().column;
-        int currentColumnRightSide = caret.getSelectionEndPosition().column;
-        int currentLine = caret.getLeadSelectionPosition().line;
+        int currentColumnLeftSide = caret.getLogicalPosition().column;
+        int currentColumnRightSide = currentColumnLeftSide;
+        int currentLine = caret.getLogicalPosition().line;
 
         String textOnCurrentLine = editor.getDocument().getText(TextRange.create(
                 editor.getDocument().getLineStartOffset(currentLine),
