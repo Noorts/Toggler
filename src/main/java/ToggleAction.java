@@ -98,6 +98,7 @@ public class ToggleAction extends AnAction {
         if (selectedToggleFromCaret == null) {
             NotificationHandler.notify("No text could be selected.",
                     NotificationType.INFORMATION);
+            return;
         }
 
         /* This position is relative to the start of the expanded selection.
