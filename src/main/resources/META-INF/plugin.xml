@@ -17,7 +17,7 @@
         <action id="ToggleAction" class="ToggleAction" text="Toggle Word/Symbol"
                 description="Toggle the selected word or symbol to the next word or symbol in the sequence
                 defined in the Toggler plugin configuration.">
-            <add-to-group group-id="EditMenu" anchor="after" relative-to-action="EditSmartGroup"/>
+            <add-to-group group-id="EditMenu" anchor="before" relative-to-action="EditSmartGroup"/>
             <keyboard-shortcut keymap="$default" first-keystroke="control shift X"/>
         </action>
     </actions>
