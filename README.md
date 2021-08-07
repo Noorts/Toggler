@@ -57,10 +57,9 @@ Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the 
 - None, currently. Feel free to send me a message or create an issue if you run into unexpected behavior.
 
 ## Roadmap
-- Improve performance (optimise data structure).
 - Create JetBrains "native" UI.
+- Add support for language specific toggles.
 - Improve transferring word case.
-- Improve JsonParser error handling.
 
 ## Acknowledgements
 This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
