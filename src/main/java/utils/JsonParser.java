@@ -35,7 +35,7 @@ public class JsonParser {
      */
     public static List<List<String>> parseJsonToToggles(String jsonText) throws TogglesFormatException {
         List<List<String>> togglesStructure = new ArrayList<>();
-        jsonText = jsonText.replaceAll("[\\t\\n {4}]", "");
+        jsonText = jsonText.replaceAll("\\t|\\n|\\s{4}", "");
 
         // Will check the JSON for errors and throw an error if required.
         checkJsonForErrors(jsonText);
