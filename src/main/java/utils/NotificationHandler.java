@@ -2,11 +2,17 @@ package utils;
 
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.NotificationGroupManager;
+import com.intellij.openapi.editor.Editor;
 
+/**
+ * A utility that handles notifications.
+ *
+ * See: https://plugins.jetbrains.com/docs/intellij/notifications.html#top-level-notifications-balloons
+ */
 public class NotificationHandler {
-    public static void notify(String content, NotificationType notificationType) {
+    public static void notify(String content, NotificationType notificationType, Editor editor) {
         NotificationGroupManager.getInstance().getNotificationGroup("Toggler")
-                .createNotification("Toggler", content, notificationType, null)
-                .notify(null);
+                .createNotification(content, notificationType)
+                .notify(editor.getProject());
     }
 }

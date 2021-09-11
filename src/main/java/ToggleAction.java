@@ -75,7 +75,7 @@ public class ToggleAction extends AnAction {
         if (caret.getSelectionStartPosition().line != caret.getSelectionEndPosition().line) {
             NotificationHandler.notify("Toggling by finding keywords inside of a multi-line " +
                             "selection isn't supported by Toggler (yet).",
-                    NotificationType.INFORMATION);
+                    NotificationType.INFORMATION, editor);
             return;
         }
 
@@ -97,7 +97,7 @@ public class ToggleAction extends AnAction {
         // Exit if the caret is in an empty file in which no toggle could possibly be selected.
         if (selectedToggleFromCaret == null) {
             NotificationHandler.notify("No text could be selected.",
-                    NotificationType.INFORMATION);
+                    NotificationType.INFORMATION, editor);
             return;
         }
 
@@ -125,10 +125,10 @@ public class ToggleAction extends AnAction {
             int endPositionOfTextToReplace = caret.getSelectionStart() + positionOfMatch.get(1);
             document.replaceString(startPositionOfTextToReplace, endPositionOfTextToReplace, replacementToggle);
         } else {
-            NotificationHandler.notify(String.format("No match was found in: %s<br>" +
-                            "Add new words or symbols through the configuration menu.<br>" +
-                            "Go to Settings/Preferences -> Tools -> Toggler.", selectedToggleFromCaret),
-                        NotificationType.INFORMATION);
+            NotificationHandler.notify(String.format("No match was found in: %s.<br>" +
+                        "Add new words or symbols through the configuration menu.<br>" +
+                        "Go to Settings/Preferences -> Tools -> Toggler.", selectedToggleFromCaret),
+                    NotificationType.WARNING, editor);
         }
 
         /* Reset the caret selection to the state before the action was performed.
