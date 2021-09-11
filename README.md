@@ -38,7 +38,7 @@
 
 ## Usage
 Select or place your cursor on a word/symbol and press the default hotkey
-(<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on MacOS) to
+(<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on macOS) to
 toggle the word/symbol to the next toggle defined in the configuration file.
 The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
