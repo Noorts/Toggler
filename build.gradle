@@ -30,7 +30,7 @@ runPluginVerifier {
 buildSearchableOptions.enabled = false
 
 group 'com.noorts'
-version '1.2.3'
+version '1.2.4'
 
 // Changes made to the plugin.xml are entered here.
 patchPluginXml {
@@ -38,6 +38,13 @@ patchPluginXml {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.4] - 2021-12-29
+      <ul>
+      <li>Add confirmation dialog to the "Reset to Defaults" button in the configuration menu.</li>
+      <li>Replace console system errors with error notifications.</li>
+      <li>Improve code quality.</li>
+      </ul><br>
+      
       [1.2.3] - 2021-09-11
       <ul>
       <li>Removed deprecated API methods. This improves the plugin its compatibility for future IDE versions.</li>
