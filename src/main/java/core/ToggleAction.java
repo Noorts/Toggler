@@ -1,3 +1,5 @@
+package core;
+
 import com.intellij.notification.*;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -292,7 +294,6 @@ public class ToggleAction extends AnAction {
         List<MatchResult> matches = matcher.results().collect(Collectors.toList());
 
         // A full match is returned if it can be found.
-        if (matches.size() != 0 && matches.get(0).end() - matches.get(0).start() == input.length()) {
             return new ArrayList<>(Arrays.asList(matches.get(0).start(), matches.get(0).end()));
         } else if (allowPartialMatch) {
             /* Else, if partial matches are allowed, a partial match is returned. This is only done if it has
@@ -305,6 +306,5 @@ public class ToggleAction extends AnAction {
             }
         }
         // If no match that fits the requirements is found, then we return null.
-        return null;
     }
 }

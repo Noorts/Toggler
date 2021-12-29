@@ -1,3 +1,5 @@
+package core;
+
 import com.intellij.util.xmlb.Converter;
 import org.jetbrains.annotations.NotNull;
 import utils.JsonParser;
