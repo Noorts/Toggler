@@ -1,9 +1,11 @@
 package core;
 
+import com.intellij.notification.NotificationType;
 import com.intellij.util.xmlb.Converter;
 import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 import utils.JsonParser;
+import utils.NotificationHandler;
 
 import java.util.List;
 
@@ -16,7 +18,9 @@ class TogglerStructureConverter extends Converter<List<List<String>>> {
         try {
             return JsonParser.parseJsonToToggles(value);
         } catch (JsonParser.TogglesFormatException e) {
-            System.err.println("The toggles couldn't be parsed from the plugin setting storage successfully.");
+            NotificationHandler.notify("The toggles couldn't be parsed from the " +
+                            "plugin setting storage successfully.",
+                    NotificationType.ERROR);
             return Collections.emptyList();
         }
     }

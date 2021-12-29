@@ -1,5 +1,6 @@
 package core;
 
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
@@ -9,6 +10,7 @@ import com.intellij.util.xmlb.annotations.OptionTag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import utils.JsonParser;
+import utils.NotificationHandler;
 
 import java.util.List;
 
@@ -85,8 +87,9 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
             toggles = JsonParser.parseJsonToToggles(DEFAULT_TOGGLES);
             partialMatchingIsEnabled = DEFAULT_PARTIAL_MATCHING_STATUS;
         } catch (JsonParser.TogglesFormatException e) {
-            System.err.println("The defaultToggles provided by the creator of the " +
-                    "plugin don't conform to the JSON format.");
+            NotificationHandler.notify("The defaultToggles provided by the creator of the " +
+                            "plugin don't conform to the JSON format.",
+                    NotificationType.ERROR);
         }
     }
 
