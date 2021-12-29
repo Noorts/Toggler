@@ -6,15 +6,15 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="AppSettingsState"/>
-        <applicationConfigurable parentId="tools" instance="AppSettingsConfigurable"
+        <applicationService serviceImplementation="core.AppSettingsState"/>
+        <applicationConfigurable parentId="tools" instance="core.AppSettingsConfigurable"
                                  id="org.intellij.sdk.settings.AppSettingsConfigurable"
                                  displayName="Toggler"/>
         <notificationGroup id="Toggler" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
 
     <actions>
-        <action id="ToggleAction" class="ToggleAction" text="Toggle Word/Symbol"
+        <action id="ToggleAction" class="core.ToggleAction" text="Toggle Word/Symbol"
                 description="Toggle the selected word or symbol to the next word or symbol in the sequence
                 defined in the Toggler plugin configuration.">
             <add-to-group group-id="EditMenu" anchor="before" relative-to-action="EditSmartGroup"/>
