@@ -5,6 +5,7 @@ import com.intellij.ui.components.JBTextArea;
 import com.intellij.util.ui.FormBuilder;
 import com.intellij.util.ui.components.BorderLayoutPanel;
 import org.jetbrains.annotations.NotNull;
+import utils.ConfirmResetDialogWrapper;
 import utils.FileHandler;
 import utils.JsonParser;
 
@@ -39,7 +40,7 @@ public class AppSettingsComponent {
                 "This allows Toggler to also search for toggles at the cursor that don't encompass " +
                 "the entire word/symbol. E.g. 'add' inside of 'addClass'.");
 
-        resetButton.addActionListener(a -> executeResetButtonAction());
+        resetButton.addActionListener(a -> promptResetButtonAction());
         importButton.addActionListener(a -> importTogglesFromJsonFile());
         exportButton.addActionListener(a -> exportTogglesToJsonFile());
 
@@ -61,12 +62,20 @@ public class AppSettingsComponent {
                 .getPanel();
     }
 
+    public void promptResetButtonAction() {
+        if (new ConfirmResetDialogWrapper().showAndGet()) {
+            executeResetButtonAction();
+            setStatusMessage("Status: Resetting settings to defaults was successful.");
+        } else {
+            setStatusMessage("Status: Resetting settings to defaults was cancelled.");
+        }
+    }
+
     public void executeResetButtonAction() {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         appSettingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
         setCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
-        setStatusMessage("Status: Resetting settings to defaults was successful.");
     }
 
     private void importTogglesFromJsonFile() {
