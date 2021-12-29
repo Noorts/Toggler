@@ -18,7 +18,7 @@ import java.util.List;
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
 
-    private static final String defaultToggles =
+    private static final String DEFAULT_TOGGLES =
             (
                     "[" +
                         "[`public`,`private`,`protected`]," +
@@ -72,18 +72,18 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
                         "[`===`,`!==`]," +
                     "]"
             ).replace('`', '"');
-    private static final boolean defaultPartialMatchingStatus = true;
+    private static final boolean DEFAULT_PARTIAL_MATCHING_STATUS = true;
 
     AppSettingsState() { resetSettingsToDefault(); }
 
     @OptionTag(converter = TogglerStructureConverter.class)
     public List<List<String>> toggles;
-    public boolean partialMatchingIsEnabled;
+    private boolean partialMatchingIsEnabled;
 
     public void resetSettingsToDefault(){
         try {
-            toggles = JsonParser.parseJsonToToggles(defaultToggles);
-            partialMatchingIsEnabled = defaultPartialMatchingStatus;
+            toggles = JsonParser.parseJsonToToggles(DEFAULT_TOGGLES);
+            partialMatchingIsEnabled = DEFAULT_PARTIAL_MATCHING_STATUS;
         } catch (JsonParser.TogglesFormatException e) {
             System.err.println("The defaultToggles provided by the creator of the " +
                     "plugin don't conform to the JSON format.");
@@ -103,5 +103,13 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     @Override
     public void loadState(@NotNull AppSettingsState state) {
         XmlSerializerUtil.copyBean(state, this);
+    }
+
+    public boolean isPartialMatchingIsEnabled() {
+        return partialMatchingIsEnabled;
+    }
+
+    public void setPartialMatchingIsEnabled(boolean partialMatchingIsEnabled) {
+        this.partialMatchingIsEnabled = partialMatchingIsEnabled;
     }
 }

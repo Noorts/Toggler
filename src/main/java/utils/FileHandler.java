@@ -5,6 +5,7 @@ import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
  * @author Noorts
  */
 public class FileHandler {
+    private FileHandler() { throw new IllegalStateException("Utility class"); }
 
     /**
      * Return the contents of a file as a String.
@@ -41,7 +43,7 @@ public class FileHandler {
         }
 
         // Load the text from the selected file. Throw an IOException if an IO error occurs.
-        return VfsUtil.loadText(virtualFile);
+        return VfsUtilCore.loadText(virtualFile);
     }
 
     /**
@@ -95,7 +97,5 @@ public class FileHandler {
      * A custom exception thrown when selection of a file through a file saver dialog was cancelled.
      * @see FileHandler#saveTextToDisk
      */
-    public static class FileSelectionCancelledException extends Exception {
-        public FileSelectionCancelledException() {}
-    }
+    public static class FileSelectionCancelledException extends Exception { }
 }

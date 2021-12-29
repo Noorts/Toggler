@@ -1,6 +1,7 @@
 package core;
 
 import com.intellij.util.xmlb.Converter;
+import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 import utils.JsonParser;
 
@@ -16,7 +17,7 @@ class TogglerStructureConverter extends Converter<List<List<String>>> {
             return JsonParser.parseJsonToToggles(value);
         } catch (JsonParser.TogglesFormatException e) {
             System.err.println("The toggles couldn't be parsed from the plugin setting storage successfully.");
-            return null;
+            return Collections.emptyList();
         }
     }
 

@@ -3,6 +3,8 @@ package utils;
 import org.jetbrains.annotations.NotNull;
 
 public class StringTransformer {
+    private StringTransformer() { throw new IllegalStateException("Utility class"); }
+
     /**
      * Transfer the capitalisation from the currentWord to the replacementWord.
      * Beware: the current implementation is very limited and only supports:

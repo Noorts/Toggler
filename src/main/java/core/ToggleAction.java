@@ -44,7 +44,7 @@ public class ToggleAction extends AnAction {
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (Caret caret : carets) {
                 performToggleOnSingleCaret(caret, document, editor,
-                        regexPatternOfToggles, appSettingsState.partialMatchingIsEnabled);
+                        regexPatternOfToggles, appSettingsState.isPartialMatchingIsEnabled());
             }
         });
     }
@@ -112,7 +112,7 @@ public class ToggleAction extends AnAction {
                 (partialMatchingIsAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
 
         // If a match was found then toggle it, else display a notification.
-        if (positionOfMatch != null) {
+        if (!positionOfMatch.isEmpty()) {
             String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
             String replacementToggle = findNextToggleInToggles(match);
 
@@ -191,7 +191,7 @@ public class ToggleAction extends AnAction {
                             textOnCurrentLine.charAt(currentColumnRightSide)))) {
                 currentColumnRightSide++;
             }
-        } catch (StringIndexOutOfBoundsException ignored){}
+        } catch (StringIndexOutOfBoundsException ignored) {}
 
         /* Start and end offset are determined because those are required for the setSelection method.
          * The offsets indicate the offset from the beginning of the document, so including all lines. */
@@ -294,6 +294,7 @@ public class ToggleAction extends AnAction {
         List<MatchResult> matches = matcher.results().collect(Collectors.toList());
 
         // A full match is returned if it can be found.
+        if (!matches.isEmpty() && matches.get(0).end() - matches.get(0).start() == input.length()) {
             return new ArrayList<>(Arrays.asList(matches.get(0).start(), matches.get(0).end()));
         } else if (allowPartialMatch) {
             /* Else, if partial matches are allowed, a partial match is returned. This is only done if it has
@@ -306,5 +307,6 @@ public class ToggleAction extends AnAction {
             }
         }
         // If no match that fits the requirements is found, then we return null.
+        return Collections.emptyList();
     }
 }

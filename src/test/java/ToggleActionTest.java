@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ToggleActionTest {
     @Test
     public void regexPatternIsCorrectlyCreatedFromTheTogglePairs() {
@@ -100,7 +102,7 @@ public class ToggleActionTest {
                 regexPattern, input, false, -1);
 
         // Assert
-        assertNull(resultPositions,
+        assertTrue(resultPositions.isEmpty(),
                 "The positions returned by findToggle for the partial match are incorrect.");
     }
 
@@ -149,10 +151,10 @@ public class ToggleActionTest {
                 regexPattern, input, true, -1);
 
         // Assert
-        assertNull(resultPositionsWrongWord,
+        assertTrue(resultPositionsWrongWord.isEmpty(),
                 "The positions returned by findToggle for the partial match " +
                         "whilst the caret position is in the wrong word are incorrect.");
-        assertNull(resultPositionsOutOfBounds,
+        assertTrue(resultPositionsOutOfBounds.isEmpty(),
                 "The positions returned by findToggle for the partial match " +
                         "whilst the caret position is out of bounds are incorrect.");
     }

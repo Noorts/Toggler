@@ -8,6 +8,8 @@ import java.util.*;
  * @author Noorts
  */
 public class JsonParser {
+    private JsonParser() { throw new IllegalStateException("Utility class"); }
+
     /**
      * Check the provided text for errors that indicate that the text doesn't adhere to the toggles JSON format.
      * See the defaultToggles defined in the AppSettingsState class for more information about the format.

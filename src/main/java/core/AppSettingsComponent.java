@@ -65,7 +65,7 @@ public class AppSettingsComponent {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         appSettingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setCheckboxStatus(appSettingsState.partialMatchingIsEnabled);
+        setCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
         setStatusMessage("Status: Resetting settings to defaults was successful.");
     }
 
