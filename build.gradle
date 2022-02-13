@@ -141,6 +141,14 @@ patchPluginXml {
       <li>None, currently. Feel free to send me a message or create an issue if you run
       into unexpected behavior or if you have a feature request.</li>
       </ul>
+      
+      <h3>Alternatives</h3>
+      <ul>
+      <li>If you're looking for more text manipulation features,
+      then check out <a href="https://plugins.jetbrains.com/plugin/6149-shifter">Shifter</a>.
+      Which also includes a dictionary (with custom symbols/words) just like Toggler
+      and includes many other nice features.</li>
+      </ul>
 
       <h3>Acknowledgements</h3>
       This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his

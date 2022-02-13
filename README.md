@@ -20,6 +20,7 @@
   <a href="#installation">Installation</a> •
   <a href="#issues">Issues</a> •
   <a href="#roadmap">Roadmap</a> •
+  <a href="#alternatives">Alternatives</a> •
   <a href="#acknowledgements">Acknowledgements</a> •
   <a href="#license">License</a>
   <br><br>
@@ -60,6 +61,9 @@ Go to the <kbd>Settings/Preferences -> Plugins</kbd> menu, press the cog in the 
 - Create JetBrains "native" UI.
 - Add support for language specific toggles.
 - Improve transferring word case.
+
+## Alternatives
+- If you're looking for more text manipulation features, then check out [Shifter](https://plugins.jetbrains.com/plugin/6149-shifter). Which also includes a dictionary (with custom symbols/words) just like Toggler and includes many other nice features.
 
 ## Acknowledgements
 This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
