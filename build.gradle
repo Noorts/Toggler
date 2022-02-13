@@ -108,6 +108,12 @@ patchPluginXml {
 
     pluginDescription("""
       Quickly toggle words and symbols with a hotkey. Toggles can be configured from the settings menu.
+      
+      <br><br>
+      Do you really like Toggler? Consider giving a star on <a href="https://github.com/Noorts/Toggler">GitHub</a> or leaving a review on the <a href="https://plugins.jetbrains.com/plugin/16166-toggler">JetBrains marketplace</a>.
+      <br><br>
+      Did you find a bug or do you have a feature request? Feel free to open an issue on <a href="https://github.com/Noorts/Toggler/issues">GitHub</a>.
+      
       <br>
       <h3>Features</h3>
       <ul>

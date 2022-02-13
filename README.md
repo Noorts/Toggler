@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/Noorts/Toggler"><img src="src/main/resources/META-INF/pluginIcon_dark.svg" width="120" height="120" alt="Toggler"></a>
+  <a href="https://github.com/Noorts/Toggler"><img src="src/main/resources/META-INF/pluginIcon_dark.svg" width="120" height="120" alt="Logo"></a>
   <br>
   Toggler
   <br>
@@ -27,6 +27,10 @@
   <img src="TogglerUsage.gif" alt="Toggler Usage Example">
 </p>
 <br>
+
+Do you really like Toggler? Consider giving a star on [GitHub](https://github.com/Noorts/Toggler) or leaving a review on the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
+
+Did you find a bug or do you have a feature request? Feel free to open an issue on [GitHub](https://github.com/Noorts/Toggler/issues).
 
 ## Features
 - Customizable through the settings menu.
