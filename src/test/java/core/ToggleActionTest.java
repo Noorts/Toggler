@@ -1,4 +1,5 @@
-import core.ToggleAction;
+package core;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
