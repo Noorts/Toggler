@@ -55,12 +55,9 @@ jobs:
           PROPERTIES="$(./gradlew properties --console=plain -q)"
           IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64)"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
-          NAME="Toggler"
-          ARTIFACT="${NAME}-${VERSION}.zip"
 
           echo "::set-output name=ideVersions::$IDE_VERSIONS"
           echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
-          echo "::set-output name=artifact::$ARTIFACT"
 
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
@@ -72,9 +69,3 @@ jobs:
       # Run IntelliJ Plugin Verifier action using GitHub Action
       - name: Verify Plugin
         run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: UnZipMe
-          path: ./build/distributions/${{ steps.properties.outputs.artifact }}
