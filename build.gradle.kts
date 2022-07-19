@@ -126,11 +126,16 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.7] - 2022-07-19
+      <ul>
+      <li>Extend plugin IDE compatibility range from 2022.1 to 2022.2.</li>
+      </ul><br>
+      
       [1.2.6] - 2022-07-17
       <ul>
       <li>Extend plugin IDE compatibility range from 2021.3 to 2022.1.</li>
-      <li>Upgrade Gradle to 7.5 and migrate build configs</li>
-      <li>Expand tests</li>
+      <li>Upgrade Gradle to 7.5 and migrate build configs.</li>
+      <li>Expand tests.</li>
       </ul><br>
       
       [1.2.5] - 2022-02-13
