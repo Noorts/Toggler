@@ -126,6 +126,11 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.8] - 2022-08-20
+      <ul>
+      <li>Fix Toggler configuration menu bug, which caused the menu to not show up due to incompatibility with external plugins. See: <a href="https://github.com/Noorts/Toggler/issues/5">#5</a>.</li>
+      </ul><br>
+      
       [1.2.7] - 2022-07-19
       <ul>
       <li>Extend plugin IDE compatibility range from 2022.1 to 2022.2.</li>
