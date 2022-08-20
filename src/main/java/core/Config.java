@@ -15,6 +15,9 @@ public class Config {
      * Toggler's default collection of toggles. These are the toggles the plugin loads into its configuration if the
      * user hasn't modified them yet. These are also used when the user uses the "Reset to Default" functionality in
      * the configuration menu.
+     *
+     * The toggles are stored in this Config class instead of an external JSON file for OS compatibility and performance
+     * reasons.
      */
     public static final String DEFAULT_TOGGLES = (
             "[" +
