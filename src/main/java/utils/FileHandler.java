@@ -8,12 +8,9 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
-import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 
 /**
@@ -97,27 +94,6 @@ public class FileHandler {
         };
         // Run the lambda defined above to save the file to disk.
         ApplicationManager.getApplication().runWriteAction(throwableComputable);
-    }
-
-    /**
-     * Retrieve the plugin its default toggles from a JSON file. The file can be found under src/resources.
-     * <p>
-     * Note: if updates are made to the toggles file, then the 'build/resources' folder is reprocessed to include the
-     * new version of the file. If the default toggles aren't loaded into the test IDE correctly then deleting the
-     * build folder will make sure that the new version is used.
-     *
-     * @return All contents of the JSON file as a String.
-     * @throws IOException If the file can't be found or another IO error occurs.
-     */
-    public static @NotNull String getDefaultToggles() throws IOException {
-        final String DEFAULT_TOGGLES_FILE_NAME = "DefaultToggles.json";
-        URL url = ResourceUtil.getResource(FileHandler.class.getClassLoader(), "/", DEFAULT_TOGGLES_FILE_NAME);
-        VirtualFile virtualFile = VfsUtil.findFileByURL(url);
-        if (virtualFile == null) {
-            throw new FileNotFoundException(DEFAULT_TOGGLES_FILE_NAME + " couldn't be found.");
-        }
-        // Load the text from the selected file. Throw an IOException if an IO error occurs.
-        return VfsUtilCore.loadText(virtualFile);
     }
 
     /**
