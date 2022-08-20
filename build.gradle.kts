@@ -67,12 +67,12 @@ tasks {
 
         pluginDescription.set("""
       Quickly toggle words and symbols with a hotkey. Toggles can be configured from the settings menu.
-      
+
       <br><br>
       Do you really like Toggler? Consider giving a star on <a href="https://github.com/Noorts/Toggler">GitHub</a> or leaving a review on the <a href="https://plugins.jetbrains.com/plugin/16166-toggler">JetBrains marketplace</a>.
       <br><br>
       Did you find a bug or do you have a feature request? Feel free to open an issue on <a href="https://github.com/Noorts/Toggler/issues">GitHub</a>.
-      
+
       <br>
       <h3>Features</h3>
       <ul>
@@ -81,38 +81,49 @@ tasks {
       <li>Support for numerous toggles.</li>
       <li>Support for partial matches.</li>
       <li>Limited support for transferring word case.</li>
-      <li>Easy importing and exporting of the settings configuration.</li>
+      <li>Easy importing and exporting of the JSON configuration.</li>
       <li>No external dependencies required.</li>
       </ul>
 
       <h3>Usage</h3>
-      Select or place your cursor on a word/symbol and press the default hotkey
-      (<kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on macOS) to
-      toggle the word/symbol to the next toggle defined in the configuration file.
+      Select or place your cursor on a word/symbol and press the hotkey
+      (by default <kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on macOS) to
+      toggle the word/symbol to the next toggle defined in the configuration file (wrapping around when it reaches the end).
       The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
       The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
+      <br><br>
+      The partial matching functionality allows for substrings of words/symbols to be toggled. E.g. <code>getName</code> could be
+      toggled to <code>setName</code> by placing the cursor anywhere on <code>get</code> and then activating the toggle action.
+      The largest match found is prioritised. This means that if you have the following toggles configured <code>["dev", "prod"],
+      ["development", "production"]</code> and toggle <code>development</code>, then it will be replaced with <code>production</code>. The partial
+      matching functionality can be bypassed by using your cursor to create a precise selection of the sub word/symbol you
+      want to toggle. The partial matching functionality (which is enabled by default) can also be disabled completely in
+      the configuration menu.
 
       <h3>Configuration</h3>
-      Configure the toggles from <kbd>Settings/Preferences -> Tools -> Toggler</kbd>.
-      Default toggles have been added to provide functionality right out of the gate.
-      Toggles can be added and removed by modifying the JSON and applying the changes.
-      The Import, Export and Reset to Defaults buttons have been added for convenience.
-      The following characters are used for word/symbol selection and thus can't be used inside the toggles
-      <kbd>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</kbd>.
-      The partial matching functionality (which is enabled by default) can be disabled in the configuration menu.
+      You can configure the toggles in your IDE by going to <kbd>Settings/Preferences -> Tools -> Toggler</kbd>.
+      <br><br>
+      Toggles can be added and removed by modifying the JSON inside the configuration menu and subsequently
+      pressing the <code>Apply</code> button. The <code>Import</code>, <code>Export</code> and <code>Reset to Defaults</code> buttons have been added for convenience.
+      <br><br>
+      The following <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11">boundary characters</a>
+      are used for word/symbol selection internally and thus can't be used inside the toggles
+      <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</code>.
+      <br><br>
+      Default <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22">toggles</a>
+      are included with every fresh installment.
 
-      <h3>Issues</h3>
-      <ul>
-      <li>None, currently. Feel free to send me a message or create an issue if you run
-      into unexpected behavior or if you have a feature request.</li>
-      </ul>
-      
+      <h3>Roadmap</h3>
+      The roadmap can be found on the <a href="https://github.com/users/Noorts/projects/2">Toggler board</a>.
+
+      <h3>Contribute</h3>
+      Want to contribute? Check out the <a href="https://github.com/Noorts/Toggler/tree/master#contribute">contribute</a> section over on GitHub.
+
       <h3>Alternatives</h3>
-      <ul>
-      <li>If you're looking for more text manipulation features,
+      If you're looking for more text manipulation features,
       then check out <a href="https://plugins.jetbrains.com/plugin/6149-shifter">Shifter</a>.
       Which also includes a dictionary (with custom symbols/words) just like Toggler
-      and includes many other nice features.</li>
+      and includes many other nice features.
       </ul>
 
       <h3>Acknowledgements</h3>
@@ -130,38 +141,38 @@ tasks {
       <ul>
       <li>Fix Toggler configuration menu bug, which caused the menu to not show up due to incompatibility with external plugins. See: <a href="https://github.com/Noorts/Toggler/issues/5">#5</a>.</li>
       </ul><br>
-      
+
       [1.2.7] - 2022-07-19
       <ul>
       <li>Extend plugin IDE compatibility range from 2022.1 to 2022.2.</li>
       </ul><br>
-      
+
       [1.2.6] - 2022-07-17
       <ul>
       <li>Extend plugin IDE compatibility range from 2021.3 to 2022.1.</li>
       <li>Upgrade Gradle to 7.5 and migrate build configs.</li>
       <li>Expand tests.</li>
       </ul><br>
-      
+
       [1.2.5] - 2022-02-13
       <ul>
       <li>Improve plugin description.</li>
       <li>Add alternatives section to plugin description.</li>
       </ul><br>
-      
+
       [1.2.4] - 2021-12-29
       <ul>
       <li>Add confirmation dialog to the "Reset to Defaults" button in the configuration menu.</li>
       <li>Replace console system errors with error notifications.</li>
       <li>Improve code quality.</li>
       </ul><br>
-      
+
       [1.2.3] - 2021-09-11
       <ul>
       <li>Removed deprecated API methods. This improves the plugin its compatibility for future IDE versions.</li>
       <li>Fixed a JsonParser bug that prevented the number 4 from being added to a toggle.</li>
       </ul><br>
-      
+
       [1.2.2] - 2021-08-02
       <ul>
       <li>Bug caused by folded text in the editor has been fixed.</li>
@@ -169,7 +180,7 @@ tasks {
       <li>Handling of error when no text can be selected has been improved.</li>
       <li>The no match found notification has been changed slightly.</li>
       </ul><br>
-      
+
       [1.2.1] - 2021-07-08
       <ul>
       <li>The plugin is now compatible with IDE builds from 2020.3 and onwards. Under the hood the notification system was updated which improves compatibility with future versions of the JetBrains products. This also means that older IDE versions (prior to 2020.3/203.4341) are no longer supported as of this update.</li>
