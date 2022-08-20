@@ -8,7 +8,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="core.AppSettingsState"/>
         <applicationConfigurable parentId="tools" instance="core.AppSettingsConfigurable"
-                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 id="com.noorts.toggler.AppSettingsConfigurable"
                                  displayName="Toggler"/>
         <notificationGroup id="Toggler" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
