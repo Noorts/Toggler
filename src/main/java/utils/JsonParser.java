@@ -1,5 +1,7 @@
 package utils;
 
+import core.Config;
+
 import java.util.*;
 
 /**
@@ -119,13 +121,9 @@ public class JsonParser {
      * @throws TogglesFormatException when a word/symbol was found that contains a boundary character.
      */
     private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
-        /* Boundary characters should be declared somewhere else to improve
-         * maintainability as these characters are also used elsewhere. */
-        Character[] boundaryChars = {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
-
         for (int i = 0; i < word.length(); i++) {
-            for (int j = 0; j < boundaryChars.length; j++) {
-                if (word.charAt(i) == boundaryChars[j]) {
+            for (int j = 0; j < Config.BOUNDARY_CHARS.length; j++) {
+                if (word.charAt(i) == Config.BOUNDARY_CHARS[j]) {
                     throw new TogglesFormatException("A toggle contains an invalid character.");
                 }
             }

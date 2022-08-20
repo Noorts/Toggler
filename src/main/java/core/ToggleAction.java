@@ -163,11 +163,6 @@ public class ToggleAction extends AnAction {
      * @param editor   The editor in which the caret(s) are present.
      */
     private void expandCaretSelection(Caret caret, Editor editor) {
-        /* The characters that indicate a word/symbol its boundaries. Used for left and right side.
-         * The beginning and end of the line the caret is on also function as boundaries.
-         * Boundary characters should be declared somewhere else to improve
-         * maintainability as these characters are also used elsewhere. */
-        Character[] boundaryChars = {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
         int currentColumnLeftSide = caret.getLogicalPosition().column;
         int currentColumnRightSide = currentColumnLeftSide;
         int currentLine = caret.getLogicalPosition().line;
@@ -182,12 +177,12 @@ public class ToggleAction extends AnAction {
         try {
             /* Text expansion by extending the left side and then the right side. */
             while ((currentColumnLeftSide > 0) &&
-                    (-1 == Arrays.toString(boundaryChars).indexOf(
+                    (-1 == Arrays.toString(Config.BOUNDARY_CHARS).indexOf(
                             textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
                 currentColumnLeftSide--;
             }
             while ((currentColumnRightSide < textOnCurrentLine.length()) &&
-                    (-1 == Arrays.toString(boundaryChars).indexOf(
+                    (-1 == Arrays.toString(Config.BOUNDARY_CHARS).indexOf(
                             textOnCurrentLine.charAt(currentColumnRightSide)))) {
                 currentColumnRightSide++;
             }
