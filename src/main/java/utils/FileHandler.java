@@ -19,15 +19,17 @@ import java.time.LocalDate;
  * @author Noorts
  */
 public class FileHandler {
-    private FileHandler() { throw new IllegalStateException("Utility class"); }
+    private FileHandler() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Return the contents of a file as a String.
      * The file to load is selected through a file chooser dialog.
+     *
      * @return the content of the chosen file or null if loading the chosen file failed.
-     * @throws FileSelectionCancelledException
-     * thrown when the selection of a file through the file chooser was cancelled.
-     * @throws IOException thrown when an unexpected IOException has occurred.
+     * @throws FileSelectionCancelledException thrown when the selection of a file through the file chooser was cancelled.
+     * @throws IOException                     thrown when an unexpected IOException has occurred.
      */
     public static @NotNull String loadContentFromFileToString()
             throws FileSelectionCancelledException, IOException {
@@ -48,12 +50,13 @@ public class FileHandler {
 
     /**
      * Save text to disk with a file saver dialog.
+     *
      * @param textToSaveToFile the text to be written to the file.
      * @throws FileSelectionCancelledException thrown when the selection of a file through the file saver was cancelled.
-     * @throws IOException thrown when an unexpected IOException has occurred.
+     * @throws IOException                     thrown when an unexpected IOException has occurred.
      */
     public static void saveTextToDisk(@NotNull String textToSaveToFile)
-            throws FileSelectionCancelledException, IOException  {
+            throws FileSelectionCancelledException, IOException {
 
         final String filenameForJsonExportFile = String.format(
                 "TogglerExport_%s.json",
@@ -95,6 +98,7 @@ public class FileHandler {
 
     /**
      * A custom exception thrown when selection of a file through a file saver dialog was cancelled.
+     *
      * @see FileHandler#saveTextToDisk
      */
     public static class FileSelectionCancelledException extends Exception { }
