@@ -137,6 +137,14 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.9] - 2022-08-21
+      <ul>
+      <li>Update plugin description.</li>
+      <li>Upgrade Gradle to 7.5.1.</li>
+      <li>Expand integration tests.</li>
+      <li>Improve internal organization.</li>
+      </ul><br>
+
       [1.2.8] - 2022-08-20
       <ul>
       <li>Fix Toggler configuration menu bug, which caused the menu to not show up due to incompatibility with external plugins. See: <a href="https://github.com/Noorts/Toggler/issues/5">#5</a>.</li>
