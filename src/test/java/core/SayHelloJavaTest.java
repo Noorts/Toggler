@@ -1,0 +1,39 @@
+// Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+
+package core;
+
+import com.intellij.remoterobot.RemoteRobot;
+import core.pages.WelcomeFrame;
+import core.utils.RemoteRobotExtension;
+import core.utils.StepsLogger;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.time.Duration;
+
+import static com.intellij.remoterobot.fixtures.dataExtractor.TextDataPredicatesKt.startsWith;
+
+@ExtendWith(RemoteRobotExtension.class)
+public class SayHelloJavaTest {
+    @BeforeAll
+    public static void initLogging() {
+        StepsLogger.init();
+    }
+
+    @Test
+    void checkSayHello(final RemoteRobot remoteRobot) {
+        final WelcomeFrame welcomeFrame = remoteRobot.find(WelcomeFrame.class, Duration.ofSeconds(10));
+        assert (welcomeFrame.hasText(startsWith("IntelliJ IDEA")));
+        if (!welcomeFrame.hasText("Say Hello")) {
+            welcomeFrame.getMoreActions().click();
+            welcomeFrame.getHeavyWeightPopup().findText("Say Hello").click();
+        } else {
+            welcomeFrame.findText("Say Hello").click();
+        }
+        final SayHelloKotlinTest.HelloWorldDialog helloDialog = remoteRobot.find(SayHelloKotlinTest.HelloWorldDialog.class);
+        assert (helloDialog.getTextPane().hasText("Hello World!"));
+        helloDialog.getOk().click();
+        assert (welcomeFrame.hasText(startsWith("IntelliJ IDEA")));
+    }
+}
