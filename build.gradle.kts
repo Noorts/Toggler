@@ -137,6 +137,11 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.10] - 2022-11-12
+      <ul>
+      <li>Add limited support for tabs as whitespace. See: <a href="https://github.com/Noorts/Toggler/issues/20">#20</a>.</li>
+      </ul><br>
+
       [1.2.9] - 2022-08-21
       <ul>
       <li>Update plugin description.</li>
