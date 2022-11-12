@@ -9,7 +9,7 @@ public class Config {
      * end of the line the caret is on also function as boundaries.
      */
     public static final Character[] BOUNDARY_CHARS =
-            {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}'};
+            {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t'};
 
     /**
      * Toggler's default collection of toggles. These are the toggles the plugin loads into its configuration if the

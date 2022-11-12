@@ -171,6 +171,16 @@ public class ToggleAction extends AnAction {
                 editor.getDocument().getLineStartOffset(currentLine),
                 editor.getDocument().getLineEndOffset(currentLine)));
 
+        /* The clause below provides limited support for tabs as whitespace in files. It requires the "Use tab
+         * character" option in the "Tabs and Indents" menu to be ticked and requires all tabs in the file to adhere to
+         * the "Tab size" set in the same menu.
+         *
+         * Handling ambiguous tab sizes is a more complicated problem and is left to be solved. */
+        if (editor.getSettings().isUseTabCharacter(editor.getProject())) {
+            int editorTabSize = editor.getSettings().getTabSize(editor.getProject());
+            textOnCurrentLine = textOnCurrentLine.replaceAll("\t", " ".repeat(editorTabSize));
+        }
+
         /* Try catch added as temporary measure against StringIndexOutOfBoundsException.
          * The exception is sometimes thrown when the caret isn't set correctly after
          * the user selects a different location. */
