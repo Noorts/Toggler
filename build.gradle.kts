@@ -137,6 +137,12 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.11] - 2022-11-14
+      <ul>
+      <li>Extend plugin IDE compatibility range from 2022.2 to 2022.3.</li>
+      <li>Update plugin description.</li>
+      </ul><br>
+
       [1.2.10] - 2022-11-12
       <ul>
       <li>Add limited support for tabs as whitespace. See: <a href="https://github.com/Noorts/Toggler/issues/20">#20</a>.</li>
