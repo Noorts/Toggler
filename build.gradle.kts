@@ -108,7 +108,7 @@ tasks {
       <br><br>
       The following <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11">boundary characters</a>
       are used for word/symbol selection internally and thus can't be used inside the toggles
-      <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</code>.
+      <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}', '\t'</code>.
       <br><br>
       Default <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22">toggles</a>
       are included with every fresh installment.

@@ -54,7 +54,7 @@ toggled to `setName` by placing the cursor anywhere on `get` and then activating
 The largest match found is prioritised. This means that if you have the following toggles configured `["dev", "prod"],
 ["development", "production"]` and toggle `development`, then it will be replaced with `production`. The partial
 matching functionality can be bypassed by using your cursor to create a precise selection of the sub word/symbol you
-want to toggle. The partial matching functionality (which is enabled by default) can also be disabled completely in 
+want to toggle. The partial matching functionality (which is enabled by default) can also be disabled completely in
 the configuration menu.
 
 ## Installation
@@ -74,9 +74,9 @@ pressing the `Apply` button. The `Import`, `Export` and `Reset to Defaults` butt
 
 The following [boundary characters](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11)
 are used for word/symbol selection internally and thus can't be used inside the toggles
-<code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}'</code>.
+<code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}', '\t'</code>.
 
-The [toggles](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22) displayed below 
+The [toggles](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22) displayed below
 are the default ones included with every fresh installment.
 ```JSON
 [
@@ -152,7 +152,7 @@ will build the plugin and open a development IDE, allowing you to test out the p
 5. Verify your changes
    * by running the `test` Gradle task.
    * (optionally) by running the `runPluginVerifier` Gradle task to verify whether the
-plugin is still compatible with the IDE build range configured in `gradle.properties`. 
+plugin is still compatible with the IDE build range configured in `gradle.properties`.
 6. [Commit](https://github.com/git-guides/git-commit) your changes to your fork.
 7. Create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
 from your fork to the [Noorts/Toggler](https://github.com/Noorts/Toggler) repository.
