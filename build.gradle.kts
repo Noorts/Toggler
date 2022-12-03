@@ -5,7 +5,7 @@ fun properties(key: String) = project.findProperty(key).toString()
 // https://github.com/JetBrains/gradle-intellij-plugin
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
+    id("org.jetbrains.kotlin.jvm") version "1.7.22"
     id("org.jetbrains.intellij") version "1.10.0"
 }
 
