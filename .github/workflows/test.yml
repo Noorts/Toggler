@@ -56,8 +56,8 @@ jobs:
           IDE_VERSIONS="$(echo "$PROPERTIES" | grep "^pluginVerifierIdeVersions:" | base64)"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
 
-          echo "::set-output name=ideVersions::$IDE_VERSIONS"
-          echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
+          echo "ideVersions=$IDE_VERSIONS" >> $GITHUB_OUTPUT
+          echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
 
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
