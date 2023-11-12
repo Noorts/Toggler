@@ -137,6 +137,12 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.2.14] - 2023-11-12
+      <ul>
+      <li>Extend plugin IDE compatibility range from 2023.2 to 2023.3.</li>
+      <li>Update internal plugins.</li>
+      </ul><br>
+
       [1.2.13] - 2023-06-10
       <ul>
       <li>Extend plugin IDE compatibility range from 2023.1 to 2023.2.</li>
