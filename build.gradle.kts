@@ -92,6 +92,9 @@ tasks {
       The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
       The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
       <br><br>
+      The normal action toggles forward (e.g., 1, 2, 3, 1). A reverse toggle action can be used to toggle backwards (e.g., 1, 3, 2, 1).
+      By default it is mapped to <kbd>Ctrl+Shift+Alt+X</kbd> on Windows and <kbd>Cmd+Shift+Opt+X</kbd> on macOS.
+      <br><br>
       The partial matching functionality allows for substrings of words/symbols to be toggled. E.g. <code>getName</code> could be
       toggled to <code>setName</code> by placing the cursor anywhere on <code>get</code> and then activating the toggle action.
       The largest match found is prioritised. This means that if you have the following toggles configured <code>["dev", "prod"],
@@ -136,6 +139,13 @@ tasks {
         changeNotes.set("""
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
+
+      [1.3.0] - 2024-01-31
+      <ul>
+      <li>The reverse toggle action has been added! Instead of forwards (e.g., 1, 2, 3, 1), it is now also possible to toggle backwards with the reverse toggle action (e.g., 1, 3, 2, 1). By default the new action is bound to <kbd>Ctrl/Cmd + Shift + Alt/Opt + X</kbd>. The keybind can be changed under <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.</li>
+      <li>Update internal plugins.</li>
+      <li>Plugin description updated.</li>
+      </ul><br>
 
       [1.2.14] - 2023-11-12
       <ul>
