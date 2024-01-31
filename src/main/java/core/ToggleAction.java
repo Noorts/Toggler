@@ -24,6 +24,13 @@ import java.util.stream.Collectors;
  * @author Noorts
  */
 public class ToggleAction extends AnAction {
+    private boolean isReverseToggleAction = false; // Default is to toggle to the next word/symbol in the toggle sequence.
+
+    public ToggleAction() {}
+
+    public ToggleAction(boolean isReverseToggleAction) {
+        this.isReverseToggleAction = isReverseToggleAction;
+    }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -43,8 +50,8 @@ public class ToggleAction extends AnAction {
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (Caret caret : carets) {
-                performToggleOnSingleCaret(caret, document, editor,
-                        regexPatternOfToggles, appSettingsState.isPartialMatchingIsEnabled());
+                performToggleOnSingleCaret(caret, document, editor, regexPatternOfToggles,
+                        this.isReverseToggleAction, appSettingsState.isPartialMatchingIsEnabled());
             }
         });
     }
@@ -58,7 +65,7 @@ public class ToggleAction extends AnAction {
      * @param editor   The editor in which the caret(s) are present.
      */
     private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor,
-                String regexPatternOfToggles, boolean partialMatchingIsAllowed) {
+                String regexPatternOfToggles, boolean isReverseToggle, boolean partialMatchingIsAllowed) {
         /* The validity of the carets are checked down below to prevent unexpected behavior.
          * E.g. when three carets are placed inside the same word/symbol and the toggle is pressed, the
          * first caret will be processed and the word/symbol will be toggled/replaced. The unintended consequence
@@ -114,7 +121,7 @@ public class ToggleAction extends AnAction {
         // If a match was found then toggle it, else display a notification.
         if (!positionOfMatch.isEmpty()) {
             String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
-            String replacementToggle = findNextToggleInToggles(match);
+            String replacementToggle = findNextToggleInToggles(match, isReverseToggle);
 
             /* The replacementToggle should never be null in this case, because if no match was found then
              * the positionOfMatch would be null. There will always be a replacementToggle because even a single toggle
@@ -220,16 +227,19 @@ public class ToggleAction extends AnAction {
     }
 
     /**
-     * Find the next word/symbol for the provided word/symbol in the toggles.
+     * Find the next or previous word/symbol for the provided word/symbol in the toggles.
      * The provided word/symbol is searched for in the toggles configured
-     * in the plugin settings and the next one in the sequence is returned.
+     * in the plugin settings and the next or previous one in the sequence is returned.
+     * Whether the next or previous toggle in the sequence is returned depends on the isReverseToggleAction parameter.
      * The settings can be found under Settings/Preferences -> Tools -> Toggler.
      *
      * @param keyword The word/symbol to be replaced.
+     * @param isReverseToggleAction Determines whether the next or previous toggle in the sequence is returned.
+     *                              false → next, true → previous.
      * @return The next word/symbol in the sequence which the provided word/symbol is part of.
      * Null is returned if the provided word couldn't be found in the config.
      */
-    private String findNextToggleInToggles(String keyword) {
+    private String findNextToggleInToggles(String keyword, boolean isReverseToggleAction) {
         String wordInLowerCase = keyword.toLowerCase();
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         /* The current settings. */
@@ -241,7 +251,12 @@ public class ToggleAction extends AnAction {
                 if (toggleWordsStructure.get(i).get(j).toLowerCase().equals(wordInLowerCase)) {
                     /* The next word/symbol in the sequence is retrieved.
                        The modulo is used to wrap around if the end of the sequence is reached. */
-                    return toggleWordsStructure.get(i).get((j + 1) % toggleWordsStructure.get(i).size());
+                    int sequence_size = toggleWordsStructure.get(i).size();
+                    return toggleWordsStructure.get(i).get(
+                            isReverseToggleAction
+                                    ? (j - 1 + sequence_size) % sequence_size // Previous
+                                    : (j + 1) % sequence_size // Next
+                            );
                 }
             }
         }
