@@ -49,6 +49,9 @@ toggle the word/symbol to the next toggle defined in the configuration file (wra
 The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
 The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
 
+The normal action toggles forward (e.g., 1, 2, 3, 1). A reverse toggle action can be used to toggle backwards
+(e.g., 1, 3, 2, 1). By default it is mapped to <kbd>Ctrl+Shift+Alt+X</kbd> on Windows and <kbd>Cmd+Shift+Opt+X</kbd> on macOS.
+
 The partial matching functionality allows for substrings of words/symbols to be toggled. E.g. `getName` could be
 toggled to `setName` by placing the cursor anywhere on `get` and then activating the toggle action.
 The largest match found is prioritised. This means that if you have the following toggles configured `["dev", "prod"],
