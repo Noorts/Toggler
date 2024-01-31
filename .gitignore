@@ -3,5 +3,6 @@
 /build/
 TODO.txt
 bin
+.vscode
 
 .DS_Store
