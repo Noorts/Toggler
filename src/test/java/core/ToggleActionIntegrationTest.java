@@ -17,6 +17,20 @@ public class ToggleActionIntegrationTest extends BasePlatformTestCase {
         myFixture.checkResult("getName");
     }
 
+    // The default toggles include: public, private, protected.
+    public void testToggleActionReverseTogglesToNext() {
+        myFixture.configureByText(TEST_FILE_NAME, "public"); // |public
+
+        myFixture.performEditorAction(TOGGLE_ACTION); // |private
+        myFixture.checkResult("private");
+
+        myFixture.performEditorAction(TOGGLE_ACTION); // |protected
+        myFixture.checkResult("protected");
+
+        myFixture.performEditorAction(TOGGLE_ACTION); // |public
+        myFixture.checkResult("public");
+    }
+
     public void testToggleActionTogglesAWordRegardlessOfPosition() {
         // In front
         myFixture.configureByText(TEST_FILE_NAME, "getName");
