@@ -27,6 +27,8 @@ intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
 //    type.set(properties("platformType"))
+    // Do not set an until build: https://intellij-support.jetbrains.com/hc/en-us/community/posts/14610689926674/comments/14625872002706
+    updateSinceUntilBuild.set(false)
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
@@ -63,7 +65,6 @@ tasks {
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
 
         pluginDescription.set("""
       Quickly toggle words and symbols with a hotkey. Toggles can be configured from the settings menu.
