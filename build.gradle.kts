@@ -141,6 +141,11 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.3.1] - 2024-02-01
+      <ul>
+      <li>The plugin is now automatically compatible with any IDE versions from 2021.1 onwards.</li>
+      </ul><br>
+
       [1.3.0] - 2024-01-31
       <ul>
       <li>The reverse toggle action has been added! Instead of forwards (e.g., 1, 2, 3, 1), it is now also possible to toggle backwards with the reverse toggle action (e.g., 1, 3, 2, 1). By default the new action is bound to <kbd>Ctrl/Cmd + Shift + Alt/Opt + X</kbd>. The keybind can be changed under <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.</li>
