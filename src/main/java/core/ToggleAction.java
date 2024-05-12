@@ -1,9 +1,7 @@
 package core;
 
 import com.intellij.notification.*;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
@@ -30,6 +28,15 @@ public class ToggleAction extends AnAction {
 
     public ToggleAction(boolean isReverseToggleAction) {
         this.isReverseToggleAction = isReverseToggleAction;
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        // BGT is preferred and I see no reason to use EDT instead. See {@link ActionUpdateThread}, this only affects
+        // how {@link AnAction#update(AnActionEvent)} and friends are called.
+        // See: https://plugins.jetbrains.com/docs/intellij/basic-action-system.html#principal-implementation-overrides
+        // and: https://github.com/JetBrains/intellij-community/blob/idea/241.15989.150/platform/editor-ui-api/src/com/intellij/openapi/actionSystem/ActionUpdateThread.java#L21
+        return ActionUpdateThread.BGT;
     }
 
     @Override
