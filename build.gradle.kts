@@ -141,6 +141,14 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.4.0] - 2024-05-12
+      <ul>
+      <li>This update includes internal version bumps to stay compatible with the newest IDE versions.</li>
+      <li>The minimum IDE version has been bumped from 2021.1.3 to 2022.3.1. The plugin is now compatible with any IDE
+      versions from 2022.3.1 onwards.</li>
+      <li>Addressed a deprecation. See: <a href="https://github.com/Noorts/Toggler/issues/64">#64</a>.</li>
+      </ul><br>
+
       [1.3.1] - 2024-02-01
       <ul>
       <li>The plugin is now automatically compatible with any IDE versions from 2021.1 onwards.</li>
