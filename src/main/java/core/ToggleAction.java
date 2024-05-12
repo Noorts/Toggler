@@ -33,6 +33,20 @@ public class ToggleAction extends AnAction {
     }
 
     @Override
+    public void update(@NotNull final AnActionEvent e) {
+        final Project project = e.getProject();
+        final Editor editor = e.getData(CommonDataKeys.EDITOR);
+
+        // Make sure at least one caret is available.
+        boolean menuAllowed = false;
+        if (editor != null && project != null) {
+            // Ensure the list of carets in the editor is not empty.
+            menuAllowed = !editor.getCaretModel().getAllCarets().isEmpty();
+        }
+        e.getPresentation().setEnabledAndVisible(menuAllowed);
+    }
+
+    @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         final Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
@@ -210,20 +224,6 @@ public class ToggleAction extends AnAction {
         int startOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnLeftSide));
         int endOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnRightSide));
         caret.setSelection(startOffset, endOffset);
-    }
-
-    @Override
-    public void update(@NotNull final AnActionEvent e) {
-        final Project project = e.getProject();
-        final Editor editor = e.getData(CommonDataKeys.EDITOR);
-
-        // Make sure at least one caret is available.
-        boolean menuAllowed = false;
-        if (editor != null && project != null) {
-            // Ensure the list of carets in the editor is not empty.
-            menuAllowed = !editor.getCaretModel().getAllCarets().isEmpty();
-        }
-        e.getPresentation().setEnabledAndVisible(menuAllowed);
     }
 
     /**
