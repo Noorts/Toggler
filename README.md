@@ -144,7 +144,7 @@ The roadmap can be found on the [Toggler board](https://github.com/users/Noorts/
 2. Set up your development environment (I use [IntelliJ IDEA](https://www.jetbrains.com/idea/) for Toggler's development).
    * Open the project and load the Gradle project. A notification should show up in the bottom right indicating
 "Gradle build scripts found".
-   * Install Java 11 and make sure it's set as the SDK and language level in the
+   * Install Java 17 (see `javaVersion` in `gradle.properties`) and make sure it is set as the SDK and language level in the
 [project structure settings](https://www.jetbrains.com/help/idea/project-settings-and-structure.html).
 3. Verify whether you're ready to start development by running the development IDE through Gradle's `runIde` task.
 This task should be available under `Toggler/Tasks/intellij` in
