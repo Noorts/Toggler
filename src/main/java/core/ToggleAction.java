@@ -55,8 +55,14 @@ public class ToggleAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        final Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
-        final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        final Editor editor = e.getData(CommonDataKeys.EDITOR);
+        final Project project = e.getData(CommonDataKeys.PROJECT);
+        if (editor == null || project == null) {
+            NotificationHandler.notify("Toggle aborted. Internal error: editor and/or project is null. " +
+                    "Please open an issue: https://github.com/Noorts/Toggler/issues.",
+                NotificationType.ERROR, editor);
+            return;
+        }
         final Document document = editor.getDocument();
 
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
