@@ -164,7 +164,7 @@ from your fork to the [Noorts/Toggler](https://github.com/Noorts/Toggler) reposi
 - If you're looking for more text manipulation features, then check out [Shifter](https://plugins.jetbrains.com/plugin/6149-shifter). Which also includes a dictionary (with custom symbols/words) just like Toggler and includes many other nice features.
 
 ## Acknowledgements
-This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
+This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a>'s
 original versions of toggle plugins/extensions
 for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a>
 and <a href="https://atom.io/packages/toggler">Atom</a>.
