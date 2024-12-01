@@ -141,6 +141,11 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.4.1] - 2024-12-01
+      <ul>
+      <li>Addressed a deprecation. See: <a href="https://github.com/Noorts/Toggler/issues/80">#80</a>.</li>
+      </ul><br>
+
       [1.4.0] - 2024-05-12
       <ul>
       <li>This update includes internal version bumps to stay compatible with the newest IDE versions.</li>
