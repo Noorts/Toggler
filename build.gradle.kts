@@ -41,9 +41,6 @@ tasks {
             sourceCompatibility = it
             targetCompatibility = it
         }
-        withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = it
-        }
     }
 
     wrapper {
