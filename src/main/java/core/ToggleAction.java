@@ -161,10 +161,9 @@ public class ToggleAction extends AnAction {
             int endPositionOfTextToReplace = caret.getSelectionStart() + positionOfMatch.get(1);
             document.replaceString(startPositionOfTextToReplace, endPositionOfTextToReplace, replacementToggle);
         } else {
-            NotificationHandler.notify(String.format("No match was found in: %s.<br>" +
-                        "Add new words or symbols through the configuration menu.<br>" +
-                        "Go to Settings/Preferences -> Tools -> Toggler.", selectedToggleFromCaret),
-                    NotificationType.WARNING, editor);
+            NotificationHandler.notifyWithOpenSettingsAction(
+                String.format("No match for \"%s\".", selectedToggleFromCaret),
+                NotificationType.WARNING, editor);
         }
 
         /* Reset the caret selection to the state before the action was performed.
