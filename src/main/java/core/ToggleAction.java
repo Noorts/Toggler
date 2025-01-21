@@ -163,7 +163,7 @@ public class ToggleAction extends AnAction {
         } else {
             NotificationHandler.notifyWithOpenSettingsAction(
                 String.format("No match for \"%s\".", selectedToggleFromCaret),
-                NotificationType.WARNING, editor);
+                NotificationType.INFORMATION, editor);
         }
 
         /* Reset the caret selection to the state before the action was performed.
