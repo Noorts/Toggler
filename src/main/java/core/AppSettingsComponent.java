@@ -22,23 +22,25 @@ public class AppSettingsComponent {
 
     public AppSettingsComponent() {
         JButton importButton = new JButton("Import");
-        importButton.setToolTipText("Import the toggles from a file. " +
-                "Clicking this button will open a file picker from which you can open a file. " +
-                "Note: the toggles have to be formatted in the correct JSON format. " +
-                "See the default toggles for the correct format.");
+        importButton.setToolTipText("Import toggles from a file. " +
+            "Warning: current toggles are overwritten. " +
+            "The toggles have to be formatted correctly " +
+            "(see the default toggles for an example).");
 
         JButton exportButton = new JButton("Export");
-        exportButton.setToolTipText("Export the currently saved toggles to a JSON file. " +
-                "Clicking this button will open a file saver dialog from which you can save the file.");
+        exportButton.setToolTipText(
+            "Export the currently saved toggles to a file.");
 
         JButton resetButton = new JButton("Reset to Defaults");
-        resetButton.setToolTipText("Reset the settings to the default settings this plugin ships with. " +
-                "Note: the reset is applied and saved instantly.");
+        resetButton.setToolTipText("Reset the settings to the default " +
+            "settings this plugin ships with. The reset is applied and saved " +
+            "instantly.");
 
         checkBox = new JCheckBox("Enable partial matching");
-        checkBox.setToolTipText("Check the checkbox to enable the partial matching functionality. " +
-                "This allows Toggler to also search for toggles at the cursor that don't encompass " +
-                "the entire word/symbol. E.g. 'add' inside of 'addClass'.");
+        checkBox.setToolTipText("Partial matching allows Toggler to search for " +
+            "toggles at the cursor that do not encompass the entire word/symbol. " +
+            "For example, when the cursor is placed somewhere on 'add', then it " +
+            "allows toggling 'add' inside 'addClass'.");
 
         resetButton.addActionListener(a -> promptResetButtonAction());
         importButton.addActionListener(a -> importTogglesFromJsonFile());
