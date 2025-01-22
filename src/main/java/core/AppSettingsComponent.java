@@ -83,7 +83,8 @@ public class AppSettingsComponent {
     private void importTogglesFromJsonFile() {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
 
-        // Load and parse the contents of the JSON file and set the toggles to the loaded toggles.
+        // Load and parse the contents of the JSON file and set the toggles to
+        // the loaded toggles.
         try {
             appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
         } catch (JsonParser.TogglesFormatException e) {
@@ -97,7 +98,8 @@ public class AppSettingsComponent {
             return;
         }
 
-        // Reset the settings menu JsonText textarea to the toggles that have been loaded.
+        // Reset the settings menu JsonText textarea to the toggles that have
+        // been loaded.
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
         setStatusMessage("Status: Importing toggles from file was successful.");
     }

@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 /**
- * A utility written to handle saving and loading of a String to/from a file.
- *
- * @author Noorts
+ * Handles saving and loading of a String to/from a file.
  */
 public class FileHandler {
     private FileHandler() {
@@ -24,12 +22,15 @@ public class FileHandler {
     }
 
     /**
-     * Return the contents of a file as a String.
-     * The file to load is selected through a file chooser dialog.
+     * Return the contents of a file as a String. The file to load is selected
+     * through a file chooser dialog.
      *
-     * @return the content of the chosen file or null if loading the chosen file failed.
-     * @throws FileSelectionCancelledException thrown when the selection of a file through the file chooser was cancelled.
-     * @throws IOException                     thrown when an unexpected IOException has occurred.
+     * @return the content of the chosen file or null if loading the chosen file
+     * failed.
+     * @throws FileSelectionCancelledException thrown when the selection of a
+     * file through the file chooser was cancelled.
+     * @throws IOException                     thrown when an unexpected
+     * IOException has occurred.
      */
     public static @NotNull String loadContentFromFileToString()
             throws FileSelectionCancelledException, IOException {
@@ -39,12 +40,14 @@ public class FileHandler {
                 FileChooserDescriptorFactory.createSingleFileDescriptor(),
                 null, null);
 
-        // If no file was selected because the dialog was closed or cancelled throw an appropriate error.
+        // If no file was selected because the dialog was closed or cancelled
+        // throw an appropriate error.
         if (virtualFile == null) {
             throw new FileSelectionCancelledException();
         }
 
-        // Load the text from the selected file. Throw an IOException if an IO error occurs.
+        // Load the text from the selected file. Throw an IOException if an IO
+        // error occurs.
         return VfsUtilCore.loadText(virtualFile);
     }
 
@@ -52,8 +55,10 @@ public class FileHandler {
      * Save text to disk with a file saver dialog.
      *
      * @param textToSaveToFile the text to be written to the file.
-     * @throws FileSelectionCancelledException thrown when the selection of a file through the file saver was cancelled.
-     * @throws IOException                     thrown when an unexpected IOException has occurred.
+     * @throws FileSelectionCancelledException thrown when the selection of a
+     * file through the file saver was cancelled.
+     * @throws IOException                     thrown when an unexpected
+     * IOException has occurred.
      */
     public static void saveTextToDisk(@NotNull String textToSaveToFile)
             throws FileSelectionCancelledException, IOException {
@@ -63,7 +68,8 @@ public class FileHandler {
                 LocalDate.now().toString()
         );
 
-        // Create the file saver dialog that will be used to select/create the file to a directory.
+        // Create the file saver dialog that will be used to select/create the
+        // file to a directory.
         FileSaverDialog fileSaverDialog = FileChooserFactory.getInstance().createSaveFileDialog(
                 new FileSaverDescriptor(
                         "Toggler JSON Export",
@@ -71,19 +77,23 @@ public class FileHandler {
                 (Project) null
         );
 
-        // Open the file saver dialog and allow the user to choose a file (whether it exists or not doesn't matter).
+        // Open the file saver dialog and allow the user to choose a file
+        // (whether it exists doesn't matter).
         VirtualFileWrapper virtualFileWrapper = fileSaverDialog.save((VirtualFile) null, filenameForJsonExportFile);
 
-        // If no file was selected because the dialog was closed or cancelled throw an appropriate error.
+        // Throw an error if no file was selected because the dialog was closed
+        // or cancelled.
         if (virtualFileWrapper == null) {
             throw new FileSelectionCancelledException();
         }
 
-        /* Save the text to disk. A virtual file is created if the user didn't overwrite an existing one.
+        /* Save the text to disk. A virtual file is created if the user didn't
+         * overwrite an existing one.
          *
-         * A ThrowableComputable is used to be able to throw an IOException inside of the thread started
-         * by runWriteAction (Runnable doesn't allow throwing exceptions).
-         * This works for now but could probably be improved upon. */
+         * A ThrowableComputable is used to be able to throw an IOException
+         * inside the thread started by runWriteAction (Runnable doesn't allow
+         * throwing exceptions). This works for now but could probably be
+         * improved upon. */
         ThrowableComputable<Boolean, IOException> throwableComputable = () -> {
             VirtualFile finalVirtualFile = virtualFileWrapper.getVirtualFile(true);
             if (finalVirtualFile == null) {

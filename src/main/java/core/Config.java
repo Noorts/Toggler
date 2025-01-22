@@ -1,23 +1,25 @@
 package core;
 
 /**
- * Configuration class that exposes constants to the rest of the application.
+ * Exposes constants to the rest of the application.
  */
 public class Config {
     /**
-     * The characters that indicate a word/symbol its boundaries. Used for the left and right side. The beginning and
-     * end of the line the caret is on also function as boundaries.
+     * The characters that indicate a word/symbol's boundaries. Used for the
+     * left and right side. The beginning and end of the line the caret is on
+     * also function as boundaries.
      */
     public static final Character[] BOUNDARY_CHARS =
             {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t'};
 
     /**
-     * Toggler's default collection of toggles. These are the toggles the plugin loads into its configuration if the
-     * user hasn't modified them yet. These are also used when the user uses the "Reset to Default" functionality in
+     * Toggler's default collection of toggles. These are the toggles the plugin
+     * loads into its configuration if the user hasn't modified them yet. These
+     * are also used when the user uses the "Reset to Default" functionality in
      * the configuration menu.
-     *
-     * The toggles are stored in this Config class instead of an external JSON file for OS compatibility and performance
-     * reasons.
+     * <p>
+     * The toggles are stored in this Config class instead of an external JSON
+     * file for OS compatibility and performance reasons.
      */
     public static final String DEFAULT_TOGGLES = (
             "[" +

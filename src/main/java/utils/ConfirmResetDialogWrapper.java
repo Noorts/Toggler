@@ -8,12 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * The DialogWrapper used to confirm if the toggles should be reset or not. This dialog is displayed once
- * the "Reset to Defaults" button in the configuration menu is pressed.
- *
+ * The DialogWrapper used to confirm if the toggles should be reset or not. This
+ * dialog is displayed once the "Reset to Defaults" button in the configuration
+ * menu is pressed.
+ * <p>
  * See: https://plugins.jetbrains.com/docs/intellij/dialog-wrapper.html
- *
- * @author Noorts
  */
 public class ConfirmResetDialogWrapper extends DialogWrapper {
     private static final String TITLE = "Confirm Reset";

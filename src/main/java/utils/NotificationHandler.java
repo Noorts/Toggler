@@ -40,7 +40,8 @@ public class NotificationHandler {
     }
 
     /**
-     * Notify the user. The notification includes a button that opens the Toggler settings panel.
+     * Notify the user. The notification includes a button that opens the
+     * Toggler settings panel.
      */
     public static void notifyWithOpenSettingsAction(String content, NotificationType notificationType,
                                                     @Nullable Editor editor) {

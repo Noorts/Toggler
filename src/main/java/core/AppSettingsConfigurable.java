@@ -8,8 +8,11 @@ import utils.JsonParser;
 import javax.swing.*;
 import java.util.List;
 
-/* When the settings are changed to something else than the defaultToggles,
- * then the settings are persisted to a file named config/options/SdkSettingsPlugin.xml */
+// Docs:
+// When the settings are changed to something else than the defaultToggles, then
+// the settings are persisted to a file named
+// config/options/SdkSettingsPlugin.xml.
+
 public class AppSettingsConfigurable implements Configurable {
 
     private AppSettingsComponent mySettingsComponent;
@@ -45,16 +48,17 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
 
         try {
-            /* Set whether or not the partial matching functionality is enabled. */
+            /* Set whether the partial matching functionality is enabled. */
             settings.setPartialMatchingIsEnabled(mySettingsComponent.getCheckboxStatus());
 
             List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(
                     mySettingsComponent.getJsonText());
             settings.toggles = currentSettingsFromMenu;
 
-            /* Set the JsonTextarea in the settings menu to the toggles saved to the plugin.
-             * The side effect is that eventual errors entered by the user that aren't included by the JsonParser
-             * are removed from the textarea input as the input is forcefully reset. */
+            /* Set the JsonTextarea in the settings menu to the toggles saved to
+             * the plugin. The side effect is that eventual errors entered by
+             * the user that aren't included by the JsonParser are removed from
+             * the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
             mySettingsComponent.setStatusMessage("Status: Saving was successful.");
         } catch (JsonParser.TogglesFormatException e) {
@@ -62,7 +66,8 @@ public class AppSettingsConfigurable implements Configurable {
         }
     }
 
-    /* Will reset the fields in the settings menu to the values that are currently loaded. */
+    /* Reset the fields in the settings menu to the values that are currently
+     * loaded. */
     @Override
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
