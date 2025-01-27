@@ -31,6 +31,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+
+    testImplementation("com.squareup.okhttp3:logging-interceptor:4.12.0") // Logging Network Calls
+    implementation("com.automation-remarks:video-recorder-junit5:2.0") // Video Recording
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

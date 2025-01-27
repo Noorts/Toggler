@@ -1,5 +1,6 @@
 package ui;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.TextEditorFixture;
 import com.intellij.remoterobot.utils.Keyboard;
@@ -49,6 +50,7 @@ public class ToggleUITest {
     }
 
     @Test
+    @Video
     void testTrivial() {
         final IdeaFrameFixture idea = remoteRobot.find(IdeaFrameFixture.class);
         final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(2));
