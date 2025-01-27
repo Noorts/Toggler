@@ -41,4 +41,12 @@ public class CommonSteps {
 
         return settingsFrame;
     }
+
+    public void triggerToggleAction() {
+        commonSteps.invokeAction("ToggleAction");
+    }
+
+    public void triggerToggleActionReverse() {
+        commonSteps.invokeAction("ToggleActionReverse");
+    }
 }
