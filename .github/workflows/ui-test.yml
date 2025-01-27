@@ -1,3 +1,7 @@
+# Inspiration:
+# - https://github.com/JetBrains/intellij-ui-test-robot/blob/139a05eb99e9a49f13605626b81ad9864be23c96/.github/workflows/runTest.yml
+# - https://github.com/redhat-developer/intellij-quarkus/blob/efc6c6afa78f28b95f55f8c0f71e6585200e7e9d/.github/workflows/itests.yml
+
 name: UI Tests
 on:
   push:
