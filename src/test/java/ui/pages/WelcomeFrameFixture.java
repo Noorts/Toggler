@@ -7,6 +7,8 @@ import com.intellij.remoterobot.fixtures.ComponentFixture;
 import com.intellij.remoterobot.fixtures.DefaultXpath;
 import com.intellij.remoterobot.fixtures.FixtureName;
 
+import java.time.Duration;
+
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.utils.UtilsKt.hasAnyComponent;
 
@@ -45,6 +47,6 @@ public class WelcomeFrameFixture extends CommonContainerFixture {
      */
     public ComponentFixture createNewProjectButton() {
         return remoteRobot.find(ComponentFixture.class,
-            byXpath("//div[@text='Create']"));
+            byXpath("//div[@text='Create']"), Duration.ofSeconds(10));
     }
 }
