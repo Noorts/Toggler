@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 fun properties(key: String) = project.findProperty(key).toString()
 
 // https://github.com/JetBrains/gradle-intellij-plugin
@@ -11,15 +9,28 @@ plugins {
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
+var remoteRobotVersion = properties("remoteRobotVersion")
+
+kotlin {
+    jvmToolchain(Integer.parseInt(properties("javaVersion")))
+}
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies") }
 }
 
 dependencies {
     // https://github.com/junit-team/junit5-samples/blob/main/junit5-jupiter-starter-gradle-kotlin/build.gradle.kts
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    // UI Tests - Remote Robot
+    testImplementation("com.intellij.remoterobot:remote-robot:$remoteRobotVersion")
+    testImplementation("com.intellij.remoterobot:remote-fixtures:$remoteRobotVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -57,6 +68,37 @@ tasks {
     // https://github.com/JetBrains/gradle-intellij-plugin/blob/master/FAQ.md
     buildSearchableOptions {
         enabled = false
+    }
+
+    downloadRobotServerPlugin {
+        version.set(remoteRobotVersion)
+    }
+
+    runIdeForUiTests {
+        // For the systemProperties, see:
+        // https://github.com/JetBrains/intellij-ui-test-robot/blob/master/ui-test-example/README.md
+        systemProperty("robot-server.port", "8082") // default port 8580
+        systemProperty("ide.mac.message.dialogs.as.sheets", "false")
+        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
+        systemProperty("jb.consents.confirmation.enabled", "false")
+        systemProperty("ide.mac.file.chooser.native", "false")
+        systemProperty("jbScreenMenuBar.enabled", "false")
+        systemProperty("apple.laf.useScreenMenuBar", "false")
+        systemProperty("idea.trust.all.projects", "true")
+        systemProperty("ide.show.tips.on.startup.default.value", "false")
+    }
+
+    // Runs the tests in the "core" and "utils" test directories.
+    test {
+        useJUnit() // discover and execute JUnit4-based tests
+    }
+
+    // Runs the UI (remote robot) tests in the "ui" directory.
+    // This defines a new gradle task.
+    register<Test>("uiTest") {
+        useJUnitPlatform()
+        description = "Runs the UI tests."
+        group = "verification"
     }
 
     patchPluginXml {
