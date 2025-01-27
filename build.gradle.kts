@@ -98,7 +98,7 @@ tasks {
 
     // Runs the UI (remote robot) tests in the "ui" directory.
     // This defines a new gradle task.
-    register<Test>("uiTest") {
+    register<Test>("testUI") {
         useJUnitPlatform()
         description = "Runs the UI tests."
         group = "verification"

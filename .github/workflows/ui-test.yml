@@ -20,7 +20,7 @@ jobs:
               ./gradlew runIdeForUiTests > build/reports/idea.log &
             runTests: |
               export DISPLAY=:99.0
-              ./gradlew uiTest
+              ./gradlew testUI
             url: http://127.0.0.1:8082
             reportName: ui-test-fails-report-linux
 
