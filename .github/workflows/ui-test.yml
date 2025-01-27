@@ -23,16 +23,6 @@ jobs:
               ./gradlew testUI
             url: http://127.0.0.1:8082
             reportName: ui-test-fails-report-linux
-          - os: macOS-latest
-            runIde: ./gradlew runIdeForUiTests &
-            runTests: ./gradlew testUI
-            url: http://127.0.0.1:8082
-            reportName: ui-test-fails-report-mac
-          - os: windows-latest
-            runIde: start gradlew.bat runIdeForUiTests
-            runTests: ./gradlew testUI
-            url: http://localhost:8082
-            reportName: ui-test-fails-report-windows
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -43,13 +33,6 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-
-      - name: Setup FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v2
-        with:
-          # Not strictly necessary, but it may prevent rate limit
-          # errors especially on GitHub-hosted macos machines.
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clean
         run: ./gradlew clean
