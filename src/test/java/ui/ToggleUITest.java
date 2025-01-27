@@ -51,13 +51,22 @@ public class ToggleUITest {
 
     @Test
     @Video
-    void testTrivial() {
+    void testToggleAction() {
         final IdeaFrameFixture idea = remoteRobot.find(IdeaFrameFixture.class);
-        final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(2));
+        final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(5));
 
-        step("Trivial click and assert", () -> {
-            editor.getEditor().findText(";").click();
-            assert (0 == 0);
+        step("Set editor text to True", () -> {
+            // This overwrites the current editor's content.
+            editor.getEditor().setText("True");
+        });
+
+        step("Toggle word", () -> {
+            editor.getEditor().findText("True").click();
+            commonSteps.triggerToggleAction();
+        });
+
+        step("Verify that word was toggled", () -> {
+            assert(editor.getEditor().getText().equals("False"));
         });
     }
 }
