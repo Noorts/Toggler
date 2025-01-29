@@ -7,6 +7,8 @@ import com.intellij.remoterobot.fixtures.*;
 import java.time.Duration;
 
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
+import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
+import static java.time.Duration.ofSeconds;
 
 @FixtureName(name = "Settings frame")
 @DefaultXpath(by = "MyDialog type", xpath = "//div[@class='MyDialog']")
@@ -18,16 +20,27 @@ public class SettingsFrameFixture extends CommonContainerFixture {
         this.remoteRobot = remoteRobot;
     }
 
+    public boolean isTogglerSettingsPanelVisible() {
+        // Bread crumb at top of the settings panel should be "Tools > Toggler".
+        return remoteRobot.find(ComponentFixture.class,
+                byXpath("//div[@class='NonOpaquePanel'][.//div[@class='Breadcrumbs']]"),
+                Duration.ofSeconds(10))
+            .hasText("Toggler");
+    }
+
     /**
-     * Returns once the toggler settings are accessible or until a timeout
-     * occurs.
+     * Waits until Toggler's settings panel is visible, or until time out.
+     * Fails the test upon time out.
+     * <p>
+     * This method only tests for visibility, it does not take any
+     * action to open Toggler's settings. See CommonSteps.openTogglerSettings
+     * for that.
      */
-    public void waitUntilTogglerSettingsAreAccessible() {
-        // TODO: Properly throw error if failure occurs?
-        // TODO: Or separate Toggler specific settings panel from the general
-        //  settings panel.
-        remoteRobot.find(JCheckboxFixture.class,
-            byXpath("//div[@class='JCheckBox']"), Duration.ofSeconds(10));
+    public void waitUntilTogglerSettingsPanelIsVisible() {
+        waitForIgnoringError(Duration.ofSeconds(10), ofSeconds(2),
+            "Wait till Toggler settings panel is visible",
+            "Toggler settings panel is not visible",
+            this::isTogglerSettingsPanelVisible);
     }
 
     public JTextFieldFixture searchBar() {
