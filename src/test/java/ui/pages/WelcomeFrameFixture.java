@@ -30,10 +30,12 @@ public class WelcomeFrameFixture extends CommonContainerFixture {
      * Opens the new project dialog upon clicking.
      */
     public ComponentFixture openNewProjectDialogButton() {
+        // Visible if recent projects pane is empty.
         if (hasAnyComponent(remoteRobot, byXpath("//div[@text='Welcome to IntelliJ IDEA']"))) {
             return remoteRobot.find(ComponentFixture.class,
                 byXpath("//div[@defaulticon='createNewProjectTab.svg']"));
         }
+        // Visible if recent projects pane is not empty.
         return remoteRobot.find(ComponentFixture.class,
             byXpath("//div[@visible_text='New Project']"));
     }
