@@ -91,9 +91,18 @@ public class SettingsFrameFixture extends CommonContainerFixture {
             byXpath("//div[@text='Export']"));
     }
 
-    public JButtonFixture resetToDefaultButton() {
+    public JButtonFixture resetToDefaultOpenDialogButton() {
         return remoteRobot.find(JButtonFixture.class,
             byXpath("//div[@text='Reset to Defaults']"));
     }
-    // TODO: Add "Reset to Default" confirmation dialog fixtures.
+
+    public JButtonFixture resetToDefaultDialogYesButton() {
+        return remoteRobot.find(JButtonFixture.class,
+            byXpath("//div[@text='Yes']"), Duration.ofSeconds(5));
+    }
+
+    public JButtonFixture resetToDefaultDialogNoButton() {
+        return remoteRobot.find(JButtonFixture.class,
+            byXpath("//div[@text='No']"), Duration.ofSeconds(5));
+    }
 }

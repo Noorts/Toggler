@@ -74,6 +74,14 @@ public class CommonSteps {
         return settingsFrame;
     }
 
+    public void resetTogglerSettings() {
+        SettingsFrameFixture settingsFrame =
+            openTogglerSettings();
+        settingsFrame.resetToDefaultOpenDialogButton().click();
+        settingsFrame.resetToDefaultDialogYesButton().click();
+        settingsFrame.okButton().click();
+    }
+
     public void triggerToggleAction() {
         commonSteps.invokeAction("ToggleAction");
     }
