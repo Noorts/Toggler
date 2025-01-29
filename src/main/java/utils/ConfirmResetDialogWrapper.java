@@ -16,7 +16,8 @@ import java.awt.*;
  */
 public class ConfirmResetDialogWrapper extends DialogWrapper {
     private static final String TITLE = "Confirm Reset";
-    private static final String LABEL_TEXT = "<html>Are you sure you want to reset the toggles to the defaults?</html>";
+    private static final String LABEL_TEXT = "<html>Are you sure you want to " +
+        "reset the settings and toggles to the defaults?</html>";
 
     public ConfirmResetDialogWrapper() {
         super(true);
