@@ -4,6 +4,7 @@ import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.Fixture;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import com.intellij.remoterobot.utils.Keyboard;
+import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
 import ui.pages.NotificationFixture;
 import ui.pages.SettingsFrameFixture;
 import ui.pages.WelcomeFrameFixture;
@@ -91,7 +92,31 @@ public class CommonSteps {
         commonSteps.invokeAction("ToggleActionReverse");
     }
 
+    /**
+     * Returns one of the currently active notifications. If none are active,
+     * returns null.
+     */
     public NotificationFixture getNotification() {
-        return remoteRobot.find(NotificationFixture.class, Duration.ofSeconds(10));
+        try {
+            return remoteRobot.find(
+                NotificationFixture.class, Duration.ofSeconds(5));
+        } catch (WaitForConditionTimeoutException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Close all currently open notifications one by one.
+     */
+    public void closeNotifications() {
+        NotificationFixture fixture = getNotification();
+        while (fixture != null) {
+            // TODO: Potential race condition between finding the
+            //  notification and clicking to close it. It might've already
+            //  been closed by the notification time out.
+            fixture.closeNotification();
+            fixture = getNotification();
+        }
+        ;
     }
 }

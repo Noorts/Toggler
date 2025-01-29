@@ -8,7 +8,7 @@ import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 
 @FixtureName(name = "Notification")
 @DefaultXpath(by = "NotificationCenter type",
-    xpath = "//div[@class='NotificationCenterPanel']")
+    xpath = "//div[@javaclass='com.intellij.ui.BalloonImpl$MyComponent']")
 public class NotificationFixture extends CommonContainerFixture {
     RemoteRobot remoteRobot;
 
@@ -30,5 +30,12 @@ public class NotificationFixture extends CommonContainerFixture {
         return remoteRobot.find(ComponentFixture.class,
                 byXpath("//div[@class='NotificationCenterPanel']//div[@class='JEditorPane']"))
             .callJs("component.getText() || \"\"", true);
+    }
+
+    public void closeNotification() {
+        // TODO: Use child based find instead. See: `this.button(locator)`.
+        //  Apply this child based approach to all custom fixtures.
+        this.remoteRobot.find(JButtonFixture.class, byXpath("//div" +
+            "[@myhovericon='closeHover.svg']")).click();
     }
 }
