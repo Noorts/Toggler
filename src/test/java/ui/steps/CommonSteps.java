@@ -4,6 +4,7 @@ import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.Fixture;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import com.intellij.remoterobot.utils.Keyboard;
+import ui.pages.NotificationFixture;
 import ui.pages.SettingsFrameFixture;
 import ui.pages.WelcomeFrameFixture;
 
@@ -88,5 +89,9 @@ public class CommonSteps {
 
     public void triggerToggleActionReverse() {
         commonSteps.invokeAction("ToggleActionReverse");
+    }
+
+    public NotificationFixture getNotification() {
+        return remoteRobot.find(NotificationFixture.class, Duration.ofSeconds(10));
     }
 }
