@@ -116,48 +116,52 @@ tasks {
       <br><br>
       Did you find a bug or do you have a feature request? Feel free to open an issue on <a href="https://github.com/Noorts/Toggler/issues">GitHub</a>.
 
-      <br>
-      <h3>Features</h3>
+      <h3>Usage</h3>
+      Select or place your cursor on a word and press:
       <ul>
-      <li>Customizable through the settings menu.</li>
-      <li>Support for multiple cursors.</li>
-      <li>Support for numerous toggles.</li>
-      <li>Support for partial matches.</li>
-      <li>Limited support for transferring word case.</li>
-      <li>Easy importing and exporting of the JSON configuration.</li>
-      <li>No external dependencies required.</li>
+      <li><kbd>Ctrl + Shift + X</kbd> (Windows and Linux)</li>
+      <li><kbd>Cmd + Shift + X</kbd> (macOS)</li>
       </ul>
 
-      <h3>Usage</h3>
-      Select or place your cursor on a word/symbol and press the hotkey
-      (by default <kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on macOS) to
-      toggle the word/symbol to the next toggle defined in the configuration file (wrapping around when it reaches the end).
-      The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
-      The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
+      If the word matches one of the configured word combinations / toggles, then it will be replaced with the next configured word.
+
       <br><br>
-      The normal action toggles forward (e.g., 1, 2, 3, 1). A reverse toggle action can be used to toggle backwards (e.g., 1, 3, 2, 1).
-      By default it is mapped to <kbd>Ctrl+Shift+Alt+X</kbd> on Windows and <kbd>Cmd+Shift+Opt+X</kbd> on macOS.
-      <br><br>
-      The partial matching functionality allows for substrings of words/symbols to be toggled. E.g. <code>getName</code> could be
-      toggled to <code>setName</code> by placing the cursor anywhere on <code>get</code> and then activating the toggle action.
-      The largest match found is prioritised. This means that if you have the following toggles configured <code>["dev", "prod"],
-      ["development", "production"]</code> and toggle <code>development</code>, then it will be replaced with <code>production</code>. The partial
-      matching functionality can be bypassed by using your cursor to create a precise selection of the sub word/symbol you
-      want to toggle. The partial matching functionality (which is enabled by default) can also be disabled completely in
-      the configuration menu.
+      <code>
+      true -> false<br>
+      !== -> ===<br>
+      && -> ||<br>
+      left -> right<br>
+      LEFT -> RIGHT<br>
+      addClass -> removeClass<br>
+      </code>
+      <br>
+
+      See the "Advanced Usage" section below for more details.
 
       <h3>Configuration</h3>
-      You can configure the toggles in your IDE by going to <kbd>Settings/Preferences -> Tools -> Toggler</kbd>.
+      Configure the word combinations / toggles and other Toggler settings by going to <kbd>Settings/Preferences -> Tools -> Toggler</kbd> in your IDE.
       <br><br>
-      Toggles can be added and removed by modifying the JSON inside the configuration menu and subsequently
-      pressing the <code>Apply</code> button. The <code>Import</code>, <code>Export</code> and <code>Reset to Defaults</code> buttons have been added for convenience.
+      The toggle hotkey / keybind can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
       <br><br>
-      The following <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11">boundary characters</a>
-      are used for word/symbol selection internally and thus can't be used inside the toggles
-      <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}', '\t'</code>.
+      Word combinations / toggles can be added and removed by modifying the JSON-like configuration and subsequently pressing the <code>Apply</code> button. The <code>Import</code>, <code>Export</code>, and <code>Reset to Defaults</code> buttons have been added for convenience.
+      <br><br>
+      Toggler has a custom mechanism for distinguishing / separating words from each other. Because of that the following <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11">boundary characters</a> can't be used inside the toggles <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}', '\t'</code>.
       <br><br>
       Default <a href="https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22">toggles</a>
       are included with every fresh installment.
+
+      <h3>Advanced Usage</h3>
+      The configured toggles "wrap around", which means that if <code>["true", "false"]</code> is configured, then continually toggling will lead to <code>true -> false -> true -> ...</code>.
+      <br><br>
+      Word combinations / toggles can contain "any" number of words. Thus, <code>["public", "private", "protected"]</code> is also supported.
+      <br><br>
+      The normal toggle action discussed thus far toggles (i.e., replaces) forward (e.g., 1, 2, 3, 1, ...). Use the reverse toggle action to toggle backwards (e.g., 1, 3, 2, 1, ...). It uses the same keybind as above, but in addition make sure to also hold the <kbd>Alt</kbd> (Windows and Linux) or <kbd>Opt</kbd> (Linux) key.
+      <br><br>
+      Toggler supports toggling with multiple cursors (also known as carets) at the same time.
+      <br><br>
+      Toggler has limited support for transferring word case. It supports, full caps (<code>TRUE -> FALSE</code>) and first letter capitalized (<code>True -> False</code>). It defaults back to lowercase in all other cases (<code>true -> false</code>).
+      <br><br>
+      The partial matching functionality allows for substrings of words to be toggled. For example, <code>getName</code> can be toggled to <code>setName</code> by placing the cursor anywhere on <code>get</code> and then toggling. The largest match found is prioritised. This means that if you have the following toggles configured <code>["dev", "prod"] and ["development", "production"]</code>, and toggle <code>development</code>, then it will be replaced by <code>production</code>. The partial matching functionality can be bypassed by using your cursor to create a precise selection of the sub word you want to toggle (for example making a selection of <code>dev</code> and then toggling). The partial matching functionality is enabled by default and can be disabled in the configuration menu.
 
       <h3>Roadmap</h3>
       The roadmap can be found on the <a href="https://github.com/users/Noorts/projects/2">Toggler board</a>.
@@ -168,15 +172,19 @@ tasks {
       <h3>Alternatives</h3>
       If you're looking for more text manipulation features,
       then check out <a href="https://plugins.jetbrains.com/plugin/6149-shifter">Shifter</a>.
-      Which also includes a dictionary (with custom symbols/words) just like Toggler
+      Which also includes a dictionary (with custom words) just like Toggler
       and includes many other nice features.
-      </ul>
 
       <h3>Acknowledgements</h3>
-      This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a> his
-      original versions of toggle plugins/extensions
-      for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a>
-      and <a href="https://atom.io/packages/toggler">Atom</a>.
+      This plugin has drawn inspiration from similar toggle plugins / extensions.
+      <ul>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a> (by <a href="https://github.com/HiDeoo">HiDeoo</a>)</li>
+      <li><a href="https://atom.io/packages/toggler">Atom</a> (by <a href="https://github.com/HiDeoo">HiDeoo</a>)</li>
+      <li><a href="https://github.com/gordio/ToggleWords">Sublime Text 4</a> (by <a href="https://github.com/gordio">gordio</a>)</li>
+      </ul>
+
+      <h3>License</h3>
+      Toggler is licensed under the <a href="https://github.com/Noorts/Toggler/blob/master/LICENSE.md">MIT license</a>.
       """)
 
         changeNotes.set("""
