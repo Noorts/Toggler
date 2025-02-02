@@ -28,7 +28,7 @@ dependencies {
     // UI Tests - Remote Robot
     testImplementation("com.intellij.remoterobot:remote-robot:$remoteRobotVersion")
     testImplementation("com.intellij.remoterobot:remote-fixtures:$remoteRobotVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.4")
 
