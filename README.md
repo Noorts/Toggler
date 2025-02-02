@@ -6,7 +6,7 @@
   <br>
 </h1>
 <h4 align="center">
-  Toggler is a JetBrains IDE Plugin that allows you to quickly toggle words and symbols with a hotkey.<br>
+  A JetBrains IDE plugin that allows you to quickly toggle words with a hotkey.<br>
   Toggles can be configured from the settings menu.
 </h4>
 <p align="center">
@@ -15,9 +15,8 @@
   <a href="https://plugins.jetbrains.com/plugin/16166-toggler"><img src="https://img.shields.io/jetbrains/plugin/v/16166" alt="Plugin version"></a>
 </p>
 <p align="center">
-  <a href="#features">Features</a> •
-  <a href="#usage">Usage</a> •
   <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#roadmap">Roadmap</a> •
   <a href="#contribute">Contribute</a> •
@@ -33,50 +32,57 @@ Do you really like Toggler? Consider giving a star on [GitHub](https://github.co
 
 Did you find a bug or do you have a feature request? Feel free to open an issue on [GitHub](https://github.com/Noorts/Toggler/issues).
 
-## Features
-- Customizable through the settings menu.
-- Support for multiple cursors.
-- Support for numerous toggles.
-- Support for partial matches.
-- Limited support for transferring word case.
-- Easy importing and exporting of the JSON configuration.
-- No external dependencies required.
+## Installation
+- (Recommended) Install directly from the plugin marketplace in your JetBrains IDE.
+  - Go to <kbd>Settings/Preferences -> Plugins -> Marketplace -> Search for "Toggler" -> Install Plugin</kbd>.
+- Install manually
+  - from the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
+  - from GitHub. Download the jar from a GitHub [release](https://github.com/Noorts/Toggler/releases).
+  Then go to the <kbd>Settings/Preferences -> Plugins -> Press the ⚙️ (in the top right) -> Choose "Install Plugin from Disk..."</kbd>.
+  - Download this repo, build the plugin and install it manually. Also see the ["Contribute"](#contribute) section.
 
 ## Usage
-Select or place your cursor on a word/symbol and press the hotkey
-(by default <kbd>Ctrl+Shift+X</kbd> on Windows or <kbd>Cmd+Shift+X</kbd> on macOS) to
-toggle the word/symbol to the next toggle defined in the configuration file (wrapping around when it reaches the end).
-The shortcut can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
-The toggle action can also be found as <kbd>Toggle Word/Symbol</kbd> in the <kbd>Edit</kbd> menu.
+Select or place your cursor on a word and press:
+- <kbd>Ctrl + Shift + X</kbd> (Windows and Linux)
+- <kbd>Cmd + Shift + X</kbd> (macOS)
 
-The normal action toggles forward (e.g., 1, 2, 3, 1). A reverse toggle action can be used to toggle backwards
-(e.g., 1, 3, 2, 1). By default it is mapped to <kbd>Ctrl+Shift+Alt+X</kbd> on Windows and <kbd>Cmd+Shift+Opt+X</kbd> on macOS.
+If the word matches one of the configured word combinations / toggles, then it will be replaced with the next configured word.
 
-The partial matching functionality allows for substrings of words/symbols to be toggled. E.g. `getName` could be
-toggled to `setName` by placing the cursor anywhere on `get` and then activating the toggle action.
-The largest match found is prioritised. This means that if you have the following toggles configured `["dev", "prod"],
-["development", "production"]` and toggle `development`, then it will be replaced with `production`. The partial
-matching functionality can be bypassed by using your cursor to create a precise selection of the sub word/symbol you
-want to toggle. The partial matching functionality (which is enabled by default) can also be disabled completely in
-the configuration menu.
+```
+    true -> false
+     !== -> ===
+      && -> ||
+    left -> right
+    LEFT -> RIGHT
+addClass -> removeClass
+```
 
-## Installation
-There are four ways to install Toggler:
-- Install from the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/16166-toggler).
-- Install directly from the plugin marketplace in your JetBrains product. Go to <kbd>Settings/Preferences -> Plugins -> Marketplace -> Search for "Toggler" -> Install Plugin</kbd>.
-- Download the jar from a GitHub [release](https://github.com/Noorts/Toggler/releases) and install manually.
-  Go to the <kbd>Settings/Preferences -> Plugins -> Press the ⚙️ (in the top right) -> Choose "Install Plugin from Disk..."</kbd>.
-- Download this repo, build the plugin and install it manually. Also see the [contribute](#contribute) section.
+See the ["Configuration"](#configuration) section below to learn more about the standard word combinations / toggles and how to configure them.
+
+### Advanced Usage
+The configured toggles "wrap around", which means that if `["true", "false"]` is configured, then continually toggling will lead to `true -> false -> true -> ...`.
+
+Word combinations / toggles can contain "any" number of words. Thus, `["public", "private", "protected"]` is also supported.
+
+The normal toggle action discussed thus far toggles (i.e., replaces) forward (e.g., 1, 2, 3, 1, ...). Use the reverse toggle action to toggle backwards (e.g., 1, 3, 2, 1, ...). It uses the same keybind as above, but in addition make sure to also hold the <kbd>Alt</kbd> (Windows and Linux) or <kbd>Opt</kbd> (Linux) key.
+
+Toggler supports toggling with multiple cursors (also known as carets) at the same time.
+
+Toggler has limited support for transferring word case. It supports, full caps (`TRUE -> FALSE`) and first letter capitalized (`True -> False`). It defaults back to lowercase in all other cases (`true -> false`).
+
+The partial matching functionality allows for substrings of words to be toggled. For example, `getName` can be toggled to `setName` by placing the cursor anywhere on `get` and then toggling. The largest match found is prioritised. This means that if you have the following toggles configured `["dev", "prod"] and ["development", "production"]`, and toggle `development`, then it will be replaced by `production`. The partial matching functionality can be bypassed by using your cursor to create a precise selection of the sub word you want to toggle (for example making a selection of `dev` and then toggling). The partial matching functionality is enabled by default and can be disabled in the configuration menu.
 
 ## Configuration
-You can configure the toggles in your IDE by going to <kbd>Settings/Preferences -> Tools -> Toggler</kbd>.
+Configure the word combinations / toggles and other Toggler settings by going to <kbd>Settings/Preferences -> Tools -> Toggler</kbd> in your IDE.
+
+The toggle hotkey / keybind can be changed from <kbd>Settings/Preferences -> Keymap -> Plug-ins -> Toggler</kbd>.
+
 <img src="TogglerConfigurationMenu.png" alt="The Toggler Configuration Menu">
 
-Toggles can be added and removed by modifying the JSON inside the configuration menu and subsequently
-pressing the `Apply` button. The `Import`, `Export` and `Reset to Defaults` buttons have been added for convenience.
+Word combinations / toggles can be added and removed by modifying the JSON-like configuration and subsequently pressing the `Apply` button. The `Import`, `Export` and `Reset to Defaults` buttons have been added for convenience.
 
-The following [boundary characters](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11)
-are used for word/symbol selection internally and thus can't be used inside the toggles
+Toggler has a custom mechanism for distinguishing / separating words from each other. Because of that the following [boundary characters](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L11)
+can't be used inside the toggles
 <code>' ', ';', ':', '.', ',', '`', '"', ''', '(', ')', '[', ']', '{', '}', '\t'</code>.
 
 The [toggles](https://github.com/Noorts/Toggler/blob/master/src/main/java/core/Config.java#L22) displayed below
@@ -161,13 +167,13 @@ plugin is still compatible with the IDE build range configured in `gradle.proper
 from your fork to the [Noorts/Toggler](https://github.com/Noorts/Toggler) repository.
 
 ## Alternatives
-- If you're looking for more text manipulation features, then check out [Shifter](https://plugins.jetbrains.com/plugin/6149-shifter). Which also includes a dictionary (with custom symbols/words) just like Toggler and includes many other nice features.
+- If you're looking for more text manipulation features, then check out [Shifter](https://plugins.jetbrains.com/plugin/6149-shifter). Which also includes a dictionary (with custom words) just like Toggler and includes many other nice features.
 
 ## Acknowledgements
-This plugin has drawn a lot of inspiration from <a href="https://github.com/HiDeoo">HiDeoo</a>'s
-original versions of toggle plugins/extensions
-for <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a>
-and <a href="https://atom.io/packages/toggler">Atom</a>.
+This plugin has drawn inspiration from similar toggle plugins/extensions.
+- <a href="https://marketplace.visualstudio.com/items?itemName=hideoo.toggler">VSCode</a> (by <a href="https://github.com/HiDeoo">HiDeoo</a>)
+- <a href="https://atom.io/packages/toggler">Atom</a> (by <a href="https://github.com/HiDeoo">HiDeoo</a>)
+- <a href="https://github.com/gordio/ToggleWords">Sublime Text 4</a> (by <a href="https://github.com/gordio">gordio</a>)
 
 ## License
 Toggler is licensed under the [MIT license](LICENSE.md).
