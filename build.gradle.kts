@@ -191,6 +191,14 @@ tasks {
       For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
       <br><br>
 
+      [1.5.0] - 2025-02-02
+      <ul>
+      <li>Enhanced "no match found" notification with direct link to settings panel.</li>
+      <li>Slightly reworked notifications.</li>
+      <li>Increased clarity of settings panel button tooltips.</li>
+      <li>Reworked plugin description.</li>
+      </ul><br>
+
       [1.4.1] - 2024-12-01
       <ul>
       <li>Addressed a deprecation. See: <a href="https://github.com/Noorts/Toggler/issues/80">#80</a>.</li>
