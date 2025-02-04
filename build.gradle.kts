@@ -1,3 +1,5 @@
+import org.jetbrains.changelog.Changelog
+
 fun properties(key: String) = project.findProperty(key).toString()
 
 // https://github.com/JetBrains/gradle-intellij-plugin
@@ -5,6 +7,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.10"
     id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.changelog") version "2.2.1"
 }
 
 group = properties("pluginGroup")
@@ -187,12 +190,27 @@ tasks {
       Toggler is licensed under the <a href="https://github.com/Noorts/Toggler/blob/master/LICENSE.md">MIT license</a>.
       """)
 
-        changeNotes.set("""
-      For all changes check out: <a href="https://github.com/Noorts/Toggler/commits">https://github.com/Noorts/Toggler/commits</a>
-      <br><br>
+        val changelog = project.changelog // local variable for configuration cache compatibility
+        // Get the latest available change notes from the changelog file
+        changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
+            val changelogContent = with(changelog) {
+                renderItem(
+                    (getOrNull(pluginVersion) ?: getUnreleased())
+                        .withHeader(true)
+                        .withEmptySections(false),
+                    Changelog.OutputType.HTML,
+                )
+            }
 
-      Empty
+            "$changelogContent<br><br>" +
+                    "<h2>Other Versions</h2>" +
+                    "For all other versions, check out the " +
+                    "<a href=\"https://github.com/Noorts/Toggler/blob/master/CHANGELOG.md\">changelog</a>."
+        }
+    }
 
-      """)
+    // https://github.com/JetBrains/gradle-changelog-plugin?tab=readme-ov-file#configuration
+    changelog {
+
     }
 }
