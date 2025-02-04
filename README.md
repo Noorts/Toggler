@@ -19,6 +19,7 @@
   <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#roadmap">Roadmap</a> •
+  <a href="#versions">Versions</a> •
   <a href="#contribute">Contribute</a> •
   <a href="#alternatives">Alternatives</a> •
   <a href="#acknowledgements">Acknowledgements</a> •
@@ -143,6 +144,9 @@ are the default ones included with every fresh installment.
 
 ## Roadmap
 The roadmap can be found on the [Toggler board](https://github.com/users/Noorts/projects/2).
+
+## Versions
+See the [changelog](https://github.com/Noorts/Toggler/blob/master/CHANGELOG.md) for an overview of the plugin's versions. Check out the [GitHub releases](https://github.com/Noorts/Toggler/releases) for plugin artifacts and the related source code.
 
 ## Contribute
 1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and
