@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.utils.StepsLogger;
 
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
@@ -24,6 +25,8 @@ import static java.time.Duration.ofSeconds;
 import static org.assertj.swing.timing.Pause.pause;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ui.utils.KeyboardUtils.enterKeycodeSequence;
+import static ui.utils.KeyboardUtils.repeatKeycodeNTimes;
 
 public class ToggleUITest {
     private final RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
@@ -157,6 +160,73 @@ public class ToggleUITest {
 
         step("PM OFF: Invalid toggle triggers notification", () -> {
             editor.getEditor().findText("addClass").click();
+            commonSteps.triggerToggleAction();
+
+            NotificationFixture notification = commonSteps.getNotification();
+            assertTrue(notification != null &&
+                notification.getDescriptionText().contains("No match"));
+        });
+    }
+
+    @Test
+    @Video
+    void testTogglesConfiguration() {
+        final IdeaFrameFixture idea = remoteRobot.find(IdeaFrameFixture.class);
+        final TextEditorFixture editor = idea.textEditor(ofSeconds(5));
+
+        final String newCombination = "[\"Foo\", \"Bar\"]";
+
+        // Set editor text to "Foo"
+        step("Set editor text to 'Foo'", () -> {
+            // This overwrites the current editor's content.
+            editor.getEditor().setText("Foo");
+            pause(ofSeconds(1).toMillis());
+        });
+
+        // Toggle and confirm that notification shows up
+        step("PM OFF: Invalid toggle triggers notification", () -> {
+            editor.getEditor().findText("Foo").click();
+            commonSteps.triggerToggleAction();
+
+            NotificationFixture notification = commonSteps.getNotification();
+            assertTrue(notification != null &&
+                notification.getDescriptionText().contains("No match"));
+        });
+
+        step("Add [\"Foo\", \"Bar\"] toggle to configured toggles", () -> {
+            SettingsFrameFixture settingsFrame =
+                commonSteps.openTogglerSettings();
+            settingsFrame.togglesTextArea().click();
+            keyboard.selectAll();
+            enterKeycodeSequence(keyboard,
+                KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, KeyEvent.VK_LEFT, KeyEvent.VK_COMMA, // Move to last row, add comma
+                KeyEvent.VK_ENTER, KeyEvent.VK_TAB); // Create new row
+            keyboard.enterText(newCombination);
+            settingsFrame.okButton().click();
+        });
+
+        step("Toggle and verify toggle from 'Foo' to 'Bar'",
+            () -> {
+                editor.getEditor().findText("Foo").click();
+                commonSteps.triggerToggleAction();
+                assertEquals("Bar", editor.getEditor().getText());
+                commonSteps.triggerToggleAction();
+                assertEquals("Foo", editor.getEditor().getText());
+            });
+
+        step("Remove [\"Foo\", \"Bar\"] toggle from configured toggles", () -> {
+            SettingsFrameFixture settingsFrame =
+                commonSteps.openTogglerSettings();
+            settingsFrame.togglesTextArea().click();
+            keyboard.selectAll();
+            enterKeycodeSequence(keyboard, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, KeyEvent.VK_LEFT);
+            repeatKeycodeNTimes(keyboard, KeyEvent.VK_BACK_SPACE, newCombination.length()); // Delete new combination.
+            repeatKeycodeNTimes(keyboard, KeyEvent.VK_BACK_SPACE, 3); // Delete up tab, line, comma
+            settingsFrame.okButton().click();
+        });
+
+        step("Invalid toggle triggers notification", () -> {
+            editor.getEditor().findText("Foo").click();
             commonSteps.triggerToggleAction();
 
             NotificationFixture notification = commonSteps.getNotification();
