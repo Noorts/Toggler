@@ -37,16 +37,10 @@ public class ToggleAction extends AnAction {
 
     @Override
     public void update(@NotNull final AnActionEvent e) {
-        final Project project = e.getProject();
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
+        boolean caretsInEditorIsOneOrMore = editor != null && editor.getCaretModel().getCaretCount() >= 1;
 
-        // Make sure at least one caret is available.
-        boolean menuAllowed = false;
-        if (editor != null && project != null) {
-            // Ensure the list of carets in the editor is not empty.
-            menuAllowed = !editor.getCaretModel().getAllCarets().isEmpty();
-        }
-        e.getPresentation().setEnabledAndVisible(menuAllowed);
+        e.getPresentation().setEnabledAndVisible(caretsInEditorIsOneOrMore);
     }
 
     @Override
