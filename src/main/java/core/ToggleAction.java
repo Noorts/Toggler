@@ -21,15 +21,15 @@ public class ToggleAction extends AnAction {
     private Document document;
 
     // Default is to toggle to the next word/symbol in the toggle sequence.
-    private boolean isReverseToggleAction = false;
+    private boolean toggleForward = true;
     private boolean partialMatchingIsEnabled = true;
 
     private String regexPatternOfToggles;
 
     public ToggleAction() {}
 
-    public ToggleAction(boolean isReverseToggleAction) {
-        this.isReverseToggleAction = isReverseToggleAction;
+    public ToggleAction(boolean toggleForward) {
+        this.toggleForward = toggleForward;
     }
 
     @Override
@@ -147,7 +147,7 @@ public class ToggleAction extends AnAction {
         // If a match was found then toggle it, else display a notification.
         if (!positionOfMatch.isEmpty()) {
             String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
-            String replacementToggle = findNextToggleInToggles(match, this.isReverseToggleAction);
+            String replacementToggle = findReplacementWord(match, this.toggleForward);
 
             /* The replacementToggle should never be null in this case, because
              * if no match was found then the positionOfMatch would be null.
@@ -252,22 +252,19 @@ public class ToggleAction extends AnAction {
      * toggles. The provided word/symbol is searched for in the toggles
      * configured in the plugin settings and the next or previous one in the
      * sequence is returned. Whether the next or previous toggle in the sequence
-     * is returned depends on the isReverseToggleAction parameter. The settings
-     * can be found under Settings/Preferences -> Tools -> Toggler.
+     * is returned depends on the toggleForward parameter.
      *
-     * @param keyword The word/symbol to be replaced.
-     * @param isReverseToggleAction Determines whether the next or previous
-     *                              toggle in the sequence is returned. false →
-     *                              next, true → previous.
-     * @return The next word/symbol in the sequence which the provided
+     * @param word The word/symbol to be replaced.
+     * @param toggleForward Determines whether the next or previous toggle in the sequence is returned.
+     * @return The next/previous word/symbol in the sequence that the provided
      * word/symbol is part of. Null is returned if the provided word couldn't be
      * found in the config.
      */
-    private String findNextToggleInToggles(String keyword, boolean isReverseToggleAction) {
+    private String findReplacementWord(String word, boolean toggleForward) {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
 
-        String wordInLowerCase = keyword.toLowerCase();
+        String wordInLowerCase = word.toLowerCase();
 
         /* O(n) search for the word/symbol to replace. */
         for (int i = 0; i < toggleWordsStructure.size(); i++) {
@@ -278,9 +275,9 @@ public class ToggleAction extends AnAction {
                        is reached. */
                     int sequenceSize = toggleWordsStructure.get(i).size();
                     return toggleWordsStructure.get(i).get(
-                            isReverseToggleAction
-                                    ? (j - 1 + sequenceSize) % sequenceSize // Previous
-                                    : (j + 1) % sequenceSize // Next
+                            toggleForward
+                                    ? (j + 1) % sequenceSize // Next
+                                    : (j - 1 + sequenceSize) % sequenceSize // Previous
                             );
                 }
             }
