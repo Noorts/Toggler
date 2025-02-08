@@ -22,6 +22,8 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 import static java.time.Duration.ofSeconds;
 import static org.assertj.swing.timing.Pause.pause;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ToggleUITest {
     private final RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
@@ -75,12 +77,12 @@ public class ToggleUITest {
         step("Toggle and verify that True was toggled to False", () -> {
             editor.getEditor().findText("True").click();
             commonSteps.triggerToggleAction();
-            assert (editor.getEditor().getText().equals("False"));
+            assertEquals("False", editor.getEditor().getText());
         });
 
         step("Toggle and verify that False was toggled back to True", () -> {
             commonSteps.triggerToggleAction();
-            assert (editor.getEditor().getText().equals("True"));
+            assertEquals("True", editor.getEditor().getText());
         });
     }
 
@@ -94,7 +96,7 @@ public class ToggleUITest {
             "a 'no match' notification was displayed", () -> {
             editor.getEditor().findText("void").click();
             commonSteps.triggerToggleAction();
-            assert (commonSteps.getNotification()
+            assertTrue(commonSteps.getNotification()
                 .getDescriptionText().contains("No match"));
         });
     }
@@ -112,7 +114,7 @@ public class ToggleUITest {
             pause(ofSeconds(1).toMillis());
             commonSteps.triggerToggleAction();
             NotificationFixture notification = commonSteps.getNotification();
-            assert (notification != null &&
+            assertTrue(notification != null &&
                 notification.getDescriptionText()
                     .contains("No text could be selected"));
         });
@@ -127,7 +129,7 @@ public class ToggleUITest {
         step("Verify that partial matching is on", () -> {
             SettingsFrameFixture settingsFrame =
                 commonSteps.openTogglerSettings();
-            assert (settingsFrame.partialMatchingCheckbox().isSelected());
+            assertTrue(settingsFrame.partialMatchingCheckbox().isSelected());
             settingsFrame.okButton().click();
         });
 
@@ -141,9 +143,9 @@ public class ToggleUITest {
             () -> {
                 editor.getEditor().findText("addClass").click();
                 commonSteps.triggerToggleAction();
-                assert (editor.getEditor().getText().equals("removeClass"));
+                assertEquals("removeClass", editor.getEditor().getText());
                 commonSteps.triggerToggleAction();
-                assert (editor.getEditor().getText().equals("addClass"));
+                assertEquals("addClass", editor.getEditor().getText());
             });
 
         step("Turn off partial matching", () -> {
@@ -158,7 +160,7 @@ public class ToggleUITest {
             commonSteps.triggerToggleAction();
 
             NotificationFixture notification = commonSteps.getNotification();
-            assert (notification != null &&
+            assertTrue(notification != null &&
                 notification.getDescriptionText().contains("No match"));
         });
     }
