@@ -7,7 +7,6 @@ import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
 import org.junit.jupiter.api.BeforeAll;
 import ui.pages.IdeaFrameFixture;
-import ui.pages.NotificationFixture;
 import ui.pages.SettingsFrameFixture;
 import ui.steps.CommonSteps;
 import org.junit.jupiter.api.AfterEach;
@@ -99,8 +98,8 @@ public class ToggleUITest {
             "a 'no match' notification was displayed", () -> {
             editor.getEditor().findText("void").click();
             commonSteps.triggerToggleAction();
-            assertTrue(commonSteps.getNotification()
-                .getDescriptionText().contains("No match"));
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
     }
 
@@ -116,10 +115,8 @@ public class ToggleUITest {
             editor.getEditor().clickOnOffset(0, MouseButton.LEFT_BUTTON, 1);
             pause(ofSeconds(1).toMillis());
             commonSteps.triggerToggleAction();
-            NotificationFixture notification = commonSteps.getNotification();
-            assertTrue(notification != null &&
-                notification.getDescriptionText()
-                    .contains("No text could be selected"));
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No text could be selected");
         });
     }
 
@@ -162,9 +159,7 @@ public class ToggleUITest {
             editor.getEditor().findText("addClass").click();
             commonSteps.triggerToggleAction();
 
-            NotificationFixture notification = commonSteps.getNotification();
-            assertTrue(notification != null &&
-                notification.getDescriptionText().contains("No match"));
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
     }
 
@@ -188,9 +183,7 @@ public class ToggleUITest {
             editor.getEditor().findText("Foo").click();
             commonSteps.triggerToggleAction();
 
-            NotificationFixture notification = commonSteps.getNotification();
-            assertTrue(notification != null &&
-                notification.getDescriptionText().contains("No match"));
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
 
         step("Add [\"Foo\", \"Bar\"] toggle to configured toggles", () -> {
@@ -229,9 +222,7 @@ public class ToggleUITest {
             editor.getEditor().findText("Foo").click();
             commonSteps.triggerToggleAction();
 
-            NotificationFixture notification = commonSteps.getNotification();
-            assertTrue(notification != null &&
-                notification.getDescriptionText().contains("No match"));
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
     }
 }
