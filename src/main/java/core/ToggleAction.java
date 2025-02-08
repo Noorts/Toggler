@@ -190,14 +190,9 @@ public class ToggleAction extends AnAction {
      * by expanding the selection towards both the left and right side until a
      * boundary character or the beginning or end of the line is found.
      * <p>
-     * Boundary characters are hardcoded characters such as ; and ". Check the
-     * method's implementation for more details.
-     * <p>
      * This method will expand outwards from the cursor position of the caret.
      * If a selection has already been made, then that won't be taken into
      * account.
-     *
-     * @param caret    The caret to perform the toggle for.
      */
     private void expandCaretSelection(Caret caret) {
         int currentColumnLeftSide = caret.getLogicalPosition().column;
@@ -227,14 +222,15 @@ public class ToggleAction extends AnAction {
          * location. */
         try {
             /* Text expansion by extending the left side and then the right side. */
-            while ((currentColumnLeftSide > 0) &&
-                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS.toArray()).indexOf(
-                            textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
+            while (0 < currentColumnLeftSide &&
+                !Constants.BOUNDARY_CHARS.contains(textOnCurrentLine.charAt(currentColumnLeftSide - 1)))
+            {
                 currentColumnLeftSide--;
             }
-            while ((currentColumnRightSide < textOnCurrentLine.length()) &&
-                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS.toArray()).indexOf(
-                            textOnCurrentLine.charAt(currentColumnRightSide)))) {
+
+            while (currentColumnRightSide < textOnCurrentLine.length() &&
+                !Constants.BOUNDARY_CHARS.contains(textOnCurrentLine.charAt(currentColumnRightSide)))
+            {
                 currentColumnRightSide++;
             }
         } catch (StringIndexOutOfBoundsException ignored) {}

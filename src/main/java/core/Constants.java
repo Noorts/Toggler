@@ -1,6 +1,6 @@
 package core;
 
-import java.util.List;
+import java.util.Set;
 
 public class Constants {
     private Constants() {
@@ -11,8 +11,8 @@ public class Constants {
      * Characters used to indicate a word's boundaries on the left and right side.
      * The beginning and end of the line the caret is on also function as boundaries.
      */
-    public static final List<Character> BOUNDARY_CHARS =
-        List.of(' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t');
+    public static final Set<Character> BOUNDARY_CHARS =
+        Set.of(' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t');
 
     /**
      * Toggler's default collection of word combinations / toggles.
