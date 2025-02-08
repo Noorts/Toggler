@@ -1,74 +1,77 @@
 package core;
 
+import java.util.List;
+
 public class Constants {
-    /**
-     * The characters that indicate a word/symbol's boundaries. Used for the
-     * left and right side. The beginning and end of the line the caret is on
-     * also function as boundaries.
-     */
-    public static final Character[] BOUNDARY_CHARS =
-            {' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t'};
+    private Constants() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
-     * Toggler's default collection of toggles. These are the toggles the plugin
-     * loads into its configuration if the user hasn't modified them yet. These
-     * are also used when the user uses the "Reset to Default" functionality in
-     * the configuration menu.
+     * Characters used to indicate a word's boundaries on the left and right side.
+     * The beginning and end of the line the caret is on also function as boundaries.
+     */
+    public static final List<Character> BOUNDARY_CHARS =
+        List.of(' ', ';', ':', '.', ',', '`', '"', '\'', '(', ')', '[', ']', '{', '}', '\t');
+
+    /**
+     * Toggler's default collection of word combinations / toggles.
+     * The "Reset to Default" button resets to these.
      * <p>
-     * The toggles are stored in this Config class instead of an external JSON
+     * The toggles are stored in this class instead of an external
      * file for OS compatibility and performance reasons.
      */
     public static final String DEFAULT_TOGGLES = (
-            "[" +
-                    "[`public`,`private`,`protected`]," +
-                    "[`class`,`interface`]," +
-                    "[`extends`,`implements`]," +
-                    "[`import`,`export`]," +
-                    "[`byte`,`short`,`int`,`long`,`float`,`double`]," +
-                    "[`String`,`Character`]," +
+        "[" +
+            "[`public`,`private`,`protected`]," +
+            "[`class`,`interface`]," +
+            "[`extends`,`implements`]," +
+            "[`import`,`export`]," +
+            "[`byte`,`short`,`int`,`long`,`float`,`double`]," +
+            "[`String`,`Character`]," +
 
-                    "[`get`,`set`]," +
-                    "[`add`,`remove`]," +
-                    "[`min`,`max`]," +
-                    "[`pop`,`push`]," +
+            "[`get`,`set`]," +
+            "[`add`,`remove`]," +
+            "[`min`,`max`]," +
+            "[`pop`,`push`]," +
 
-                    "[`true`,`false`]," +
-                    "[`yes`,`no`]," +
-                    "[`on`,`off`]," +
-                    "[`0`,`1`]," +
-                    "[`x`,`y`]," +
-                    "[`enable`,`disable`]," +
-                    "[`enabled`,`disabled`]," +
-                    "[`open`,`close`]," +
+            "[`true`,`false`]," +
+            "[`yes`,`no`]," +
+            "[`on`,`off`]," +
+            "[`0`,`1`]," +
+            "[`x`,`y`]," +
+            "[`enable`,`disable`]," +
+            "[`enabled`,`disabled`]," +
+            "[`open`,`close`]," +
 
-                    "[`up`,`down`]," +
-                    "[`left`,`right`]," +
-                    "[`top`,`bottom`]," +
-                    "[`start`,`end`]," +
-                    "[`first`,`last`]," +
-                    "[`before`,`after`]," +
-                    "[`ceil`,`floor`]," +
-                    "[`read`,`write`]," +
-                    "[`show`,`hide`]," +
-                    "[`input`,`output`]," +
-                    "[`dev`,`prod`]," +
-                    "[`development`,`production`]," +
-                    "[`row`,`column`]," +
-                    "[`req`,`res`]," +
+            "[`up`,`down`]," +
+            "[`left`,`right`]," +
+            "[`top`,`bottom`]," +
+            "[`start`,`end`]," +
+            "[`first`,`last`]," +
+            "[`before`,`after`]," +
+            "[`ceil`,`floor`]," +
+            "[`read`,`write`]," +
+            "[`show`,`hide`]," +
+            "[`input`,`output`]," +
+            "[`dev`,`prod`]," +
+            "[`development`,`production`]," +
+            "[`row`,`column`]," +
+            "[`req`,`res`]," +
 
-                    "[`&&`,`||`]," +
-                    "[`&`,`|`]," +
-                    "[`<`,`>`]," +
-                    "[`+`,`-`]," +
-                    "[`*`,`/`]," +
-                    "[`++`,`--`]," +
-                    "[`+=`,`-=`]," +
-                    "[`*=`,`/=`]," +
-                    "[`&=`,`|=`]," +
-                    "[`<<=`,`>>=`]," +
-                    "[`<=`,`>=`]," +
-                    "[`==`,`!=`]," +
-                    "[`===`,`!==`]," +
+            "[`&&`,`||`]," +
+            "[`&`,`|`]," +
+            "[`<`,`>`]," +
+            "[`+`,`-`]," +
+            "[`*`,`/`]," +
+            "[`++`,`--`]," +
+            "[`+=`,`-=`]," +
+            "[`*=`,`/=`]," +
+            "[`&=`,`|=`]," +
+            "[`<<=`,`>>=`]," +
+            "[`<=`,`>=`]," +
+            "[`==`,`!=`]," +
+            "[`===`,`!==`]," +
             "]"
     ).replace('`', '"');
 }
