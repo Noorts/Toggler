@@ -1,6 +1,6 @@
 package utils;
 
-import core.Config;
+import core.Constants;
 
 import java.util.*;
 
@@ -130,8 +130,8 @@ public class JsonParser {
      */
     private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
         for (int i = 0; i < word.length(); i++) {
-            for (int j = 0; j < Config.BOUNDARY_CHARS.length; j++) {
-                if (word.charAt(i) == Config.BOUNDARY_CHARS[j]) {
+            for (int j = 0; j < Constants.BOUNDARY_CHARS.length; j++) {
+                if (word.charAt(i) == Constants.BOUNDARY_CHARS[j]) {
                     throw new TogglesFormatException("A toggle contains an invalid character.");
                 }
             }

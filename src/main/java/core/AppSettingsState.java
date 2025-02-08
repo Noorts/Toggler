@@ -29,7 +29,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
     public void resetSettingsToDefault() {
         try {
-            toggles = JsonParser.parseJsonToToggles(Config.DEFAULT_TOGGLES);
+            toggles = JsonParser.parseJsonToToggles(Constants.DEFAULT_TOGGLES);
             partialMatchingIsEnabled = DEFAULT_PARTIAL_MATCHING_STATUS;
         } catch (JsonParser.TogglesFormatException e) {
             NotificationHandler.notify("The defaultToggles provided by the creator of the " +

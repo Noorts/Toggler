@@ -235,12 +235,12 @@ public class ToggleAction extends AnAction {
         try {
             /* Text expansion by extending the left side and then the right side. */
             while ((currentColumnLeftSide > 0) &&
-                    (-1 == Arrays.toString(Config.BOUNDARY_CHARS).indexOf(
+                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS).indexOf(
                             textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
                 currentColumnLeftSide--;
             }
             while ((currentColumnRightSide < textOnCurrentLine.length()) &&
-                    (-1 == Arrays.toString(Config.BOUNDARY_CHARS).indexOf(
+                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS).indexOf(
                             textOnCurrentLine.charAt(currentColumnRightSide)))) {
                 currentColumnRightSide++;
             }

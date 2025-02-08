@@ -1,9 +1,6 @@
 package core;
 
-/**
- * Exposes constants to the rest of the application.
- */
-public class Config {
+public class Constants {
     /**
      * The characters that indicate a word/symbol's boundaries. Used for the
      * left and right side. The beginning and end of the line the caret is on
