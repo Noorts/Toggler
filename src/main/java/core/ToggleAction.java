@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ToggleAction extends AnAction {
     private Editor editor;
@@ -219,7 +218,7 @@ public class ToggleAction extends AnAction {
         boolean projectUsesTabCharacter = this.editor.getSettings().isUseTabCharacter(this.project);
         if (projectUsesTabCharacter) {
             int editorTabSize = this.editor.getSettings().getTabSize(this.project);
-            textOnCurrentLine = textOnCurrentLine.replaceAll("\t", " ".repeat(editorTabSize));
+            textOnCurrentLine = textOnCurrentLine.replace("\t", " ".repeat(editorTabSize));
         }
 
         /* Try catch added as temporary measure against
@@ -277,11 +276,11 @@ public class ToggleAction extends AnAction {
                     /* The next word/symbol in the sequence is retrieved. The
                        modulo is used to wrap around if the end of the sequence
                        is reached. */
-                    int sequence_size = toggleWordsStructure.get(i).size();
+                    int sequenceSize = toggleWordsStructure.get(i).size();
                     return toggleWordsStructure.get(i).get(
                             isReverseToggleAction
-                                    ? (j - 1 + sequence_size) % sequence_size // Previous
-                                    : (j + 1) % sequence_size // Next
+                                    ? (j - 1 + sequenceSize) % sequenceSize // Previous
+                                    : (j + 1) % sequenceSize // Next
                             );
                 }
             }
@@ -307,7 +306,7 @@ public class ToggleAction extends AnAction {
      */
     public String createRegexPatternOfToggles(List<List<String>> toggleWordsStructure) {
         List<String> names = toggleWordsStructure.stream().flatMap(Collection::stream)
-                .sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList());
+                .sorted(Comparator.comparingInt(String::length).reversed()).toList();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
@@ -341,7 +340,7 @@ public class ToggleAction extends AnAction {
 
         // Sort the matches by string length, so that longer matches get
         // priority over smaller ones.
-        List<MatchResult> matches = matcher.results().collect(Collectors.toList());
+        List<MatchResult> matches = matcher.results().toList();
 
         // A full match is returned if it can be found.
         if (!matches.isEmpty() && matches.get(0).end() - matches.get(0).start() == input.length()) {
