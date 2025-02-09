@@ -12,6 +12,7 @@ public class SettingsState {
 
     @OptionTag(converter = TogglerStructureConverter.class)
     public List<List<String>> toggles;
+    @OptionTag
     private boolean partialMatchingIsEnabled;
 
     public SettingsState() {
