@@ -7,7 +7,6 @@ import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
 import org.junit.jupiter.api.BeforeAll;
 import ui.pages.IdeaFrameFixture;
-import ui.pages.NotificationFixture;
 import ui.pages.SettingsFrameFixture;
 import ui.steps.CommonSteps;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.utils.StepsLogger;
 
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
@@ -22,6 +22,10 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 import static java.time.Duration.ofSeconds;
 import static org.assertj.swing.timing.Pause.pause;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ui.utils.KeyboardUtils.enterKeycodeSequence;
+import static ui.utils.KeyboardUtils.repeatKeycodeNTimes;
 
 public class ToggleUITest {
     private final RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
@@ -68,19 +72,18 @@ public class ToggleUITest {
         final TextEditorFixture editor = idea.textEditor(ofSeconds(5));
 
         step("Set editor text to True", () -> {
-            // This overwrites the current editor's content.
             editor.getEditor().setText("True");
         });
 
         step("Toggle and verify that True was toggled to False", () -> {
             editor.getEditor().findText("True").click();
             commonSteps.triggerToggleAction();
-            assert (editor.getEditor().getText().equals("False"));
+            assertEquals("False", editor.getEditor().getText());
         });
 
         step("Toggle and verify that False was toggled back to True", () -> {
             commonSteps.triggerToggleAction();
-            assert (editor.getEditor().getText().equals("True"));
+            assertEquals("True", editor.getEditor().getText());
         });
     }
 
@@ -94,8 +97,8 @@ public class ToggleUITest {
             "a 'no match' notification was displayed", () -> {
             editor.getEditor().findText("void").click();
             commonSteps.triggerToggleAction();
-            assert (commonSteps.getNotification()
-                .getDescriptionText().contains("No match"));
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
     }
 
@@ -111,10 +114,8 @@ public class ToggleUITest {
             editor.getEditor().clickOnOffset(0, MouseButton.LEFT_BUTTON, 1);
             pause(ofSeconds(1).toMillis());
             commonSteps.triggerToggleAction();
-            NotificationFixture notification = commonSteps.getNotification();
-            assert (notification != null &&
-                notification.getDescriptionText()
-                    .contains("No text could be selected"));
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No text could be selected");
         });
     }
 
@@ -127,12 +128,11 @@ public class ToggleUITest {
         step("Verify that partial matching is on", () -> {
             SettingsFrameFixture settingsFrame =
                 commonSteps.openTogglerSettings();
-            assert (settingsFrame.partialMatchingCheckbox().isSelected());
+            assertTrue(settingsFrame.partialMatchingCheckbox().isSelected());
             settingsFrame.okButton().click();
         });
 
         step("Set editor text to 'addClass'", () -> {
-            // This overwrites the current editor's content.
             editor.getEditor().setText("addClass");
             pause(ofSeconds(1).toMillis());
         });
@@ -141,9 +141,9 @@ public class ToggleUITest {
             () -> {
                 editor.getEditor().findText("addClass").click();
                 commonSteps.triggerToggleAction();
-                assert (editor.getEditor().getText().equals("removeClass"));
+                assertEquals("removeClass", editor.getEditor().getText());
                 commonSteps.triggerToggleAction();
-                assert (editor.getEditor().getText().equals("addClass"));
+                assertEquals("addClass", editor.getEditor().getText());
             });
 
         step("Turn off partial matching", () -> {
@@ -157,9 +157,67 @@ public class ToggleUITest {
             editor.getEditor().findText("addClass").click();
             commonSteps.triggerToggleAction();
 
-            NotificationFixture notification = commonSteps.getNotification();
-            assert (notification != null &&
-                notification.getDescriptionText().contains("No match"));
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
+        });
+    }
+
+    @Test
+    @Video
+    void testTogglesConfiguration() {
+        final IdeaFrameFixture idea = remoteRobot.find(IdeaFrameFixture.class);
+        final TextEditorFixture editor = idea.textEditor(ofSeconds(5));
+
+        final String newCombination = "[\"Foo\", \"Bar\"]";
+
+        step("Set editor text to 'Foo'", () -> {
+            editor.getEditor().setText("Foo");
+            pause(ofSeconds(1).toMillis());
+        });
+
+        step("Invalid toggle triggers notification", () -> {
+            editor.getEditor().findText("Foo").click();
+            commonSteps.triggerToggleAction();
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
+        });
+
+        step("Add [\"Foo\", \"Bar\"] toggle to configured toggles", () -> {
+            SettingsFrameFixture settingsFrame =
+                commonSteps.openTogglerSettings();
+            settingsFrame.togglesTextArea().click();
+            keyboard.selectAll();
+            enterKeycodeSequence(keyboard,
+                KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, KeyEvent.VK_LEFT, KeyEvent.VK_COMMA, // Move to last row, add comma
+                KeyEvent.VK_ENTER, KeyEvent.VK_TAB); // Create new row
+            keyboard.enterText(newCombination);
+            settingsFrame.okButton().click();
+        });
+
+        step("Toggle and verify toggle from 'Foo' to 'Bar'",
+            () -> {
+                editor.getEditor().findText("Foo").click();
+                commonSteps.triggerToggleAction();
+                assertEquals("Bar", editor.getEditor().getText());
+                commonSteps.triggerToggleAction();
+                assertEquals("Foo", editor.getEditor().getText());
+            });
+
+        step("Remove [\"Foo\", \"Bar\"] toggle from configured toggles", () -> {
+            SettingsFrameFixture settingsFrame =
+                commonSteps.openTogglerSettings();
+            settingsFrame.togglesTextArea().click();
+            keyboard.selectAll();
+            enterKeycodeSequence(keyboard, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, KeyEvent.VK_LEFT);
+            repeatKeycodeNTimes(keyboard, KeyEvent.VK_BACK_SPACE, newCombination.length()); // Delete new combination.
+            repeatKeycodeNTimes(keyboard, KeyEvent.VK_BACK_SPACE, 3); // Delete up tab, line, comma
+            settingsFrame.okButton().click();
+        });
+
+        step("Invalid toggle triggers notification", () -> {
+            editor.getEditor().findText("Foo").click();
+            commonSteps.triggerToggleAction();
+
+            commonSteps.assertNotificationIsShownAndContains(null, "No match");
         });
     }
 }

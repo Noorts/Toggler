@@ -130,10 +130,8 @@ public class JsonParser {
      */
     private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
         for (int i = 0; i < word.length(); i++) {
-            for (int j = 0; j < Constants.BOUNDARY_CHARS.size(); j++) {
-                if (word.charAt(i) == Constants.BOUNDARY_CHARS.get(j)) {
-                    throw new TogglesFormatException("A toggle contains an invalid character.");
-                }
+            if (Constants.BOUNDARY_CHARS.contains(word.charAt(i))) {
+                throw new TogglesFormatException("A toggle contains an invalid character.");
             }
         }
     }

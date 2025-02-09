@@ -18,7 +18,7 @@ public class AppSettingsComponent {
     private final JPanel mainPanel;
     private final JBTextArea jsonText = new JBTextArea();
     private final JBLabel statusLabel = new JBLabel();
-    private final JCheckBox checkBox;
+    private final JCheckBox partialMatchingCheckBox;
 
     public AppSettingsComponent() {
         JButton importButton = new JButton("Import");
@@ -36,8 +36,8 @@ public class AppSettingsComponent {
             "settings this plugin ships with. The reset is applied and saved " +
             "instantly.");
 
-        checkBox = new JCheckBox("Enable partial matching");
-        checkBox.setToolTipText("Partial matching allows Toggler to search for " +
+        partialMatchingCheckBox = new JCheckBox("Enable partial matching");
+        partialMatchingCheckBox.setToolTipText("Partial matching allows Toggler to search for " +
             "toggles at the cursor that do not encompass the entire word/symbol. " +
             "For example, when the cursor is placed somewhere on 'add', then it " +
             "allows toggling 'add' inside 'addClass'.");
@@ -52,7 +52,7 @@ public class AppSettingsComponent {
         buttonPanel.add(resetButton);
 
         BorderLayoutPanel headerPanel = new BorderLayoutPanel();
-        headerPanel.add(checkBox, BorderLayout.LINE_START);
+        headerPanel.add(partialMatchingCheckBox, BorderLayout.LINE_START);
         headerPanel.add(buttonPanel, BorderLayout.LINE_END);
 
         mainPanel = FormBuilder.createFormBuilder()
@@ -67,9 +67,9 @@ public class AppSettingsComponent {
     public void promptResetButtonAction() {
         if (new ConfirmResetDialogWrapper().showAndGet()) {
             executeResetButtonAction();
-            setStatusMessage("Status: Resetting settings to defaults was successful.");
+            setStatusMessage("Resetting settings to defaults was successful.");
         } else {
-            setStatusMessage("Status: Resetting settings to defaults was cancelled.");
+            setStatusMessage("Resetting settings to defaults was cancelled.");
         }
     }
 
@@ -77,7 +77,7 @@ public class AppSettingsComponent {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         appSettingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
+        setPartialMatchingCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
     }
 
     private void importTogglesFromJsonFile() {
@@ -88,20 +88,20 @@ public class AppSettingsComponent {
         try {
             appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
         } catch (JsonParser.TogglesFormatException e) {
-            setStatusMessage(String.format("Error: %s", e.getMessage()));
+            setStatusErrorMessage(e.getMessage());
             return;
         } catch (FileHandler.FileSelectionCancelledException e) {
-            setStatusMessage("Error: No file was selected, importing toggles failed.");
+            setStatusErrorMessage("No file was selected, importing toggles failed.");
             return;
         } catch (IOException e) {
-            setStatusMessage("Error: Importing toggles from file failed.");
+            setStatusErrorMessage("Importing toggles from file failed.");
             return;
         }
 
         // Reset the settings menu JsonText textarea to the toggles that have
         // been loaded.
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setStatusMessage("Status: Importing toggles from file was successful.");
+        setStatusMessage("Importing toggles from file was successful.");
     }
 
     private void exportTogglesToJsonFile() {
@@ -109,14 +109,14 @@ public class AppSettingsComponent {
         try {
             FileHandler.saveTextToDisk(JsonParser.toJson(AppSettingsState.getInstance().toggles));
         } catch (FileHandler.FileSelectionCancelledException e) {
-            setStatusMessage("Error: No file was saved, exporting toggles failed.");
+            setStatusErrorMessage("No file was saved, exporting toggles failed.");
             return;
         } catch (IOException e) {
-            setStatusMessage("Error: Exporting toggles to JSON file failed.");
+            setStatusErrorMessage("Exporting toggles to JSON file failed.");
             return;
         }
 
-        setStatusMessage("Status: Exporting toggles to JSON file succeeded.");
+        setStatusMessage("Exporting toggles to JSON file succeeded.");
     }
 
     public JPanel getPanel() { return mainPanel; }
@@ -130,9 +130,13 @@ public class AppSettingsComponent {
 
     public void setJsonText(@NotNull String newText) { jsonText.setText(newText); }
 
-    public void setStatusMessage(@NotNull String errorMessage) { statusLabel.setText(errorMessage); }
+    private void setStatusLabel(@NotNull String message) { statusLabel.setText(message); }
 
-    public boolean getCheckboxStatus() { return checkBox.isSelected(); }
+    public void setStatusMessage(@NotNull String statusMessage) { setStatusLabel("Status: " + statusMessage); }
 
-    public void setCheckboxStatus(boolean partialMatchingIsEnabled) { checkBox.setSelected(partialMatchingIsEnabled); }
+    public void setStatusErrorMessage(@NotNull String errorMessage) { setStatusLabel("Error: " + errorMessage); }
+
+    public boolean getPartialMatchingCheckboxStatus() { return partialMatchingCheckBox.isSelected(); }
+
+    public void setPartialMatchingCheckboxStatus(boolean partialMatchingIsEnabled) { partialMatchingCheckBox.setSelected(partialMatchingIsEnabled); }
 }

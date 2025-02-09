@@ -5,8 +5,8 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
+import utils.EditorUtils;
 import utils.NotificationHandler;
 import utils.StringTransformer;
 
@@ -14,16 +14,23 @@ import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ToggleAction extends AnAction {
+    private Editor editor;
+    private Project project;
+    private Document document;
+
     // Default is to toggle to the next word/symbol in the toggle sequence.
-    private boolean isReverseToggleAction = false;
+    private boolean toggleForward = true;
+    private boolean partialMatchingIsEnabled = true;
 
-    public ToggleAction() {}
+    private String regexPatternOfToggles;
 
-    public ToggleAction(boolean isReverseToggleAction) {
-        this.isReverseToggleAction = isReverseToggleAction;
+    public ToggleAction() {
+    }
+
+    public ToggleAction(boolean toggleForward) {
+        this.toggleForward = toggleForward;
     }
 
     @Override
@@ -37,59 +44,45 @@ public class ToggleAction extends AnAction {
 
     @Override
     public void update(@NotNull final AnActionEvent e) {
-        final Project project = e.getProject();
-        final Editor editor = e.getData(CommonDataKeys.EDITOR);
+        final Editor currentEditor = e.getData(CommonDataKeys.EDITOR);
+        boolean caretsInEditorIsOneOrMore = currentEditor != null && currentEditor.getCaretModel().getCaretCount() >= 1;
 
-        // Make sure at least one caret is available.
-        boolean menuAllowed = false;
-        if (editor != null && project != null) {
-            // Ensure the list of carets in the editor is not empty.
-            menuAllowed = !editor.getCaretModel().getAllCarets().isEmpty();
-        }
-        e.getPresentation().setEnabledAndVisible(menuAllowed);
+        e.getPresentation().setEnabledAndVisible(caretsInEditorIsOneOrMore);
     }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        final Editor editor = e.getData(CommonDataKeys.EDITOR);
-        final Project project = e.getData(CommonDataKeys.PROJECT);
-        if (editor == null || project == null) {
+        this.editor = e.getData(CommonDataKeys.EDITOR);
+        this.project = e.getData(CommonDataKeys.PROJECT);
+        if (this.editor == null || this.project == null) {
             NotificationHandler.notify("Toggle aborted. Internal error: editor and/or project is null. " +
                     "Please open an issue: https://github.com/Noorts/Toggler/issues.",
-                NotificationType.ERROR, editor);
+                NotificationType.ERROR, this.editor);
             return;
         }
-        final Document document = editor.getDocument();
+        this.document = this.editor.getDocument();
+        final CaretModel caretModel = this.editor.getCaretModel();
 
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        List<List<String>> toggleWordsStructure = appSettingsState.toggles;
-        String regexPatternOfToggles = createRegexPatternOfToggles(toggleWordsStructure);
+        this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
+        this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingIsEnabled();
 
         /* Bandage (temporary fix) that might help remove the "ghost" caret that
         appears on load of the IDE. */
-        editor.getCaretModel().setCaretsAndSelections(editor.getCaretModel().getCaretsAndSelections());
-
-        List<Caret> carets = editor.getCaretModel().getAllCarets();
+        caretModel.setCaretsAndSelections(caretModel.getCaretsAndSelections());
 
         /* Lock the file and perform the toggle on all carets in the editor. */
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            for (Caret caret : carets) {
-                performToggleOnSingleCaret(caret, document, editor, regexPatternOfToggles,
-                        this.isReverseToggleAction, appSettingsState.isPartialMatchingIsEnabled());
+            for (Caret caret : caretModel.getAllCarets()) {
+                performToggleOnSingleCaret(caret);
             }
         });
     }
 
     /**
-     * Perform the toggle action on the provided caret. Full selection of the
-     * word, and a caret next to or inside the word are supported.
-     *
-     * @param caret    The caret to perform the toggle for.
-     * @param document The document in which the caret(s) are present.
-     * @param editor   The editor in which the caret(s) are present.
+     * Full selection of the word, and a caret next to or inside the word are supported.
      */
-    private void performToggleOnSingleCaret(Caret caret, Document document, Editor editor,
-                String regexPatternOfToggles, boolean isReverseToggle, boolean partialMatchingIsAllowed) {
+    private void performToggleOnSingleCaret(Caret caret) {
         /* The validity of the carets are checked down below to prevent
          * unexpected behavior. E.g. when three carets are placed inside the
          * same word/symbol and the toggle is pressed, the first caret will be
@@ -112,8 +105,8 @@ public class ToggleAction extends AnAction {
         // has not been implemented yet.
         if (caret.getSelectionStartPosition().line != caret.getSelectionEndPosition().line) {
             NotificationHandler.notify("Toggling by finding keywords inside of a multi-line " +
-                            "selection isn't supported by Toggler (yet).",
-                    NotificationType.INFORMATION, editor);
+                    "selection isn't supported by Toggler (yet).",
+                NotificationType.INFORMATION, this.editor);
             return;
         }
 
@@ -127,7 +120,7 @@ public class ToggleAction extends AnAction {
          * replaced with the replacement word/symbol. */
         boolean caretHasASelection = caret.hasSelection();
         if (!caretHasASelection) {
-            expandCaretSelection(caret, editor);
+            EditorUtils.expandCaretSelection(caret, this.editor);
         }
 
         // Select the entire toggle/word from the caret so that it can be
@@ -138,7 +131,7 @@ public class ToggleAction extends AnAction {
         // possibly be selected.
         if (selectedToggleFromCaret == null) {
             NotificationHandler.notify("No text could be selected.",
-                    NotificationType.INFORMATION, editor);
+                NotificationType.INFORMATION, this.editor);
             return;
         }
 
@@ -148,13 +141,13 @@ public class ToggleAction extends AnAction {
          * contact is a requirement for a partial match. */
         int caretPositionInsideOfCurrentSelection = oldPosition - caret.getSelectionStart();
 
-        List<Integer> positionOfMatch = getPositionOfToggleMatch(regexPatternOfToggles, selectedToggleFromCaret,
-                (partialMatchingIsAllowed && !caretHasASelection), caretPositionInsideOfCurrentSelection);
+        List<Integer> positionOfMatch = getPositionOfToggleMatch(this.regexPatternOfToggles, selectedToggleFromCaret,
+            (this.partialMatchingIsEnabled && !caretHasASelection), caretPositionInsideOfCurrentSelection);
 
         // If a match was found then toggle it, else display a notification.
         if (!positionOfMatch.isEmpty()) {
             String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
-            String replacementToggle = findNextToggleInToggles(match, isReverseToggle);
+            String replacementToggle = findReplacementWord(match, this.toggleForward);
 
             /* The replacementToggle should never be null in this case, because
              * if no match was found then the positionOfMatch would be null.
@@ -172,7 +165,7 @@ public class ToggleAction extends AnAction {
         } else {
             NotificationHandler.notifyWithOpenSettingsAction(
                 String.format("No match for \"%s\".", selectedToggleFromCaret),
-                NotificationType.INFORMATION, editor);
+                NotificationType.INFORMATION, this.editor);
         }
 
         /* Reset the caret selection to the state before the action was performed.
@@ -193,88 +186,23 @@ public class ToggleAction extends AnAction {
     }
 
     /**
-     * Expand the caret's selection to encompass a word/symbol. This is done
-     * by expanding the selection towards both the left and right side until a
-     * boundary character or the beginning or end of the line is found.
-     * <p>
-     * Boundary characters are hardcoded characters such as ; and ". Check the
-     * method's implementation for more details.
-     * <p>
-     * This method will expand outwards from the cursor position of the caret.
-     * If a selection has already been made, then that won't be taken into
-     * account.
-     *
-     * @param caret    The caret to perform the toggle for.
-     * @param editor   The editor in which the caret(s) are present.
-     */
-    private void expandCaretSelection(Caret caret, Editor editor) {
-        int currentColumnLeftSide = caret.getLogicalPosition().column;
-        int currentColumnRightSide = currentColumnLeftSide;
-        int currentLine = caret.getLogicalPosition().line;
-
-        String textOnCurrentLine = editor.getDocument().getText(TextRange.create(
-                editor.getDocument().getLineStartOffset(currentLine),
-                editor.getDocument().getLineEndOffset(currentLine)));
-
-        /* The clause below provides limited support for tabs as whitespace in
-         * files. It requires the "Use tab character" option in the "Tabs and
-         * Indents" menu to be ticked and requires all tabs in the file to
-         * adhere to the "Tab size" set in the same menu.
-         *
-         * Handling ambiguous tab sizes is a more complicated problem and is
-         * left to be solved. */
-        if (editor.getSettings().isUseTabCharacter(editor.getProject())) {
-            int editorTabSize = editor.getSettings().getTabSize(editor.getProject());
-            textOnCurrentLine = textOnCurrentLine.replaceAll("\t", " ".repeat(editorTabSize));
-        }
-
-        /* Try catch added as temporary measure against
-         * StringIndexOutOfBoundsException. The exception is sometimes thrown
-         * when the caret isn't set correctly after the user selects a different
-         * location. */
-        try {
-            /* Text expansion by extending the left side and then the right side. */
-            while ((currentColumnLeftSide > 0) &&
-                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS.toArray()).indexOf(
-                            textOnCurrentLine.charAt(currentColumnLeftSide - 1)))) {
-                currentColumnLeftSide--;
-            }
-            while ((currentColumnRightSide < textOnCurrentLine.length()) &&
-                    (-1 == Arrays.toString(Constants.BOUNDARY_CHARS.toArray()).indexOf(
-                            textOnCurrentLine.charAt(currentColumnRightSide)))) {
-                currentColumnRightSide++;
-            }
-        } catch (StringIndexOutOfBoundsException ignored) {}
-
-        /* Start and end offset are determined because those are required for
-         * the setSelection method. The offsets indicate the offset from the
-         * beginning of the document, so including all lines. */
-        int startOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnLeftSide));
-        int endOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnRightSide));
-        caret.setSelection(startOffset, endOffset);
-    }
-
-    /**
      * Find the next or previous word/symbol for the provided word/symbol in the
      * toggles. The provided word/symbol is searched for in the toggles
      * configured in the plugin settings and the next or previous one in the
      * sequence is returned. Whether the next or previous toggle in the sequence
-     * is returned depends on the isReverseToggleAction parameter. The settings
-     * can be found under Settings/Preferences -> Tools -> Toggler.
+     * is returned depends on the toggleForward parameter.
      *
-     * @param keyword The word/symbol to be replaced.
-     * @param isReverseToggleAction Determines whether the next or previous
-     *                              toggle in the sequence is returned. false →
-     *                              next, true → previous.
-     * @return The next word/symbol in the sequence which the provided
+     * @param word          The word/symbol to be replaced.
+     * @param toggleForward Determines whether the next or previous toggle in the sequence is returned.
+     * @return The next/previous word/symbol in the sequence that the provided
      * word/symbol is part of. Null is returned if the provided word couldn't be
      * found in the config.
      */
-    private String findNextToggleInToggles(String keyword, boolean isReverseToggleAction) {
-        String wordInLowerCase = keyword.toLowerCase();
+    private String findReplacementWord(String word, boolean toggleForward) {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        /* The current settings. */
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
+
+        String wordInLowerCase = word.toLowerCase();
 
         /* O(n) search for the word/symbol to replace. */
         for (int i = 0; i < toggleWordsStructure.size(); i++) {
@@ -283,12 +211,12 @@ public class ToggleAction extends AnAction {
                     /* The next word/symbol in the sequence is retrieved. The
                        modulo is used to wrap around if the end of the sequence
                        is reached. */
-                    int sequence_size = toggleWordsStructure.get(i).size();
+                    int sequenceSize = toggleWordsStructure.get(i).size();
                     return toggleWordsStructure.get(i).get(
-                            isReverseToggleAction
-                                    ? (j - 1 + sequence_size) % sequence_size // Previous
-                                    : (j + 1) % sequence_size // Next
-                            );
+                        toggleForward
+                            ? (j + 1) % sequenceSize // Next
+                            : (j - 1 + sequenceSize) % sequenceSize // Previous
+                    );
                 }
             }
         }
@@ -313,7 +241,7 @@ public class ToggleAction extends AnAction {
      */
     public String createRegexPatternOfToggles(List<List<String>> toggleWordsStructure) {
         List<String> names = toggleWordsStructure.stream().flatMap(Collection::stream)
-                .sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList());
+            .sorted(Comparator.comparingInt(String::length).reversed()).toList();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
@@ -332,26 +260,22 @@ public class ToggleAction extends AnAction {
      * <p>
      * Priority is based on the following: greater length and left > right.
      *
-     * @param regexPatternOfToggles A regex pattern that contains all toggles.
-     *                              For more information check out the
-     *                              createRegexPatternOfToggles method.
-     * @param input The text that will be searched for matches.
+     * @param input             The text that will be searched for matches.
      * @param allowPartialMatch Whether to allow partial matches. If not, then
      *                          only a match that is of the same length as the
      *                          input (aka a full match) is deemed valid.
-     * @param caretPosition The position the caret is in relative to the input.
-     *                      E.g. if the input is "add", then the caretPosition
-     *                      should be between 0 and 4.
+     * @param caretPosition     The position the caret is in relative to the input.
+     *                          E.g. if the input is "add", then the caretPosition
+     *                          should be between 0 and 4.
      * @return A pair of integers that indicate the beginning and end of the
      * match relative to the input string.
      */
-    public List<Integer> getPositionOfToggleMatch(String regexPatternOfToggles, String input,
-                                                  boolean allowPartialMatch, int caretPosition) {
+    public List<Integer> getPositionOfToggleMatch(String regexPatternOfToggles, String input, boolean allowPartialMatch, int caretPosition) {
         Matcher matcher = Pattern.compile(regexPatternOfToggles, Pattern.CASE_INSENSITIVE).matcher(input);
 
         // Sort the matches by string length, so that longer matches get
         // priority over smaller ones.
-        List<MatchResult> matches = matcher.results().collect(Collectors.toList());
+        List<MatchResult> matches = matcher.results().toList();
 
         // A full match is returned if it can be found.
         if (!matches.isEmpty() && matches.get(0).end() - matches.get(0).start() == input.length()) {

@@ -5,6 +5,7 @@ import com.intellij.remoterobot.fixtures.Fixture;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import com.intellij.remoterobot.utils.Keyboard;
 import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
+import org.jetbrains.annotations.Nullable;
 import ui.pages.NotificationFixture;
 import ui.pages.SettingsFrameFixture;
 import ui.pages.WelcomeFrameFixture;
@@ -14,6 +15,8 @@ import java.time.Duration;
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static java.time.Duration.ofSeconds;
 import static org.assertj.swing.timing.Pause.pause;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonSteps {
     final private RemoteRobot remoteRobot;
@@ -117,6 +120,17 @@ public class CommonSteps {
             fixture.closeNotification();
             fixture = getNotification();
         }
-        ;
+    }
+
+    public void assertNotificationIsShownAndContains(
+        @Nullable String requiredTextInTitle, @Nullable String requiredTextInDescription)
+    {
+        NotificationFixture notification = getNotification();
+        assertNotNull(notification);
+        assertTrue(
+            (requiredTextInTitle == null ||
+                notification.getTitleText().contains(requiredTextInTitle))
+            && (requiredTextInDescription == null ||
+                notification.getDescriptionText().contains(requiredTextInDescription)));
     }
 }
