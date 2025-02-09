@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 )
 public final class AppSettingsState implements PersistentStateComponent<SettingsState> {
     AppSettingsState() {
+        settingsState = new SettingsState();
     }
 
     private SettingsState settingsState;
