@@ -72,7 +72,6 @@ public class ToggleUITest {
         final TextEditorFixture editor = idea.textEditor(ofSeconds(5));
 
         step("Set editor text to True", () -> {
-            // This overwrites the current editor's content.
             editor.getEditor().setText("True");
         });
 
@@ -134,7 +133,6 @@ public class ToggleUITest {
         });
 
         step("Set editor text to 'addClass'", () -> {
-            // This overwrites the current editor's content.
             editor.getEditor().setText("addClass");
             pause(ofSeconds(1).toMillis());
         });
@@ -171,15 +169,12 @@ public class ToggleUITest {
 
         final String newCombination = "[\"Foo\", \"Bar\"]";
 
-        // Set editor text to "Foo"
         step("Set editor text to 'Foo'", () -> {
-            // This overwrites the current editor's content.
             editor.getEditor().setText("Foo");
             pause(ofSeconds(1).toMillis());
         });
 
-        // Toggle and confirm that notification shows up
-        step("PM OFF: Invalid toggle triggers notification", () -> {
+        step("Invalid toggle triggers notification", () -> {
             editor.getEditor().findText("Foo").click();
             commonSteps.triggerToggleAction();
 
