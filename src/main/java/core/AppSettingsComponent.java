@@ -74,14 +74,14 @@ public class AppSettingsComponent {
     }
 
     public void executeResetButtonAction() {
-        SettingsState settingsState = AppSettingsState.getInstance().getState();
+        SettingsState settingsState = AppSettings.getInstance().getState();
         settingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(settingsState.toggles));
         setPartialMatchingCheckboxStatus(settingsState.isPartialMatchingEnabled());
     }
 
     private void importTogglesFromJsonFile() {
-        SettingsState settingsState = AppSettingsState.getInstance().getState();
+        SettingsState settingsState = AppSettings.getInstance().getState();
 
         // Load and parse the contents of the JSON file and set the toggles to
         // the loaded toggles.
@@ -105,7 +105,7 @@ public class AppSettingsComponent {
     }
 
     private void exportTogglesToJsonFile() {
-        SettingsState settingsState = AppSettingsState.getInstance().getState();
+        SettingsState settingsState = AppSettings.getInstance().getState();
         // Save the toggles to a file in JSON format.
         try {
             FileHandler.saveTextToDisk(JsonParser.toJson(settingsState.toggles));

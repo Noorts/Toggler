@@ -63,7 +63,7 @@ public class ToggleAction extends AnAction {
         this.document = this.editor.getDocument();
         final CaretModel caretModel = this.editor.getCaretModel();
 
-        SettingsState appSettingsState = AppSettingsState.getInstance().getState();
+        SettingsState appSettingsState = AppSettings.getInstance().getState();
         this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
         this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingEnabled();
 
@@ -199,7 +199,7 @@ public class ToggleAction extends AnAction {
      * found in the config.
      */
     private String findReplacementWord(String word, boolean toggleForward) {
-        SettingsState appSettingsState = AppSettingsState.getInstance().getState();
+        SettingsState appSettingsState = AppSettings.getInstance().getState();
         List<List<String>> toggleWordsStructure = appSettingsState.toggles;
 
         String wordInLowerCase = word.toLowerCase();

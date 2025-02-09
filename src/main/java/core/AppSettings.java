@@ -12,15 +12,15 @@ import org.jetbrains.annotations.NotNull;
     name = "TogglerSettingsState",
     storages = {@Storage("togglerPluginSettings.xml")}
 )
-public final class AppSettingsState implements PersistentStateComponent<SettingsState> {
-    AppSettingsState() {
+public final class AppSettings implements PersistentStateComponent<SettingsState> {
+    AppSettings() {
         settingsState = new SettingsState();
     }
 
     private SettingsState settingsState;
 
-    public static AppSettingsState getInstance() {
-        return ApplicationManager.getApplication().getService(AppSettingsState.class);
+    public static AppSettings getInstance() {
+        return ApplicationManager.getApplication().getService(AppSettings.class);
     }
 
     @Override
