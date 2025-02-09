@@ -39,7 +39,7 @@ public class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         AppSettingsState settings = AppSettingsState.getInstance();
         boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
-        modified |= mySettingsComponent.getCheckboxStatus() != settings.isPartialMatchingIsEnabled();
+        modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingIsEnabled();
         return modified;
     }
 
@@ -49,7 +49,7 @@ public class AppSettingsConfigurable implements Configurable {
 
         try {
             /* Set whether the partial matching functionality is enabled. */
-            settings.setPartialMatchingIsEnabled(mySettingsComponent.getCheckboxStatus());
+            settings.setPartialMatchingIsEnabled(mySettingsComponent.getPartialMatchingCheckboxStatus());
 
             List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(
                     mySettingsComponent.getJsonText());
@@ -72,7 +72,7 @@ public class AppSettingsConfigurable implements Configurable {
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
-        mySettingsComponent.setCheckboxStatus(settings.isPartialMatchingIsEnabled());
+        mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingIsEnabled());
         mySettingsComponent.setStatusMessage("Loaded previous settings.");
     }
 

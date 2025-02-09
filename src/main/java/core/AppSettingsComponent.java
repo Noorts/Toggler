@@ -18,7 +18,7 @@ public class AppSettingsComponent {
     private final JPanel mainPanel;
     private final JBTextArea jsonText = new JBTextArea();
     private final JBLabel statusLabel = new JBLabel();
-    private final JCheckBox checkBox;
+    private final JCheckBox partialMatchingCheckBox;
 
     public AppSettingsComponent() {
         JButton importButton = new JButton("Import");
@@ -36,8 +36,8 @@ public class AppSettingsComponent {
             "settings this plugin ships with. The reset is applied and saved " +
             "instantly.");
 
-        checkBox = new JCheckBox("Enable partial matching");
-        checkBox.setToolTipText("Partial matching allows Toggler to search for " +
+        partialMatchingCheckBox = new JCheckBox("Enable partial matching");
+        partialMatchingCheckBox.setToolTipText("Partial matching allows Toggler to search for " +
             "toggles at the cursor that do not encompass the entire word/symbol. " +
             "For example, when the cursor is placed somewhere on 'add', then it " +
             "allows toggling 'add' inside 'addClass'.");
@@ -52,7 +52,7 @@ public class AppSettingsComponent {
         buttonPanel.add(resetButton);
 
         BorderLayoutPanel headerPanel = new BorderLayoutPanel();
-        headerPanel.add(checkBox, BorderLayout.LINE_START);
+        headerPanel.add(partialMatchingCheckBox, BorderLayout.LINE_START);
         headerPanel.add(buttonPanel, BorderLayout.LINE_END);
 
         mainPanel = FormBuilder.createFormBuilder()
@@ -77,7 +77,7 @@ public class AppSettingsComponent {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         appSettingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
+        setPartialMatchingCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
     }
 
     private void importTogglesFromJsonFile() {
@@ -136,7 +136,7 @@ public class AppSettingsComponent {
 
     public void setStatusErrorMessage(@NotNull String errorMessage) { setStatusLabel("Error: " + errorMessage); }
 
-    public boolean getCheckboxStatus() { return checkBox.isSelected(); }
+    public boolean getPartialMatchingCheckboxStatus() { return partialMatchingCheckBox.isSelected(); }
 
-    public void setCheckboxStatus(boolean partialMatchingIsEnabled) { checkBox.setSelected(partialMatchingIsEnabled); }
+    public void setPartialMatchingCheckboxStatus(boolean partialMatchingIsEnabled) { partialMatchingCheckBox.setSelected(partialMatchingIsEnabled); }
 }
