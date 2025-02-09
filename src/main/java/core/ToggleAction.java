@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 public class ToggleAction extends AnAction {
     private Editor editor;
-    private Project project;
     private Document document;
 
     // Default is to toggle to the next word/symbol in the toggle sequence.
@@ -53,8 +52,8 @@ public class ToggleAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         this.editor = e.getData(CommonDataKeys.EDITOR);
-        this.project = e.getData(CommonDataKeys.PROJECT);
-        if (this.editor == null || this.project == null) {
+        Project project = e.getData(CommonDataKeys.PROJECT);
+        if (this.editor == null || project == null) {
             NotificationHandler.notify("Toggle aborted. Internal error: editor and/or project is null. " +
                     "Please open an issue: https://github.com/Noorts/Toggler/issues.",
                 NotificationType.ERROR, this.editor);
