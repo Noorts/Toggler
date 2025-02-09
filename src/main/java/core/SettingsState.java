@@ -29,7 +29,7 @@ public class SettingsState {
         }
     }
 
-    public boolean isPartialMatchingIsEnabled() {
+    public boolean isPartialMatchingEnabled() {
         return partialMatchingIsEnabled;
     }
 

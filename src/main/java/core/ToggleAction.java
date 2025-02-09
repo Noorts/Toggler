@@ -65,7 +65,7 @@ public class ToggleAction extends AnAction {
 
         SettingsState appSettingsState = AppSettingsState.getInstance().getState();
         this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
-        this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingIsEnabled();
+        this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingEnabled();
 
         /* Bandage (temporary fix) that might help remove the "ghost" caret that
         appears on load of the IDE. */

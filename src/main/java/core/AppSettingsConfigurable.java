@@ -39,7 +39,7 @@ public class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         SettingsState settings = AppSettingsState.getInstance().getState();
         boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
-        modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingIsEnabled();
+        modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingEnabled();
         return modified;
     }
 
@@ -72,7 +72,7 @@ public class AppSettingsConfigurable implements Configurable {
     public void reset() {
         SettingsState settings = AppSettingsState.getInstance().getState();
         mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
-        mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingIsEnabled());
+        mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingEnabled());
         mySettingsComponent.setStatusMessage("Loaded previous settings.");
     }
 

@@ -77,7 +77,7 @@ public class AppSettingsComponent {
         SettingsState settingsState = AppSettingsState.getInstance().getState();
         settingsState.resetSettingsToDefault();
         setJsonText(JsonParser.toJson(settingsState.toggles));
-        setPartialMatchingCheckboxStatus(settingsState.isPartialMatchingIsEnabled());
+        setPartialMatchingCheckboxStatus(settingsState.isPartialMatchingEnabled());
     }
 
     private void importTogglesFromJsonFile() {
