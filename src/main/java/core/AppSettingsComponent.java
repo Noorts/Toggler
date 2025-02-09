@@ -67,9 +67,9 @@ public class AppSettingsComponent {
     public void promptResetButtonAction() {
         if (new ConfirmResetDialogWrapper().showAndGet()) {
             executeResetButtonAction();
-            setStatusMessage("Status: Resetting settings to defaults was successful.");
+            setStatusMessage("Resetting settings to defaults was successful.");
         } else {
-            setStatusMessage("Status: Resetting settings to defaults was cancelled.");
+            setStatusMessage("Resetting settings to defaults was cancelled.");
         }
     }
 
@@ -88,20 +88,20 @@ public class AppSettingsComponent {
         try {
             appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
         } catch (JsonParser.TogglesFormatException e) {
-            setStatusMessage(String.format("Error: %s", e.getMessage()));
+            setStatusErrorMessage(e.getMessage());
             return;
         } catch (FileHandler.FileSelectionCancelledException e) {
-            setStatusMessage("Error: No file was selected, importing toggles failed.");
+            setStatusErrorMessage("No file was selected, importing toggles failed.");
             return;
         } catch (IOException e) {
-            setStatusMessage("Error: Importing toggles from file failed.");
+            setStatusErrorMessage("Importing toggles from file failed.");
             return;
         }
 
         // Reset the settings menu JsonText textarea to the toggles that have
         // been loaded.
         setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setStatusMessage("Status: Importing toggles from file was successful.");
+        setStatusMessage("Importing toggles from file was successful.");
     }
 
     private void exportTogglesToJsonFile() {
@@ -109,14 +109,14 @@ public class AppSettingsComponent {
         try {
             FileHandler.saveTextToDisk(JsonParser.toJson(AppSettingsState.getInstance().toggles));
         } catch (FileHandler.FileSelectionCancelledException e) {
-            setStatusMessage("Error: No file was saved, exporting toggles failed.");
+            setStatusErrorMessage("No file was saved, exporting toggles failed.");
             return;
         } catch (IOException e) {
-            setStatusMessage("Error: Exporting toggles to JSON file failed.");
+            setStatusErrorMessage("Exporting toggles to JSON file failed.");
             return;
         }
 
-        setStatusMessage("Status: Exporting toggles to JSON file succeeded.");
+        setStatusMessage("Exporting toggles to JSON file succeeded.");
     }
 
     public JPanel getPanel() { return mainPanel; }
@@ -130,7 +130,11 @@ public class AppSettingsComponent {
 
     public void setJsonText(@NotNull String newText) { jsonText.setText(newText); }
 
-    public void setStatusMessage(@NotNull String errorMessage) { statusLabel.setText(errorMessage); }
+    private void setStatusLabel(@NotNull String message) { statusLabel.setText(message); }
+
+    public void setStatusMessage(@NotNull String statusMessage) { setStatusLabel("Status: " + statusMessage); }
+
+    public void setStatusErrorMessage(@NotNull String errorMessage) { setStatusLabel("Error: " + errorMessage); }
 
     public boolean getCheckboxStatus() { return checkBox.isSelected(); }
 

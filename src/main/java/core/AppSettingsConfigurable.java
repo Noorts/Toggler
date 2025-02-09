@@ -60,9 +60,9 @@ public class AppSettingsConfigurable implements Configurable {
              * the user that aren't included by the JsonParser are removed from
              * the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
-            mySettingsComponent.setStatusMessage("Status: Saving was successful.");
+            mySettingsComponent.setStatusMessage("Saving was successful.");
         } catch (JsonParser.TogglesFormatException e) {
-            mySettingsComponent.setStatusMessage(String.format("Error: %s", e.getMessage()));
+            mySettingsComponent.setStatusErrorMessage(e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
         mySettingsComponent.setCheckboxStatus(settings.isPartialMatchingIsEnabled());
-        mySettingsComponent.setStatusMessage("Status: Loaded previous settings.");
+        mySettingsComponent.setStatusMessage("Loaded previous settings.");
     }
 
     @Override
