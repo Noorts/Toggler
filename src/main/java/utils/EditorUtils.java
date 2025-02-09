@@ -12,23 +12,28 @@ public class EditorUtils {
         throw new IllegalStateException("Utility class");
     }
 
+    private static boolean isBoundaryChar(char c) {
+        return Constants.BOUNDARY_CHARS.contains(c);
+    }
+
     /**
-     * Expand the caret's selection to encompass a word/symbol. This is done
-     * by expanding the selection towards both the left and right side until a
-     * boundary character or the beginning or end of the line is found.
+     * Expand the caret's selection to encompass a word/symbol.
      * <p>
-     * This method will expand outwards from the cursor position of the caret.
-     * If a selection has already been made, then that won't be taken into
-     * account.
+     * There is the built-in {@link Caret#selectWordAtCaret}, but custom behavior was desired
+     * for Toggler.
+     * <p>
+     * The selection is expanded from the caret position to the left and right until a boundary
+     * character ({@link Constants#BOUNDARY_CHARS}) or the beginning or end of the line is found.
+     * An existing caret selection is overwritten.
      */
     public static void expandCaretSelection(Caret caret, Editor editor) {
         Project project = editor.getProject();
 
-        int currentColumnLeftSide = caret.getLogicalPosition().column;
-        int currentColumnRightSide = currentColumnLeftSide;
+        int selectionStart = caret.getLogicalPosition().column;
+        int selectionEnd = selectionStart;
         int currentLine = caret.getLogicalPosition().line;
 
-        String textOnCurrentLine = editor.getDocument().getText(TextRange.create(
+        String textLine = editor.getDocument().getText(TextRange.create(
             editor.getDocument().getLineStartOffset(currentLine),
             editor.getDocument().getLineEndOffset(currentLine)));
 
@@ -37,12 +42,12 @@ public class EditorUtils {
          * Indents" menu to be ticked and requires all tabs in the file to
          * adhere to the "Tab size" set in the same menu.
          *
-         * Handling ambiguous tab sizes is a more complicated problem and is
-         * left to be solved. */
+         * Handling ambiguous tab sizes (e.g., tabs of size 2 and 4 in the same
+         * document) is not supported yet. */
         boolean projectUsesTabCharacter = editor.getSettings().isUseTabCharacter(project);
         if (projectUsesTabCharacter) {
             int editorTabSize = editor.getSettings().getTabSize(project);
-            textOnCurrentLine = textOnCurrentLine.replace("\t", " ".repeat(editorTabSize));
+            textLine = textLine.replace("\t", " ".repeat(editorTabSize));
         }
 
         /* Try catch added as temporary measure against
@@ -50,25 +55,19 @@ public class EditorUtils {
          * when the caret isn't set correctly after the user selects a different
          * location. */
         try {
-            /* Text expansion by extending the left side and then the right side. */
-            while (0 < currentColumnLeftSide &&
-                !Constants.BOUNDARY_CHARS.contains(textOnCurrentLine.charAt(currentColumnLeftSide - 1)))
-            {
-                currentColumnLeftSide--;
+            // Caret positions are in between characters. So for "true", start = 0, end = 4.
+            while (0 < selectionStart && !isBoundaryChar(textLine.charAt(selectionStart - 1))) {
+                selectionStart--;
             }
-
-            while (currentColumnRightSide < textOnCurrentLine.length() &&
-                !Constants.BOUNDARY_CHARS.contains(textOnCurrentLine.charAt(currentColumnRightSide)))
-            {
-                currentColumnRightSide++;
+            while (selectionEnd < textLine.length() && !isBoundaryChar(textLine.charAt(selectionEnd))) {
+                selectionEnd++;
             }
         } catch (StringIndexOutOfBoundsException ignored) {}
 
-        /* Start and end offset are determined because those are required for
-         * the setSelection method. The offsets indicate the offset from the
-         * beginning of the document, so including all lines. */
-        int startOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnLeftSide));
-        int endOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, currentColumnRightSide));
+        // Offsets start from the beginning of the document (they include all lines).
+        int startOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, selectionStart));
+        int endOffset = editor.logicalPositionToOffset(new LogicalPosition(currentLine, selectionEnd));
+
         caret.setSelection(startOffset, endOffset);
     }
 }
