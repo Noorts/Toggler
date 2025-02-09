@@ -26,7 +26,8 @@ public class ToggleAction extends AnAction {
 
     private String regexPatternOfToggles;
 
-    public ToggleAction() {}
+    public ToggleAction() {
+    }
 
     public ToggleAction(boolean toggleForward) {
         this.toggleForward = toggleForward;
@@ -63,7 +64,6 @@ public class ToggleAction extends AnAction {
         final CaretModel caretModel = this.editor.getCaretModel();
 
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
-
         this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
         this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingIsEnabled();
 
@@ -105,8 +105,8 @@ public class ToggleAction extends AnAction {
         // has not been implemented yet.
         if (caret.getSelectionStartPosition().line != caret.getSelectionEndPosition().line) {
             NotificationHandler.notify("Toggling by finding keywords inside of a multi-line " +
-                            "selection isn't supported by Toggler (yet).",
-                    NotificationType.INFORMATION, this.editor);
+                    "selection isn't supported by Toggler (yet).",
+                NotificationType.INFORMATION, this.editor);
             return;
         }
 
@@ -131,7 +131,7 @@ public class ToggleAction extends AnAction {
         // possibly be selected.
         if (selectedToggleFromCaret == null) {
             NotificationHandler.notify("No text could be selected.",
-                    NotificationType.INFORMATION, this.editor);
+                NotificationType.INFORMATION, this.editor);
             return;
         }
 
@@ -142,7 +142,7 @@ public class ToggleAction extends AnAction {
         int caretPositionInsideOfCurrentSelection = oldPosition - caret.getSelectionStart();
 
         List<Integer> positionOfMatch = getPositionOfToggleMatch(this.regexPatternOfToggles, selectedToggleFromCaret,
-                (this.partialMatchingIsEnabled && !caretHasASelection), caretPositionInsideOfCurrentSelection);
+            (this.partialMatchingIsEnabled && !caretHasASelection), caretPositionInsideOfCurrentSelection);
 
         // If a match was found then toggle it, else display a notification.
         if (!positionOfMatch.isEmpty()) {
@@ -192,7 +192,7 @@ public class ToggleAction extends AnAction {
      * sequence is returned. Whether the next or previous toggle in the sequence
      * is returned depends on the toggleForward parameter.
      *
-     * @param word The word/symbol to be replaced.
+     * @param word          The word/symbol to be replaced.
      * @param toggleForward Determines whether the next or previous toggle in the sequence is returned.
      * @return The next/previous word/symbol in the sequence that the provided
      * word/symbol is part of. Null is returned if the provided word couldn't be
@@ -213,10 +213,10 @@ public class ToggleAction extends AnAction {
                        is reached. */
                     int sequenceSize = toggleWordsStructure.get(i).size();
                     return toggleWordsStructure.get(i).get(
-                            toggleForward
-                                    ? (j + 1) % sequenceSize // Next
-                                    : (j - 1 + sequenceSize) % sequenceSize // Previous
-                            );
+                        toggleForward
+                            ? (j + 1) % sequenceSize // Next
+                            : (j - 1 + sequenceSize) % sequenceSize // Previous
+                    );
                 }
             }
         }
@@ -241,7 +241,7 @@ public class ToggleAction extends AnAction {
      */
     public String createRegexPatternOfToggles(List<List<String>> toggleWordsStructure) {
         List<String> names = toggleWordsStructure.stream().flatMap(Collection::stream)
-                .sorted(Comparator.comparingInt(String::length).reversed()).toList();
+            .sorted(Comparator.comparingInt(String::length).reversed()).toList();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
@@ -260,13 +260,13 @@ public class ToggleAction extends AnAction {
      * <p>
      * Priority is based on the following: greater length and left > right.
      *
-     * @param input The text that will be searched for matches.
+     * @param input             The text that will be searched for matches.
      * @param allowPartialMatch Whether to allow partial matches. If not, then
      *                          only a match that is of the same length as the
      *                          input (aka a full match) is deemed valid.
-     * @param caretPosition The position the caret is in relative to the input.
-     *                      E.g. if the input is "add", then the caretPosition
-     *                      should be between 0 and 4.
+     * @param caretPosition     The position the caret is in relative to the input.
+     *                          E.g. if the input is "add", then the caretPosition
+     *                          should be between 0 and 4.
      * @return A pair of integers that indicate the beginning and end of the
      * match relative to the input string.
      */
