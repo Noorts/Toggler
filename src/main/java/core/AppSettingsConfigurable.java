@@ -38,7 +38,7 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         SettingsState settings = AppSettings.getInstance().getState();
-        boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
+        boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles.getToggles()));
         modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingEnabled();
         return modified;
     }
@@ -53,7 +53,7 @@ public class AppSettingsConfigurable implements Configurable {
 
             List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(
                     mySettingsComponent.getJsonText());
-            settings.toggles = currentSettingsFromMenu;
+            settings.toggles.setToggles(currentSettingsFromMenu);
 
             /* Set the JsonTextarea in the settings menu to the toggles saved to
              * the plugin. The side effect is that eventual errors entered by
@@ -71,7 +71,7 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public void reset() {
         SettingsState settings = AppSettings.getInstance().getState();
-        mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
+        mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles.getToggles()));
         mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingEnabled());
         mySettingsComponent.setStatusMessage("Loaded previous settings.");
     }

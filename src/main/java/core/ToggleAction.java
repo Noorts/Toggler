@@ -64,7 +64,7 @@ public class ToggleAction extends AnAction {
         final CaretModel caretModel = this.editor.getCaretModel();
 
         SettingsState appSettingsState = AppSettings.getInstance().getState();
-        this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
+        this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles.getToggles());
         this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingEnabled();
 
         /* Bandage (temporary fix) that might help remove the "ghost" caret that
@@ -200,7 +200,7 @@ public class ToggleAction extends AnAction {
      */
     private String findReplacementWord(String word, boolean toggleForward) {
         SettingsState appSettingsState = AppSettings.getInstance().getState();
-        List<List<String>> toggleWordsStructure = appSettingsState.toggles;
+        List<List<String>> toggleWordsStructure = appSettingsState.toggles.getToggles();
 
         String wordInLowerCase = word.toLowerCase();
 
