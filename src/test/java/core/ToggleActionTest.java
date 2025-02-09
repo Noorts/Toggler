@@ -18,8 +18,9 @@ public class ToggleActionTest {
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
 
         // Act
-        ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         // Assert
         String correctRegexPattern = "(\\QremoveClass\\E|\\QaddClass\\E|\\Qremove\\E|\\Qadd\\E)";
@@ -33,7 +34,9 @@ public class ToggleActionTest {
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -53,7 +56,9 @@ public class ToggleActionTest {
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -74,7 +79,9 @@ public class ToggleActionTest {
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -94,7 +101,9 @@ public class ToggleActionTest {
         List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -114,7 +123,9 @@ public class ToggleActionTest {
         List<String> secondTogglePair = new ArrayList<>(Arrays.asList("class", "interface"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(firstTogglePair, secondTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -141,7 +152,9 @@ public class ToggleActionTest {
         List<String> firstTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(firstTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -167,7 +180,9 @@ public class ToggleActionTest {
         List<String> longTogglePair = new ArrayList<>(Arrays.asList("ely", "remove"));
         List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
         ToggleAction newToggleAction = new ToggleAction();
-        String regexPattern = newToggleAction.createRegexPatternOfToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig();
+        togglesConfig.setToggles(toggleActionStructure);
+        String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "Lovely";
 
