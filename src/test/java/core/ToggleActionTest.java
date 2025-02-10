@@ -1,7 +1,7 @@
 package core;
 
 import org.junit.Test;
-import utils.JsonParser;
+import utils.ConfigParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ToggleActionTest {
     @Test
-    public void regexPatternIsCorrectlyCreatedFromTheTogglePairs() throws JsonParser.TogglesFormatException {
+    public void regexPatternIsCorrectlyCreatedFromTheTogglePairs() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
 
@@ -25,7 +25,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void fullMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws JsonParser.TogglesFormatException {
+    public void fullMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -45,7 +45,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws JsonParser.TogglesFormatException {
+    public void partialMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -65,7 +65,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void fullMatchIsFoundCorrectlyWithPartialMatchingDisabled() throws JsonParser.TogglesFormatException {
+    public void fullMatchIsFoundCorrectlyWithPartialMatchingDisabled() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -85,7 +85,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsNotFoundCorrectlyWithPartialMatchingDisabled() throws JsonParser.TogglesFormatException {
+    public void partialMatchIsNotFoundCorrectlyWithPartialMatchingDisabled() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -104,7 +104,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchUnderCaretIsFoundCorrectly() throws JsonParser.TogglesFormatException {
+    public void partialMatchUnderCaretIsFoundCorrectly() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"], [\"class\", \"interface\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -131,7 +131,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsNotFoundCorrectlyWhenCaretPositionIsOutsideOfIt() throws JsonParser.TogglesFormatException {
+    public void partialMatchIsNotFoundCorrectlyWhenCaretPositionIsOutsideOfIt() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
@@ -156,7 +156,7 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void ifThereArePartialMatchesOnEitherSideOfTheCaretThenTheOneOnTheRightIsCorrectlyReturned() throws JsonParser.TogglesFormatException {
+    public void ifThereArePartialMatchesOnEitherSideOfTheCaretThenTheOneOnTheRightIsCorrectlyReturned() throws ConfigParser.TogglesFormatException {
         // Arrange
         String toggles = "[[\"lov\", \"add\"], [\"ely\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();

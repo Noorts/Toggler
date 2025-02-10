@@ -3,7 +3,7 @@ package core;
 import com.intellij.openapi.options.Configurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
-import utils.JsonParser;
+import utils.ConfigParser;
 
 import javax.swing.*;
 import java.util.List;
@@ -59,7 +59,7 @@ public class AppSettingsConfigurable implements Configurable {
              * the textarea input as the input is forcefully reset. */
             mySettingsComponent.setJsonText(settings.toggles.toString());
             mySettingsComponent.setStatusMessage("Saving was successful.");
-        } catch (JsonParser.TogglesFormatException e) {
+        } catch (ConfigParser.TogglesFormatException e) {
             mySettingsComponent.setStatusErrorMessage(e.getMessage());
         }
     }

@@ -7,7 +7,7 @@ import com.intellij.util.ui.components.BorderLayoutPanel;
 import org.jetbrains.annotations.NotNull;
 import utils.ConfirmResetDialogWrapper;
 import utils.FileHandler;
-import utils.JsonParser;
+import utils.ConfigParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,7 +88,7 @@ public class AppSettingsComponent {
         try {
             String fileContent = FileHandler.loadContentFromFileToString();
             settingsState.toggles.overwriteToggles(fileContent);
-        } catch (JsonParser.TogglesFormatException e) {
+        } catch (ConfigParser.TogglesFormatException e) {
             setStatusErrorMessage(e.getMessage());
             return;
         } catch (FileHandler.FileSelectionCancelledException e) {

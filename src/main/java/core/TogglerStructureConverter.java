@@ -3,7 +3,7 @@ package core;
 import com.intellij.notification.NotificationType;
 import com.intellij.util.xmlb.Converter;
 import org.jetbrains.annotations.NotNull;
-import utils.JsonParser;
+import utils.ConfigParser;
 import utils.NotificationHandler;
 
 /**
@@ -15,7 +15,7 @@ class TogglerStructureConverter extends Converter<TogglesConfig> {
     public TogglesConfig fromString(@NotNull String togglesString) {
         try {
             return new TogglesConfig(togglesString);
-        } catch (JsonParser.TogglesFormatException e) {
+        } catch (ConfigParser.TogglesFormatException e) {
             NotificationHandler.notify("The toggles couldn't be parsed from the " +
                     "plugin settings storage successfully.",
                 NotificationType.ERROR);

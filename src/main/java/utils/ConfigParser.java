@@ -8,8 +8,8 @@ import java.util.*;
  * A utility written to handle parsing and composing between a String and the
  * plugin's toggles data structure.
  */
-public class JsonParser {
-    private JsonParser() { throw new IllegalStateException("Utility class"); }
+public class ConfigParser {
+    private ConfigParser() { throw new IllegalStateException("Utility class"); }
 
     /**
      * Check the provided text for errors that indicate that the text doesn't
@@ -139,8 +139,8 @@ public class JsonParser {
     /**
      * A custom exception thrown when toggles parsed from a String are
      * malformed.
-     * @see JsonParser#checkJsonForErrors
-     * @see JsonParser#parseJsonToToggles
+     * @see ConfigParser#checkJsonForErrors
+     * @see ConfigParser#parseJsonToToggles
      */
     public static class TogglesFormatException extends Exception {
         public TogglesFormatException(String errorMessage) {

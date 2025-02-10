@@ -2,7 +2,7 @@ package core;
 
 import com.intellij.notification.NotificationType;
 import org.jetbrains.annotations.NotNull;
-import utils.JsonParser;
+import utils.ConfigParser;
 import utils.NotificationHandler;
 
 import java.util.Collection;
@@ -22,23 +22,23 @@ public class TogglesConfig {
     /**
      * Parses and loads provided toggles.
      */
-    public TogglesConfig(@NotNull String togglesString) throws JsonParser.TogglesFormatException {
+    public TogglesConfig(@NotNull String togglesString) throws ConfigParser.TogglesFormatException {
         this.overwriteToggles(togglesString);
     }
 
     @Override
     public String toString() {
-        return JsonParser.toJson(this.toggles);
+        return ConfigParser.toJson(this.toggles);
     }
 
-    public void overwriteToggles(@NotNull String togglesString) throws JsonParser.TogglesFormatException {
-        this.toggles = JsonParser.parseJsonToToggles(togglesString);
+    public void overwriteToggles(@NotNull String togglesString) throws ConfigParser.TogglesFormatException {
+        this.toggles = ConfigParser.parseJsonToToggles(togglesString);
     }
 
     public void resetTogglesToDefault() {
         try {
-            toggles = JsonParser.parseJsonToToggles(Constants.DEFAULT_TOGGLES);
-        } catch (JsonParser.TogglesFormatException e) {
+            toggles = ConfigParser.parseJsonToToggles(Constants.DEFAULT_TOGGLES);
+        } catch (ConfigParser.TogglesFormatException e) {
             NotificationHandler.notify("The defaultToggles provided by the creator of the " +
                     "plugin don't conform to the JSON format.",
                 NotificationType.ERROR);
