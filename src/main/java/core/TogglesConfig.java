@@ -12,8 +12,27 @@ import java.util.List;
 public class TogglesConfig {
     private List<List<String>> toggles;
 
+    /**
+     * Instantiated with default toggles.
+     */
     public TogglesConfig() {
         resetTogglesToDefault();
+    }
+
+    /**
+     * Parses and loads provided toggles.
+     */
+    public TogglesConfig(@NotNull String togglesString) throws JsonParser.TogglesFormatException {
+        this.overwriteToggles(togglesString);
+    }
+
+    @Override
+    public String toString() {
+        return JsonParser.toJson(this.toggles);
+    }
+
+    public void overwriteToggles(@NotNull String togglesString) throws JsonParser.TogglesFormatException {
+        this.toggles = JsonParser.parseJsonToToggles(togglesString);
     }
 
     public void resetTogglesToDefault() {
@@ -87,30 +106,5 @@ public class TogglesConfig {
         }
         stringBuilder.append(")");
         return stringBuilder.toString();
-    }
-
-    public static TogglesConfig deserialize(@NotNull String togglesString) {
-        TogglesConfig config = new TogglesConfig();
-        try {
-            config.toggles = JsonParser.parseJsonToToggles(togglesString);
-            return config;
-        } catch (JsonParser.TogglesFormatException e) {
-            NotificationHandler.notify("The toggles couldn't be parsed from the " +
-                    "plugin setting storage successfully.",
-                NotificationType.ERROR);
-            return null;
-        }
-    }
-
-    public String serialize() {
-        return JsonParser.toJson(this.toggles);
-    }
-
-    public List<List<String>> getToggles() {
-        return toggles;
-    }
-
-    public void setToggles(List<List<String>> toggles) {
-        this.toggles = toggles;
     }
 }

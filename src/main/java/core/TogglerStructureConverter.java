@@ -1,7 +1,10 @@
 package core;
 
+import com.intellij.notification.NotificationType;
 import com.intellij.util.xmlb.Converter;
 import org.jetbrains.annotations.NotNull;
+import utils.JsonParser;
+import utils.NotificationHandler;
 
 /**
  * A converter used by the AppSettingsState to write and load the state of the
@@ -10,10 +13,17 @@ import org.jetbrains.annotations.NotNull;
  */
 class TogglerStructureConverter extends Converter<TogglesConfig> {
     public TogglesConfig fromString(@NotNull String togglesString) {
-        return TogglesConfig.deserialize(togglesString);
+        try {
+            return new TogglesConfig(togglesString);
+        } catch (JsonParser.TogglesFormatException e) {
+            NotificationHandler.notify("The toggles couldn't be parsed from the " +
+                    "plugin settings storage successfully.",
+                NotificationType.ERROR);
+            return null;
+        }
     }
 
     public String toString(@NotNull TogglesConfig togglesConfig) {
-        return togglesConfig.serialize();
+        return togglesConfig.toString();
     }
 }

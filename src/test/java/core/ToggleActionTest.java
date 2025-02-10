@@ -1,25 +1,22 @@
 package core;
 
 import org.junit.Test;
+import utils.JsonParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ToggleActionTest {
     @Test
-    public void regexPatternIsCorrectlyCreatedFromTheTogglePairs() {
+    public void regexPatternIsCorrectlyCreatedFromTheTogglePairs() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
 
         // Act
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         // Assert
@@ -28,14 +25,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void fullMatchIsFoundCorrectlyWithPartialMatchingEnabled() {
+    public void fullMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -51,13 +45,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsFoundCorrectlyWithPartialMatchingEnabled() {
+    public void partialMatchIsFoundCorrectlyWithPartialMatchingEnabled() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
+        String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -73,14 +65,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void fullMatchIsFoundCorrectlyWithPartialMatchingDisabled() {
+    public void fullMatchIsFoundCorrectlyWithPartialMatchingDisabled() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<String> longTogglePair = new ArrayList<>(Arrays.asList("addClass", "removeClass"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -96,13 +85,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsNotFoundCorrectlyWithPartialMatchingDisabled() {
+    public void partialMatchIsNotFoundCorrectlyWithPartialMatchingDisabled() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(smallTogglePair));
+        String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -117,14 +104,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchUnderCaretIsFoundCorrectly() {
+    public void partialMatchUnderCaretIsFoundCorrectly() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> firstTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<String> secondTogglePair = new ArrayList<>(Arrays.asList("class", "interface"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(firstTogglePair, secondTogglePair));
+        String toggles = "[[\"add\", \"remove\"], [\"class\", \"interface\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -147,13 +131,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void partialMatchIsNotFoundCorrectlyWhenCaretPositionIsOutsideOfIt() {
+    public void partialMatchIsNotFoundCorrectlyWhenCaretPositionIsOutsideOfIt() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> firstTogglePair = new ArrayList<>(Arrays.asList("add", "remove"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Collections.singletonList(firstTogglePair));
+        String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "addClass";
@@ -174,14 +156,11 @@ public class ToggleActionTest {
     }
 
     @Test
-    public void ifThereArePartialMatchesOnEitherSideOfTheCaretThenTheOneOnTheRightIsCorrectlyReturned() {
+    public void ifThereArePartialMatchesOnEitherSideOfTheCaretThenTheOneOnTheRightIsCorrectlyReturned() throws JsonParser.TogglesFormatException {
         // Arrange
-        List<String> smallTogglePair = new ArrayList<>(Arrays.asList("lov", "add"));
-        List<String> longTogglePair = new ArrayList<>(Arrays.asList("ely", "remove"));
-        List<List<String>> toggleActionStructure = new ArrayList<>(Arrays.asList(smallTogglePair, longTogglePair));
+        String toggles = "[[\"lov\", \"add\"], [\"ely\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
-        TogglesConfig togglesConfig = new TogglesConfig();
-        togglesConfig.setToggles(toggleActionStructure);
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
         String regexPattern = togglesConfig.createRegexPatternOfToggles();
 
         String input = "Lovely";
