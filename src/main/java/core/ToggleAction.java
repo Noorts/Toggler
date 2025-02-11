@@ -64,7 +64,7 @@ public class ToggleAction extends AnAction {
         final CaretModel caretModel = this.editor.getCaretModel();
 
         this.settingsState = AppSettings.getInstance().getState();
-        this.regexPatternOfToggles = this.settingsState.toggles.createRegexPatternOfToggles();
+        this.regexPatternOfToggles = this.settingsState.toggles.getRegexPatternOfToggles();
         this.partialMatchingIsEnabled = this.settingsState.isPartialMatchingEnabled();
 
         /* Bandage (temporary fix) that might help remove the "ghost" caret that

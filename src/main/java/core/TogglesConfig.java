@@ -95,7 +95,7 @@ public class TogglesConfig {
      *
      * @return The regex pattern packaged inside a String.
      */
-    public String createRegexPatternOfToggles() {
+    public String getRegexPatternOfToggles() {
         List<String> names = this.toggles.stream().flatMap(Collection::stream)
             .sorted(Comparator.comparingInt(String::length).reversed()).toList();
 
