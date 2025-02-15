@@ -104,12 +104,12 @@ public class TogglesConfig {
      */
     public Pattern getRegexPatternOfToggles() {
         if (regexPatternOfTogglesCache == null) {
-            this.regexPatternOfTogglesCache = generateRegexPatternOfToggles();
+            this.regexPatternOfTogglesCache = buildRegexPatternOfToggles();
         }
         return regexPatternOfTogglesCache;
     }
 
-    public Pattern generateRegexPatternOfToggles() {
+    private Pattern buildRegexPatternOfToggles() {
         String regexStringOfToggles = this.toggles.stream()
             .flatMap(Collection::stream)
             // sort to prioritize large matches over smaller matches.
