@@ -6,8 +6,8 @@ import utils.ConfigParser;
 import utils.NotificationHandler;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TogglesConfig {
     private List<List<String>> toggles;
@@ -109,15 +109,9 @@ public class TogglesConfig {
     }
 
     public String generateRegexPatternOfToggles() {
-        List<String> names = this.toggles.stream().flatMap(Collection::stream)
-            .sorted(Comparator.comparingInt(String::length).reversed()).toList();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
-        for (int i = 1; i < names.size(); i++) {
-            stringBuilder.append("|\\Q").append(names.get(i)).append("\\E");
-        }
-        stringBuilder.append(")");
-        return stringBuilder.toString();
+        return this.toggles.stream()
+            .flatMap(Collection::stream)
+            .map(s -> "\\Q" + s + "\\E")
+            .collect(Collectors.joining("|", "(", ")"));
     }
 }
