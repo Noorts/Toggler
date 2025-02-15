@@ -17,14 +17,14 @@ import java.util.regex.Pattern;
 
 public class ToggleAction extends AnAction {
     private Editor editor;
-    private Project project;
     private Document document;
+    private SettingsState settingsState;
 
     // Default is to toggle to the next word/symbol in the toggle sequence.
     private boolean toggleForward = true;
     private boolean partialMatchingIsEnabled = true;
 
-    private String regexPatternOfToggles;
+    private Pattern regexPatternOfToggles;
 
     public ToggleAction() {
     }
@@ -53,8 +53,8 @@ public class ToggleAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         this.editor = e.getData(CommonDataKeys.EDITOR);
-        this.project = e.getData(CommonDataKeys.PROJECT);
-        if (this.editor == null || this.project == null) {
+        Project project = e.getData(CommonDataKeys.PROJECT);
+        if (this.editor == null || project == null) {
             NotificationHandler.notify("Toggle aborted. Internal error: editor and/or project is null. " +
                     "Please open an issue: https://github.com/Noorts/Toggler/issues.",
                 NotificationType.ERROR, this.editor);
@@ -63,9 +63,9 @@ public class ToggleAction extends AnAction {
         this.document = this.editor.getDocument();
         final CaretModel caretModel = this.editor.getCaretModel();
 
-        AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        this.regexPatternOfToggles = createRegexPatternOfToggles(appSettingsState.toggles);
-        this.partialMatchingIsEnabled = appSettingsState.isPartialMatchingIsEnabled();
+        this.settingsState = AppSettings.getInstance().getState();
+        this.regexPatternOfToggles = this.settingsState.toggles.getRegexPatternOfToggles();
+        this.partialMatchingIsEnabled = this.settingsState.isPartialMatchingEnabled();
 
         /* Bandage (temporary fix) that might help remove the "ghost" caret that
         appears on load of the IDE. */
@@ -147,7 +147,7 @@ public class ToggleAction extends AnAction {
         // If a match was found then toggle it, else display a notification.
         if (!positionOfMatch.isEmpty()) {
             String match = selectedToggleFromCaret.substring(positionOfMatch.get(0), positionOfMatch.get(1));
-            String replacementToggle = findReplacementWord(match, this.toggleForward);
+            String replacementToggle = settingsState.toggles.findReplacementWord(match, this.toggleForward);
 
             /* The replacementToggle should never be null in this case, because
              * if no match was found then the positionOfMatch would be null.
@@ -186,73 +186,6 @@ public class ToggleAction extends AnAction {
     }
 
     /**
-     * Find the next or previous word/symbol for the provided word/symbol in the
-     * toggles. The provided word/symbol is searched for in the toggles
-     * configured in the plugin settings and the next or previous one in the
-     * sequence is returned. Whether the next or previous toggle in the sequence
-     * is returned depends on the toggleForward parameter.
-     *
-     * @param word          The word/symbol to be replaced.
-     * @param toggleForward Determines whether the next or previous toggle in the sequence is returned.
-     * @return The next/previous word/symbol in the sequence that the provided
-     * word/symbol is part of. Null is returned if the provided word couldn't be
-     * found in the config.
-     */
-    private String findReplacementWord(String word, boolean toggleForward) {
-        AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        List<List<String>> toggleWordsStructure = appSettingsState.toggles;
-
-        String wordInLowerCase = word.toLowerCase();
-
-        /* O(n) search for the word/symbol to replace. */
-        for (int i = 0; i < toggleWordsStructure.size(); i++) {
-            for (int j = 0; j < toggleWordsStructure.get(i).size(); j++) {
-                if (toggleWordsStructure.get(i).get(j).toLowerCase().equals(wordInLowerCase)) {
-                    /* The next word/symbol in the sequence is retrieved. The
-                       modulo is used to wrap around if the end of the sequence
-                       is reached. */
-                    int sequenceSize = toggleWordsStructure.get(i).size();
-                    return toggleWordsStructure.get(i).get(
-                        toggleForward
-                            ? (j + 1) % sequenceSize // Next
-                            : (j - 1 + sequenceSize) % sequenceSize // Previous
-                    );
-                }
-            }
-        }
-
-        /* The word/symbol could not be found. */
-        return null;
-    }
-
-    /**
-     * Takes the provided toggles and creates a regex pattern out of it that
-     * matches any of the toggles.
-     * <p>
-     * The individual toggles have been escaped by wrapping them in \\Q and \\E.
-     * This allows characters such as * that would normally be recognised as
-     * regex operators to be included in the toggles.
-     * <p>
-     * The following is an example of the output of the method:
-     * "(\\Qremove\\E|\\Qadd\\E)"
-     *
-     * @param toggleWordsStructure The data structure that holds the toggles.
-     * @return The regex pattern packaged inside a String.
-     */
-    public String createRegexPatternOfToggles(List<List<String>> toggleWordsStructure) {
-        List<String> names = toggleWordsStructure.stream().flatMap(Collection::stream)
-            .sorted(Comparator.comparingInt(String::length).reversed()).toList();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("(\\Q").append(names.get(0)).append("\\E");
-        for (int i = 1; i < names.size(); i++) {
-            stringBuilder.append("|\\Q").append(names.get(i)).append("\\E");
-        }
-        stringBuilder.append(")");
-        return stringBuilder.toString();
-    }
-
-    /**
      * Provided an input, search for toggles inside that input and if found and
      * the caret touches it, return the match's position using its beginning and
      * end indices relative to the input string. A caret touching a match means
@@ -270,8 +203,8 @@ public class ToggleAction extends AnAction {
      * @return A pair of integers that indicate the beginning and end of the
      * match relative to the input string.
      */
-    public List<Integer> getPositionOfToggleMatch(String regexPatternOfToggles, String input, boolean allowPartialMatch, int caretPosition) {
-        Matcher matcher = Pattern.compile(regexPatternOfToggles, Pattern.CASE_INSENSITIVE).matcher(input);
+    public List<Integer> getPositionOfToggleMatch(Pattern regexPatternOfToggles, String input, boolean allowPartialMatch, int caretPosition) {
+        Matcher matcher = regexPatternOfToggles.matcher(input);
 
         // Sort the matches by string length, so that longer matches get
         // priority over smaller ones.

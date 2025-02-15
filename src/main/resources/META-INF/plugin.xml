@@ -6,7 +6,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="core.AppSettingsState"/>
+        <applicationService serviceImplementation="core.AppSettings"/>
         <applicationConfigurable parentId="tools" instance="core.AppSettingsConfigurable"
                                  id="com.noorts.toggler.AppSettingsConfigurable"
                                  displayName="Toggler"/>

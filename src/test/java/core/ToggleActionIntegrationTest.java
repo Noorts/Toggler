@@ -100,4 +100,10 @@ public class ToggleActionIntegrationTest extends BasePlatformTestCase {
         myFixture.performEditorAction(TOGGLE_ACTION); // |Get
         myFixture.checkResult("Get");
     }
+
+    public void testToggleActionSupportsEscapedRegexCharactersInToggles() {
+        myFixture.configureByText(TEST_FILE_NAME, "*="); // |*=
+        myFixture.performEditorAction(TOGGLE_ACTION); // |/=
+        myFixture.checkResult("/=");
+    }
 }
