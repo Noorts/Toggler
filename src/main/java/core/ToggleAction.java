@@ -24,7 +24,7 @@ public class ToggleAction extends AnAction {
     private boolean toggleForward = true;
     private boolean partialMatchingIsEnabled = true;
 
-    private String regexPatternOfToggles;
+    private Pattern regexPatternOfToggles;
 
     public ToggleAction() {
     }
@@ -203,8 +203,8 @@ public class ToggleAction extends AnAction {
      * @return A pair of integers that indicate the beginning and end of the
      * match relative to the input string.
      */
-    public List<Integer> getPositionOfToggleMatch(String regexPatternOfToggles, String input, boolean allowPartialMatch, int caretPosition) {
-        Matcher matcher = Pattern.compile(regexPatternOfToggles, Pattern.CASE_INSENSITIVE).matcher(input);
+    public List<Integer> getPositionOfToggleMatch(Pattern regexPatternOfToggles, String input, boolean allowPartialMatch, int caretPosition) {
+        Matcher matcher = regexPatternOfToggles.matcher(input);
 
         // Sort the matches by string length, so that longer matches get
         // priority over smaller ones.

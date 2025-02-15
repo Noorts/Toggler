@@ -8,12 +8,13 @@ import utils.NotificationHandler;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TogglesConfig {
     private List<List<String>> toggles;
 
-    private String regexPatternOfTogglesCache = null;
+    private Pattern regexPatternOfTogglesCache = null;
 
     /**
      * Instantiated with default toggles.
@@ -92,29 +93,30 @@ public class TogglesConfig {
 
     /**
      * Returns a regex pattern that matches any of the configured toggles.
+     * The regex is case-insensitive.
      * <p>
      * The individual toggles have been escaped by wrapping them in \\Q and \\E.
      * This allows characters such as * to be included in the toggles.
      * These would normally be recognised as regex operators.
      * <p>
-     * The following is an example of the output of the method:
+     * An example of what the pattern might represent:
      * "(\\Qremove\\E|\\Qadd\\E)"
-     *
-     * @return The regex pattern packaged inside a String.
      */
-    public String getRegexPatternOfToggles() {
+    public Pattern getRegexPatternOfToggles() {
         if (regexPatternOfTogglesCache == null) {
             this.regexPatternOfTogglesCache = generateRegexPatternOfToggles();
         }
         return regexPatternOfTogglesCache;
     }
 
-    public String generateRegexPatternOfToggles() {
-        return this.toggles.stream()
+    public Pattern generateRegexPatternOfToggles() {
+        String regexStringOfToggles = this.toggles.stream()
             .flatMap(Collection::stream)
             // sort to prioritize large matches over smaller matches.
             .sorted(Comparator.comparingInt(String::length).reversed())
             .map(s -> "\\Q" + s + "\\E")
             .collect(Collectors.joining("|", "(", ")"));
+
+        return Pattern.compile(regexStringOfToggles, Pattern.CASE_INSENSITIVE);
     }
 }

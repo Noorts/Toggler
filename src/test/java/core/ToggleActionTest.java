@@ -6,6 +6,7 @@ import utils.ConfigParser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,11 +18,11 @@ public class ToggleActionTest {
 
         // Act
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         // Assert
         String correctRegexPattern = "(\\QremoveClass\\E|\\QaddClass\\E|\\Qremove\\E|\\Qadd\\E)";
-        assertEquals(correctRegexPattern, regexPattern, "The regex pattern that was created is incorrect.");
+        assertEquals(correctRegexPattern, regexPattern.pattern(), "The regex pattern that was created is incorrect.");
     }
 
     @Test
@@ -30,7 +31,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -50,7 +51,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -70,7 +71,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -90,7 +91,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -109,7 +110,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"], [\"class\", \"interface\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -136,7 +137,7 @@ public class ToggleActionTest {
         String toggles = "[[\"add\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "addClass";
 
@@ -161,7 +162,7 @@ public class ToggleActionTest {
         String toggles = "[[\"lov\", \"add\"], [\"ely\", \"remove\"]]";
         ToggleAction newToggleAction = new ToggleAction();
         TogglesConfig togglesConfig = new TogglesConfig(toggles);
-        String regexPattern = togglesConfig.getRegexPatternOfToggles();
+        Pattern regexPattern = togglesConfig.getRegexPatternOfToggles();
 
         String input = "Lovely";
 
