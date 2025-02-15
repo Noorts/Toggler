@@ -176,4 +176,25 @@ public class ToggleActionTest {
                         "on the left instead of the one on the right.");
     }
 
+    // Fix the current format used to store the toggles persistently. This is here to catch breaking changes.
+    @Test
+    public void togglesConfigurationPersistentStorageFormatHasNotDeviatedFromOriginal() throws ConfigParser.TogglesFormatException {
+        // Arrange
+        String toggles = "[[\"add\", \"remove\"], [\"addClass\", \"removeClass\"]]";
+        TogglesConfig togglesConfig = new TogglesConfig(toggles);
+        TogglerStructureConverter converter = new TogglerStructureConverter();
+
+        // Act
+        String persistentStoredToggles = converter.toString(togglesConfig);
+
+        // Assert
+        String expectedTogglesFormat = """
+            [
+            \t["add", "remove"],
+            \t["addClass", "removeClass"]
+            ]""";
+        assertEquals(expectedTogglesFormat, persistentStoredToggles,
+            "The toggles config format deviates from the expected formatting.");
+    }
+
 }
