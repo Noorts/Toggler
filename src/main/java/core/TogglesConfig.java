@@ -6,6 +6,7 @@ import utils.ConfigParser;
 import utils.NotificationHandler;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,6 +112,8 @@ public class TogglesConfig {
     public String generateRegexPatternOfToggles() {
         return this.toggles.stream()
             .flatMap(Collection::stream)
+            // sort to prioritize large matches over smaller matches.
+            .sorted(Comparator.comparingInt(String::length).reversed())
             .map(s -> "\\Q" + s + "\\E")
             .collect(Collectors.joining("|", "(", ")"));
     }
