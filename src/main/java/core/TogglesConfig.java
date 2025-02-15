@@ -12,6 +12,8 @@ import java.util.List;
 public class TogglesConfig {
     private List<List<String>> toggles;
 
+    private String regexPatternOfTogglesCache = null;
+
     /**
      * Instantiated with default toggles.
      */
@@ -33,6 +35,7 @@ public class TogglesConfig {
 
     public void overwriteToggles(@NotNull String togglesString) throws ConfigParser.TogglesFormatException {
         this.toggles = ConfigParser.parseJsonToToggles(togglesString);
+        invalidateCache();
     }
 
     public void resetTogglesToDefault() {
@@ -43,6 +46,10 @@ public class TogglesConfig {
                     "plugin don't conform to the JSON format.",
                 NotificationType.ERROR);
         }
+    }
+
+    private void invalidateCache() {
+        this.regexPatternOfTogglesCache = null;
     }
 
     /**
@@ -83,12 +90,11 @@ public class TogglesConfig {
     }
 
     /**
-     * Takes the provided toggles and creates a regex pattern out of it that
-     * matches any of the toggles.
+     * Returns a regex pattern that matches any of the configured toggles.
      * <p>
      * The individual toggles have been escaped by wrapping them in \\Q and \\E.
-     * This allows characters such as * that would normally be recognised as
-     * regex operators to be included in the toggles.
+     * This allows characters such as * to be included in the toggles.
+     * These would normally be recognised as regex operators.
      * <p>
      * The following is an example of the output of the method:
      * "(\\Qremove\\E|\\Qadd\\E)"
@@ -96,6 +102,13 @@ public class TogglesConfig {
      * @return The regex pattern packaged inside a String.
      */
     public String getRegexPatternOfToggles() {
+        if (regexPatternOfTogglesCache == null) {
+            this.regexPatternOfTogglesCache = generateRegexPatternOfToggles();
+        }
+        return regexPatternOfTogglesCache;
+    }
+
+    public String generateRegexPatternOfToggles() {
         List<String> names = this.toggles.stream().flatMap(Collection::stream)
             .sorted(Comparator.comparingInt(String::length).reversed()).toList();
 
