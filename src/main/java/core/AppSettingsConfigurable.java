@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import utils.ConfigParser;
 
 import javax.swing.*;
-import java.util.List;
 
 // Docs:
 // When the settings are changed to something else than the defaultToggles, then
