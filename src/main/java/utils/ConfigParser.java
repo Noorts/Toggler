@@ -26,7 +26,7 @@ public class ConfigParser {
             throw new TogglesFormatException("The toggles are malformed (check parentheses).");
         }
 
-        if (jsonText.length() == 0) {
+        if (jsonText.isEmpty()) {
             throw new TogglesFormatException("No toggles could be found.");
         }
     }

@@ -45,7 +45,7 @@ public class ToggleActionIntegrationTest extends BasePlatformTestCase {
         myFixture.checkResult("getName");
 
         // Inside
-        myFixture.performEditorAction("EditorLineStart");; // |getName
+        myFixture.performEditorAction("EditorLineStart"); // |getName
         myFixture.performEditorAction("EditorRight"); // g|etName
         myFixture.performEditorAction(TOGGLE_ACTION); // s|etName
         myFixture.checkResult("setName");
