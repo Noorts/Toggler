@@ -44,7 +44,7 @@ public class ConfigParser {
      */
     public static List<List<String>> parseJsonToToggles(String jsonText) throws TogglesFormatException {
         List<List<String>> togglesStructure = new ArrayList<>();
-        jsonText = jsonText.replaceAll("\\t|\\n|\\s", "");
+        jsonText = jsonText.replaceAll("\\s", "");
 
         // Check the JSON for errors and throw an error if required.
         checkJsonForErrors(jsonText);

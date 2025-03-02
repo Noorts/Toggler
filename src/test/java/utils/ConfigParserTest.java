@@ -42,7 +42,7 @@ public class ConfigParserTest {
     @Test
     public void parseTogglesWithSpaces() {
         assertDoesNotThrow(() -> {
-            String togglesWithSpaces = BASIC_TOGGLES.replace("\t", "    ");
+            String togglesWithSpaces = BASIC_TOGGLES.replaceAll("\\t", "    ");
 
             List<List<String>> parsedToggles = ConfigParser.parseJsonToToggles(togglesWithSpaces);
             assertEquals(BASIC_TOGGLES_LIST, parsedToggles);
@@ -52,7 +52,7 @@ public class ConfigParserTest {
     @Test
     public void parseTogglesCollapsedOnOneLine() {
         assertDoesNotThrow(() -> {
-            String togglesOnOneLine = BASIC_TOGGLES.replaceAll("[\\t\\n\\s]", "");
+            String togglesOnOneLine = BASIC_TOGGLES.replaceAll("\\s", "");
 
             List<List<String>> parsedToggles = ConfigParser.parseJsonToToggles(togglesOnOneLine);
             assertEquals(BASIC_TOGGLES_LIST, parsedToggles);
