@@ -45,7 +45,7 @@ public class ToggleActionIntegrationTest extends BasePlatformTestCase {
         myFixture.checkResult("getName");
 
         // Inside
-        myFixture.performEditorAction("EditorLineStart");; // |getName
+        myFixture.performEditorAction("EditorLineStart"); // |getName
         myFixture.performEditorAction("EditorRight"); // g|etName
         myFixture.performEditorAction(TOGGLE_ACTION); // s|etName
         myFixture.checkResult("setName");
@@ -99,5 +99,11 @@ public class ToggleActionIntegrationTest extends BasePlatformTestCase {
         myFixture.configureByText(TEST_FILE_NAME, "Set"); // |Set
         myFixture.performEditorAction(TOGGLE_ACTION); // |Get
         myFixture.checkResult("Get");
+    }
+
+    public void testToggleActionSupportsEscapedRegexCharactersInToggles() {
+        myFixture.configureByText(TEST_FILE_NAME, "*="); // |*=
+        myFixture.performEditorAction(TOGGLE_ACTION); // |/=
+        myFixture.checkResult("/=");
     }
 }

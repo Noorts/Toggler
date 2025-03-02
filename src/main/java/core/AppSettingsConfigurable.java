@@ -3,10 +3,9 @@ package core;
 import com.intellij.openapi.options.Configurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
-import utils.JsonParser;
+import utils.ConfigParser;
 
 import javax.swing.*;
-import java.util.List;
 
 // Docs:
 // When the settings are changed to something else than the defaultToggles, then
@@ -37,31 +36,29 @@ public class AppSettingsConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        AppSettingsState settings = AppSettingsState.getInstance();
-        boolean modified = !mySettingsComponent.getJsonText().equals(JsonParser.toJson(settings.toggles));
-        modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingIsEnabled();
+        SettingsState settings = AppSettings.getInstance().getState();
+        boolean modified = !mySettingsComponent.getJsonText().equals(settings.toggles.toString());
+        modified |= mySettingsComponent.getPartialMatchingCheckboxStatus() != settings.isPartialMatchingEnabled();
         return modified;
     }
 
     @Override
     public void apply() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        SettingsState settings = AppSettings.getInstance().getState();
 
         try {
             /* Set whether the partial matching functionality is enabled. */
             settings.setPartialMatchingIsEnabled(mySettingsComponent.getPartialMatchingCheckboxStatus());
 
-            List<List<String>> currentSettingsFromMenu = JsonParser.parseJsonToToggles(
-                    mySettingsComponent.getJsonText());
-            settings.toggles = currentSettingsFromMenu;
+            settings.toggles.overwriteToggles(mySettingsComponent.getJsonText());
 
             /* Set the JsonTextarea in the settings menu to the toggles saved to
              * the plugin. The side effect is that eventual errors entered by
              * the user that aren't included by the JsonParser are removed from
              * the textarea input as the input is forcefully reset. */
-            mySettingsComponent.setJsonText(JsonParser.toJson(currentSettingsFromMenu));
+            mySettingsComponent.setJsonText(settings.toggles.toString());
             mySettingsComponent.setStatusMessage("Saving was successful.");
-        } catch (JsonParser.TogglesFormatException e) {
+        } catch (ConfigParser.TogglesFormatException e) {
             mySettingsComponent.setStatusErrorMessage(e.getMessage());
         }
     }
@@ -70,9 +67,9 @@ public class AppSettingsConfigurable implements Configurable {
      * loaded. */
     @Override
     public void reset() {
-        AppSettingsState settings = AppSettingsState.getInstance();
-        mySettingsComponent.setJsonText(JsonParser.toJson(settings.toggles));
-        mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingIsEnabled());
+        SettingsState settings = AppSettings.getInstance().getState();
+        mySettingsComponent.setJsonText(settings.toggles.toString());
+        mySettingsComponent.setPartialMatchingCheckboxStatus(settings.isPartialMatchingEnabled());
         mySettingsComponent.setStatusMessage("Loaded previous settings.");
     }
 

@@ -7,7 +7,7 @@ import com.intellij.util.ui.components.BorderLayoutPanel;
 import org.jetbrains.annotations.NotNull;
 import utils.ConfirmResetDialogWrapper;
 import utils.FileHandler;
-import utils.JsonParser;
+import utils.ConfigParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,20 +74,21 @@ public class AppSettingsComponent {
     }
 
     public void executeResetButtonAction() {
-        AppSettingsState appSettingsState = AppSettingsState.getInstance();
-        appSettingsState.resetSettingsToDefault();
-        setJsonText(JsonParser.toJson(appSettingsState.toggles));
-        setPartialMatchingCheckboxStatus(appSettingsState.isPartialMatchingIsEnabled());
+        SettingsState settingsState = AppSettings.getInstance().getState();
+        settingsState.resetSettingsToDefault();
+        setJsonText(settingsState.toggles.toString());
+        setPartialMatchingCheckboxStatus(settingsState.isPartialMatchingEnabled());
     }
 
     private void importTogglesFromJsonFile() {
-        AppSettingsState appSettingsState = AppSettingsState.getInstance();
+        SettingsState settingsState = AppSettings.getInstance().getState();
 
         // Load and parse the contents of the JSON file and set the toggles to
         // the loaded toggles.
         try {
-            appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
-        } catch (JsonParser.TogglesFormatException e) {
+            String fileContent = FileHandler.loadContentFromFileToString();
+            settingsState.toggles.overwriteToggles(fileContent);
+        } catch (ConfigParser.TogglesFormatException e) {
             setStatusErrorMessage(e.getMessage());
             return;
         } catch (FileHandler.FileSelectionCancelledException e) {
@@ -100,14 +101,15 @@ public class AppSettingsComponent {
 
         // Reset the settings menu JsonText textarea to the toggles that have
         // been loaded.
-        setJsonText(JsonParser.toJson(appSettingsState.toggles));
+        setJsonText(settingsState.toggles.toString());
         setStatusMessage("Importing toggles from file was successful.");
     }
 
     private void exportTogglesToJsonFile() {
+        SettingsState settingsState = AppSettings.getInstance().getState();
         // Save the toggles to a file in JSON format.
         try {
-            FileHandler.saveTextToDisk(JsonParser.toJson(AppSettingsState.getInstance().toggles));
+            FileHandler.saveTextToDisk(settingsState.toggles.toString());
         } catch (FileHandler.FileSelectionCancelledException e) {
             setStatusErrorMessage("No file was saved, exporting toggles failed.");
             return;
