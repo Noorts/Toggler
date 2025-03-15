@@ -32,7 +32,7 @@ dependencies {
     testImplementation("com.intellij.remoterobot:remote-robot:$remoteRobotVersion")
     testImplementation("com.intellij.remoterobot:remote-fixtures:$remoteRobotVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.4")
 
     testImplementation("com.squareup.okhttp3:logging-interceptor:4.12.0") // Logging Network Calls
