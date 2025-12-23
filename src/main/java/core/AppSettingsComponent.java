@@ -88,13 +88,13 @@ public class AppSettingsComponent {
         try {
             appSettingsState.toggles = JsonParser.parseJsonToToggles(FileHandler.loadContentFromFileToString());
         } catch (JsonParser.TogglesFormatException e) {
-            setStatusErrorMessage(e.getMessage());
+            setStatusErrorMessage(String.format("Import failed: %s", e.getMessage()));
             return;
         } catch (FileHandler.FileSelectionCancelledException e) {
-            setStatusErrorMessage("No file was selected, importing toggles failed.");
+            setStatusErrorMessage("Import failed: No file was selected, importing toggles failed.");
             return;
         } catch (IOException e) {
-            setStatusErrorMessage("Importing toggles from file failed.");
+            setStatusErrorMessage(String.format("Import failed: IOException. %s.", e.getMessage()));
             return;
         }
 

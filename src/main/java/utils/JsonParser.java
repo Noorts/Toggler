@@ -23,7 +23,7 @@ public class JsonParser {
     private static void checkJsonForErrors(String jsonText) throws TogglesFormatException {
         long numberOfParenthesesInJson = jsonText.chars().filter(ch -> ch == '"').count();
         if (numberOfParenthesesInJson % 2 == 1) {
-            throw new TogglesFormatException("The toggles are malformed (check parentheses).");
+            throw new TogglesFormatException("The toggles are malformed (ensure matching parentheses).");
         }
 
         if (jsonText.length() == 0) {
@@ -113,8 +113,8 @@ public class JsonParser {
         HashSet<String> set = new HashSet<>();
         for (List<String> toggle : toggles) {
             for (String string : toggle) {
-                if (!set.add(string.toLowerCase())){
-                    throw new TogglesFormatException("Duplicate word/symbol was found.");
+                if (!set.add(string.toLowerCase())) {
+                    throw new TogglesFormatException(String.format("A duplicate word/symbol was found: \"%s\"", string));
                 }
             }
         }
@@ -131,7 +131,9 @@ public class JsonParser {
     private static void checkIfWordContainsABoundaryCharacter(String word) throws TogglesFormatException {
         for (int i = 0; i < word.length(); i++) {
             if (Constants.BOUNDARY_CHARS.contains(word.charAt(i))) {
-                throw new TogglesFormatException("A toggle contains an invalid character.");
+                throw new TogglesFormatException(String.format("The toggle " +
+                        "\"%s\" contains \"%s\", this is disallowed as this character is used " +
+                        "for word boundary detection.", word, word.charAt(i)));
             }
         }
     }
