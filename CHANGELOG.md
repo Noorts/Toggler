@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Saving Toggler settings is now blocked when an error occurs. This prevents
+  unexpected loss of configuration input. Besides the status bar, a new error
+  bar now prominently displays these errors.
 - Improved clarity of settings panel error messages.
 - Improved performance.
 

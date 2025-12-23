@@ -1,6 +1,7 @@
 package core;
 
 import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import utils.JsonParser;
@@ -44,7 +45,7 @@ public class AppSettingsConfigurable implements Configurable {
     }
 
     @Override
-    public void apply() {
+    public void apply() throws ConfigurationException {
         AppSettingsState settings = AppSettingsState.getInstance();
 
         try {
@@ -63,6 +64,7 @@ public class AppSettingsConfigurable implements Configurable {
             mySettingsComponent.setStatusMessage("Saving was successful.");
         } catch (JsonParser.TogglesFormatException e) {
             mySettingsComponent.setStatusErrorMessage(e.getMessage());
+            throw new ConfigurationException(e.getMessage());
         }
     }
 
