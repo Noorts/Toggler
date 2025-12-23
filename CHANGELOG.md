@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+
+
+## [1.6.0] - 2025-12-23
+
+### Changed
+
 - Saving Toggler settings is now blocked when an error occurs. This prevents
   unexpected loss of configuration input. Besides the status bar, a new error
   bar now prominently displays these errors.
@@ -226,7 +232,8 @@ versions from 2022.3.1 onwards.
 
 - Initial version.
 
-[unreleased]: https://github.com/Noorts/Toggler/compare/v1.5.0...HEAD
+[unreleased]: https://github.com/Noorts/Toggler/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/Noorts/Toggler/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/Noorts/Toggler/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/Noorts/Toggler/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/Noorts/Toggler/compare/v1.3.1...v1.4.0
